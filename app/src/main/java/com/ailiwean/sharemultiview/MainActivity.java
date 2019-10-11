@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         shareMultiView = findViewById(R.id.mult);
 
         shareMultiView.getMultiDelegate().isLazyLoad(true)
-                .isReuseLayout(true)
+                .isReuseLayout(false)
                 .setDefault(0)
                 .registerView(0, R.layout.aa)
                 .init(new ShareMultiDelegate.Init() {

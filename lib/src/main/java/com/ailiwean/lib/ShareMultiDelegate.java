@@ -23,12 +23,15 @@ public class ShareMultiDelegate {
     @SuppressLint("UseSparseArrays")
     HashMap<Integer, Build> buildMap = new HashMap<>();
 
+    //存放Type与LayoutId的Map
     @SuppressLint("UseSparseArrays")
     HashMap<Integer, Integer> typeMap = new HashMap<>();
 
+    //存放复用配置下的LayoutId与实例化View的Map
     @SuppressLint("UseSparseArrays")
     HashMap<Integer, View> reuseMap = new HashMap<>();
 
+    //存放可复用的Type
     Set<Integer> receptType = new TreeSet<>();
 
     //是否启用懒加载
@@ -93,11 +96,12 @@ public class ShareMultiDelegate {
 
     public void go() {
 
+        creatReceptType();
+
         loadView();
 
         switchType(defaultType);
 
-        creatReceptType();
     }
 
     /***
@@ -150,8 +154,6 @@ public class ShareMultiDelegate {
         if (!isReuseLayout) {
             View view = LayoutInflater.from(rootView.getContext()).inflate(build.contentLayout, rootView, false);
             rootView.addView(view);
-            if (build.init != null)
-                build.init.init(view);
             build.bindInstanceView(view);
             return;
         }
@@ -160,12 +162,8 @@ public class ShareMultiDelegate {
             View view = LayoutInflater.from(rootView.getContext()).inflate(build.contentLayout, rootView, false);
             rootView.addView(view);
             reuseMap.put(build.contentLayout, view);
-            if (build.init != null)
-                build.init.init(view);
             build.bindInstanceView(view);
         } else {
-            if (build.init != null)
-                build.init.init(reuseMap.get(build.contentLayout));
             build.bindInstanceView(reuseMap.get(build.contentLayout));
         }
     }
@@ -186,29 +184,33 @@ public class ShareMultiDelegate {
         if (build == null)
             return;
 
-        //创建新Type自带初始化,这里做过滤操作
-        boolean isCreatInit = false;
-
         //懒加载会走这里
         if (build.view == null) {
             inflate(build);
-            isCreatInit = true;
+            build.init.init(build.view);
+            build.isInit = true;
+        } else {
+            //对于复用的View需要重新走初始化方法
+            if (isReuseLayout) {
+                if (receptType.contains(build.type)) {
+                    build.init.init(build.view);
+                } else {
+                    if (!build.isInit) {
+                        build.init.init(build.view);
+                        build.isInit = true;
+                    }
+                }
+            } else {
+                //非复用的View未执行init则init
+                if (!build.isInit) {
+                    build.init.init(build.view);
+                    build.isInit = true;
+                }
+            }
+
         }
 
         build.view.setVisibility(View.VISIBLE);
-
-        //对于复用的View需要重新走初始化方法
-        if (isReuseLayout && !isCreatInit) {
-
-            boolean isNeedRefresh = false;
-
-            if (receptType.contains(build.type))
-                isNeedRefresh = true;
-
-            if (isNeedRefresh)
-                build.init.init(build.view);
-
-        }
     }
 
     private void creatReceptType() {
@@ -253,6 +255,7 @@ public class ShareMultiDelegate {
         View view;
         Init init;
         int type;
+        boolean isInit;
 
         private Build(ShareMultiDelegate delegate, @LayoutRes int layout, int type) {
             this.delegate = delegate;
