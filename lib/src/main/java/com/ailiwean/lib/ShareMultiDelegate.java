@@ -34,6 +34,8 @@ public class ShareMultiDelegate {
     //存放可复用的Type
     Set<Integer> receptType = new TreeSet<>();
 
+    Build lastBuild = null;
+
     //是否启用懒加载
     boolean isLazyLoad = true;
     //是否复用Layout
@@ -179,6 +181,10 @@ public class ShareMultiDelegate {
                 continue;
             build.view.setVisibility(View.INVISIBLE);
         }
+        
+        //回调上个页面的隐藏方法
+        if (lastBuild != null && lastBuild.lifeListener != null)
+            lastBuild.lifeListener.onHide(lastBuild.view);
 
         Build build = buildMap.get(type);
         if (build == null)
@@ -210,7 +216,11 @@ public class ShareMultiDelegate {
 
         }
 
+        //显示当前页面并回调
         build.view.setVisibility(View.VISIBLE);
+        if (build.lifeListener != null)
+            build.lifeListener.onVisiable(build.view);
+        lastBuild = build;
     }
 
     private void creatReceptType() {
@@ -235,7 +245,10 @@ public class ShareMultiDelegate {
      * 切换View  {@link #decisionView(int)}
      */
     public void switchType(int type) {
+
         currentType = type;
+
+
         decisionView(type);
     }
 
@@ -251,11 +264,19 @@ public class ShareMultiDelegate {
     public static class Build {
 
         int contentLayout;
+
         ShareMultiDelegate delegate;
+
         View view;
-        Init init;
+        //Build与Layout对应的Type
         int type;
+
+        //是否以及init
         boolean isInit;
+
+        Init init;
+
+        LifeListener lifeListener;
 
         private Build(ShareMultiDelegate delegate, @LayoutRes int layout, int type) {
             this.delegate = delegate;
@@ -267,8 +288,27 @@ public class ShareMultiDelegate {
             return new Build(delegate, layout, type);
         }
 
-        public ShareMultiDelegate init(Init init) {
+        /***
+         * 初始化回调，非复用布局Layout只执行一次
+         * @param init
+         * @return
+         */
+        public Build init(Init init) {
             this.init = init;
+            return this;
+        }
+
+
+        public Build bindLifeListener(LifeListener lifeListener) {
+            this.lifeListener = lifeListener;
+            return this;
+        }
+
+        /***
+         * 完成配置,返回代理
+         * @return
+         */
+        public ShareMultiDelegate complete() {
             return delegate;
         }
 
@@ -278,7 +318,18 @@ public class ShareMultiDelegate {
 
     }
 
+    //Layout 初始化接口
     public interface Init {
         void init(View pageView);
     }
+
+    //Layout的生命周期回调
+    public interface LifeListener {
+
+        void onVisiable(View pageView);
+
+        void onHide(View pageView);
+
+    }
+
 }
