@@ -3,10 +3,12 @@ package com.ailiwean.sharemultiview;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
-import com.ailiwean.lib.ShareMultiDelegate;
+import com.ailiwean.lib.animation.AnimHelper;
+import com.ailiwean.lib.animation.DefaultAnim;
+import com.ailiwean.lib.callback.InitListener;
+import com.ailiwean.lib.delegate.ShareMultiDelegate;
 import com.ailiwean.lib.ShareMultiView;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
                 .isReuseLayout(false)
                 .setDefault(0)
                 .registerView(0, R.layout.aa)
-                .init(new ShareMultiDelegate.Init() {
+                .init(new InitListener() {
                     @Override
                     public void init(View view) {
 
@@ -37,8 +39,20 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 })
+                .bindAnimation(new DefaultAnim() {
+                    @Override
+                    public int enter() {
+                        return AnimHelper.ALPHA_SHOW;
+                    }
+
+                    @Override
+                    public int exit() {
+                        return AnimHelper.ALPHA_HIDE;
+                    }
+                })
+                .complete()
                 .registerView(1, R.layout.bb)
-                .init(new ShareMultiDelegate.Init() {
+                .init(new InitListener() {
                     @Override
                     public void init(View view) {
 
@@ -51,11 +65,24 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 })
+                .bindAnimation(new DefaultAnim() {
+                    @Override
+                    public int enter() {
+                        return AnimHelper.ALPHA_SHOW;
+                    }
+
+                    @Override
+                    public int exit() {
+                        return AnimHelper.ALPHA_HIDE;
+                    }
+                })
+
+                .complete()
                 .registerView(2, R.layout.bb)
-                .init(new ShareMultiDelegate.Init() {
+                .init(new InitListener() {
                     @Override
                     public void init(View pageView) {
-
+            
                         pageView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -64,7 +91,20 @@ public class MainActivity extends AppCompatActivity {
                         });
 
                     }
-                }).go();
+                })
+                .bindAnimation(new DefaultAnim() {
+                    @Override
+                    public int enter() {
+                        return AnimHelper.ALPHA_SHOW;
+                    }
+
+                    @Override
+                    public int exit() {
+                        return AnimHelper.ALPHA_HIDE;
+                    }
+                })
+                .complete()
+                .go();
 
     }
 }

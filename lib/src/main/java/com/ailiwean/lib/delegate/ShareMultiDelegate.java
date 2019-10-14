@@ -1,4 +1,4 @@
-package com.ailiwean.lib;
+package com.ailiwean.lib.delegate;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
@@ -6,6 +6,12 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import androidx.annotation.LayoutRes;
+
+import com.ailiwean.lib.animation.CustomAnim;
+import com.ailiwean.lib.animation.NullAnim;
+import com.ailiwean.lib.callback.AnimInnerListener;
+import com.ailiwean.lib.callback.InitListener;
+import com.ailiwean.lib.callback.LifeListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,7 +73,7 @@ public class ShareMultiDelegate {
     }
 
     /***
-     * 非懒加载会一次性初始化所有布局信息
+     * 非懒加载会一次性加载所有布局
      * @param isLazyLoad
      * @return
      */
@@ -159,7 +165,6 @@ public class ShareMultiDelegate {
             build.bindInstanceView(view);
             return;
         }
-
         if (reuseMap.get(build.contentLayout) == null) {
             View view = LayoutInflater.from(rootView.getContext()).inflate(build.contentLayout, rootView, false);
             rootView.addView(view);
@@ -175,16 +180,21 @@ public class ShareMultiDelegate {
      */
     private void decisionView(int type) {
 
-        for (int key : buildMap.keySet()) {
-            Build build = buildMap.get(key);
-            if (build == null || build.view == null)
-                continue;
-            build.view.setVisibility(View.INVISIBLE);
-        }
-        
+//        for (int key : buildMap.keySet()) {
+//            Build build = buildMap.get(key);
+//            if (build == null || build.view == null)
+//                continue;
+//            build.view.setVisibility(View.INVISIBLE);
+//        }
+
+        if (lastBuild != null)
+            lastBuild.anim.exit(lastBuild.view);
+
         //回调上个页面的隐藏方法
-        if (lastBuild != null && lastBuild.lifeListener != null)
-            lastBuild.lifeListener.onHide(lastBuild.view);
+        if (lastBuild != null && lastBuild.lifeListeners.size() != 0) {
+            for (LifeListener item : lastBuild.lifeListeners)
+                item.onHide(lastBuild.view);
+        }
 
         Build build = buildMap.get(type);
         if (build == null)
@@ -193,33 +203,24 @@ public class ShareMultiDelegate {
         //懒加载会走这里
         if (build.view == null) {
             inflate(build);
-            build.init.init(build.view);
+            build.initListener.init(build.view);
             build.isInit = true;
         } else {
             //对于复用的View需要重新走初始化方法
-            if (isReuseLayout) {
-                if (receptType.contains(build.type)) {
-                    build.init.init(build.view);
-                } else {
-                    if (!build.isInit) {
-                        build.init.init(build.view);
-                        build.isInit = true;
-                    }
-                }
+            if (receptType.contains(build.type)) {
+                build.initListener.init(build.view);
             } else {
-                //非复用的View未执行init则init
                 if (!build.isInit) {
-                    build.init.init(build.view);
+                    build.initListener.init(build.view);
                     build.isInit = true;
                 }
             }
-
         }
-
-        //显示当前页面并回调
-        build.view.setVisibility(View.VISIBLE);
-        if (build.lifeListener != null)
-            build.lifeListener.onVisiable(build.view);
+        //执行动画并回调
+        build.anim.enter(build.view);
+        if (build.lifeListeners.size() != 0)
+            for (LifeListener item : build.lifeListeners)
+                item.onVisiable(build.view);
         lastBuild = build;
     }
 
@@ -248,7 +249,6 @@ public class ShareMultiDelegate {
 
         currentType = type;
 
-
         decisionView(type);
     }
 
@@ -261,22 +261,34 @@ public class ShareMultiDelegate {
         else return null;
     }
 
+    /***
+     * 获取当前显示页的Type
+     * @return
+     */
+    public int getCurrentType() {
+        return getCurrentType();
+    }
+
     public static class Build {
 
         int contentLayout;
 
         ShareMultiDelegate delegate;
 
+        //pageView
         View view;
+
         //Build与Layout对应的Type
         int type;
 
-        //是否以及init
+        //是否已经init
         boolean isInit;
 
-        Init init;
+        InitListener initListener;
 
-        LifeListener lifeListener;
+        CustomAnim anim = new NullAnim();
+
+        List<LifeListener> lifeListeners = new ArrayList<>();
 
         private Build(ShareMultiDelegate delegate, @LayoutRes int layout, int type) {
             this.delegate = delegate;
@@ -290,19 +302,33 @@ public class ShareMultiDelegate {
 
         /***
          * 初始化回调，非复用布局Layout只执行一次
-         * @param init
+         * @param initListener
          * @return
          */
-        public Build init(Init init) {
-            this.init = init;
+        public Build init(InitListener initListener) {
+            this.initListener = initListener;
             return this;
         }
 
-
-        public Build bindLifeListener(LifeListener lifeListener) {
-            this.lifeListener = lifeListener;
+        /***
+         * 添加生命周期回调
+         * @param lifeListener
+         * @return
+         */
+        public Build addLifeListener(LifeListener lifeListener) {
+            lifeListeners.add(lifeListener);
             return this;
         }
+
+        /***
+         * 绑定一个动画效果
+         */
+        public Build bindAnimation(CustomAnim anim) {
+            if (anim != null)
+                this.anim = anim;
+            return this;
+        }
+
 
         /***
          * 完成配置,返回代理
@@ -314,22 +340,7 @@ public class ShareMultiDelegate {
 
         private void bindInstanceView(View view) {
             this.view = view;
+            anim.injectPageView(view);
         }
-
     }
-
-    //Layout 初始化接口
-    public interface Init {
-        void init(View pageView);
-    }
-
-    //Layout的生命周期回调
-    public interface LifeListener {
-
-        void onVisiable(View pageView);
-
-        void onHide(View pageView);
-
-    }
-
 }

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
+import com.ailiwean.lib.delegate.ShareMultiDelegate;
+
 public class ShareMultiView extends FrameLayout {
 
     ShareMultiDelegate delegate;
@@ -36,7 +38,7 @@ public class ShareMultiView extends FrameLayout {
     }
 
     public int getCurrentType() {
-        return delegate.currentType;
+        return delegate.getCurrentType();
     }
 
 }
