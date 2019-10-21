@@ -1,16 +1,15 @@
 package com.ailiwean.lib.animation;
 
-import android.view.View;
-
-public class NullAnim extends CustomAnim {
+public class NullAnim extends DefaultAnim {
 
     @Override
-    public void enter(View pageView) {
-        animStar();
+    public int enter() {
+        return AnimHelper.NULL;
     }
 
     @Override
-    public void exit(View pageView) {
-        exitAnimEnd();
+    public int exit() {
+        return AnimHelper.NULL;
     }
 }
+

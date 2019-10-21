@@ -8,7 +8,6 @@ import android.view.View;
 import com.ailiwean.lib.animation.AnimHelper;
 import com.ailiwean.lib.animation.DefaultAnim;
 import com.ailiwean.lib.callback.InitListener;
-import com.ailiwean.lib.delegate.ShareMultiDelegate;
 import com.ailiwean.lib.ShareMultiView;
 
 public class MainActivity extends AppCompatActivity {
@@ -39,18 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 })
-                .bindAnimation(new DefaultAnim() {
-                    @Override
-                    public int enter() {
-                        return AnimHelper.ALPHA_SHOW;
-                    }
-
-                    @Override
-                    public int exit() {
-                        return AnimHelper.ALPHA_HIDE;
-                    }
-                })
-                .complete()
+                .cp()
                 .registerView(1, R.layout.bb)
                 .init(new InitListener() {
                     @Override
@@ -77,12 +65,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
 
-                .complete()
+                .cp()
                 .registerView(2, R.layout.bb)
                 .init(new InitListener() {
                     @Override
                     public void init(View pageView) {
-            
+
                         pageView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -103,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                         return AnimHelper.ALPHA_HIDE;
                     }
                 })
-                .complete()
+                .cp()
                 .go();
 
     }

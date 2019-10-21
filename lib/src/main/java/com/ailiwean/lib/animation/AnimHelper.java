@@ -4,6 +4,8 @@ import androidx.annotation.IntDef;
 
 public class AnimHelper {
 
+    public static final int NULL = 0;
+
     //透明度(0-1)
     public static final int ALPHA_SHOW = 10000;
 
@@ -24,7 +26,7 @@ public class AnimHelper {
 
     public static final int DURATION = 300;
 
-    @IntDef({ALPHA_SHOW, ALPHA_HIDE, UP_TURN, DOWN_TURN, LEFT_TURN, RIGHT_TURN})
+    @IntDef({NULL, ALPHA_SHOW, ALPHA_HIDE, UP_TURN, DOWN_TURN, LEFT_TURN, RIGHT_TURN})
     public @interface Type {
     }
 

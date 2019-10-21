@@ -14,6 +14,25 @@ class AnimLib {
 
     AnimStateListener animStateListener;
 
+    Animation.AnimationListener listener = new Animation.AnimationListener() {
+        @Override
+        public void onAnimationStart(Animation animation) {
+            animStateListener.exitAnimStar(pageView);
+            animStateListener.enterAnimStar(pageView);
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            animStateListener.exitAnimEnd(pageView);
+            animStateListener.enterAnimEnd(pageView);
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {
+
+        }
+    };
+
     private AnimLib(@AnimHelper.Type int type, View preView) {
         this.type = type;
         this.pageView = preView;
@@ -33,6 +52,8 @@ class AnimLib {
         if (pageView == null)
             return;
 
+        pageView.clearAnimation();
+
         if (type == AnimHelper.ALPHA_HIDE) {
             alpha_hide();
         }
@@ -47,45 +68,16 @@ class AnimLib {
 
         AlphaAnimation alphaAnimation = new AlphaAnimation(1, 0);
         alphaAnimation.setDuration(AnimHelper.DURATION);
-        alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                animStateListener.animStar(pageView);
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                animStateListener.animEnd(pageView);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
+        alphaAnimation.setAnimationListener(listener);
         pageView.startAnimation(alphaAnimation);
+
     }
 
     private void alpha_show() {
 
         AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
         alphaAnimation.setDuration(AnimHelper.DURATION);
-        alphaAnimation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-                animStateListener.animStar(pageView);
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                animStateListener.animEnd(pageView);
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
+        alphaAnimation.setAnimationListener(listener);
         pageView.startAnimation(alphaAnimation);
     }
 

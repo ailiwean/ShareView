@@ -4,8 +4,12 @@ import android.view.View;
 
 public interface AnimStateListener {
 
-    void animStar(View view);
+    void enterAnimStar(View view);
 
-    void animEnd(View view);
+    void enterAnimEnd(View view);
+
+    void exitAnimStar(View view);
+
+    void exitAnimEnd(View view);
 
 }

@@ -9,7 +9,6 @@ import androidx.annotation.LayoutRes;
 
 import com.ailiwean.lib.animation.CustomAnim;
 import com.ailiwean.lib.animation.NullAnim;
-import com.ailiwean.lib.callback.AnimInnerListener;
 import com.ailiwean.lib.callback.InitListener;
 import com.ailiwean.lib.callback.LifeListener;
 
@@ -178,14 +177,13 @@ public class ShareMultiDelegate {
     /***
      * 显示View
      */
-    private void decisionView(int type) {
+    private void dispatchShowView(int type) {
 
-//        for (int key : buildMap.keySet()) {
-//            Build build = buildMap.get(key);
-//            if (build == null || build.view == null)
-//                continue;
-//            build.view.setVisibility(View.INVISIBLE);
-//        }
+        final Build build = buildMap.get(type);
+        if (build == null)
+            return;
+
+        lazyCreat(build);
 
         if (lastBuild != null)
             lastBuild.anim.exit(lastBuild.view);
@@ -196,11 +194,33 @@ public class ShareMultiDelegate {
                 item.onHide(lastBuild.view);
         }
 
-        Build build = buildMap.get(type);
-        if (build == null)
-            return;
+        //执行动画并回调
+        build.anim.enter(build.view);
 
-        //懒加载会走这里
+        //设定
+        build.anim.operatorLastBuildBack(new Runnable() {
+            @Override
+            public void run() {
+
+                if (lastBuild != null && lastBuild != build) {
+                    lastBuild.view.setVisibility(View.INVISIBLE);
+                    lastBuild.view.clearAnimation();
+                }
+                lastBuild = build;
+            }
+        });
+
+        if (build.lifeListeners.size() != 0)
+            for (LifeListener item : build.lifeListeners)
+                item.onVisiable(build.view);
+
+    }
+
+    /***
+     * 懒加载
+     * @param build
+     */
+    private void lazyCreat(Build build) {
         if (build.view == null) {
             inflate(build);
             build.initListener.init(build.view);
@@ -216,13 +236,9 @@ public class ShareMultiDelegate {
                 }
             }
         }
-        //执行动画并回调
-        build.anim.enter(build.view);
-        if (build.lifeListeners.size() != 0)
-            for (LifeListener item : build.lifeListeners)
-                item.onVisiable(build.view);
-        lastBuild = build;
+
     }
+
 
     private void creatReceptType() {
 
@@ -243,13 +259,13 @@ public class ShareMultiDelegate {
     }
 
     /***
-     * 切换View  {@link #decisionView(int)}
+     * 切换View  {@link #dispatchShowView(int)}
      */
     public void switchType(int type) {
 
         currentType = type;
 
-        decisionView(type);
+        dispatchShowView(type);
     }
 
     /***
@@ -284,7 +300,12 @@ public class ShareMultiDelegate {
         //是否已经init
         boolean isInit;
 
-        InitListener initListener;
+        InitListener initListener = new InitListener() {
+            @Override
+            public void init(View pageView) {
+
+            }
+        };
 
         CustomAnim anim = new NullAnim();
 
@@ -334,7 +355,7 @@ public class ShareMultiDelegate {
          * 完成配置,返回代理
          * @return
          */
-        public ShareMultiDelegate complete() {
+        public ShareMultiDelegate cp() {
             return delegate;
         }
 
