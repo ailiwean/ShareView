@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.ailiwean.lib.ShareMultiView
+    <com.ailiwean.lib.ShareView
         android:id="@+id/mult"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

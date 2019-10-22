@@ -8,11 +8,11 @@ import android.view.View;
 import com.ailiwean.lib.animation.AnimHelper;
 import com.ailiwean.lib.animation.DefaultAnim;
 import com.ailiwean.lib.callback.InitListener;
-import com.ailiwean.lib.ShareMultiView;
+import com.ailiwean.lib.ShareView;
 
 public class MainActivity extends AppCompatActivity {
 
-    ShareMultiView shareMultiView;
+    ShareView shareMultiView;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {

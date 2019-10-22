@@ -6,21 +6,21 @@ import android.widget.FrameLayout;
 
 import com.ailiwean.lib.delegate.ShareMultiDelegate;
 
-public class ShareMultiView extends FrameLayout {
+public class ShareView extends FrameLayout {
 
     ShareMultiDelegate delegate;
 
-    public ShareMultiView(Context context) {
+    public ShareView(Context context) {
         super(context);
         init();
     }
 
-    public ShareMultiView(Context context, AttributeSet attrs) {
+    public ShareView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public ShareMultiView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public ShareView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
