@@ -1,4 +1,4 @@
-package com.ailiwean.lib.animation;
+package com.ailiwean.lib.am;
 
 import androidx.annotation.IntDef;
 

@@ -1,4 +1,4 @@
-package com.ailiwean.lib.animation;
+package com.ailiwean.lib.am;
 
 import android.view.View;
 
@@ -16,6 +16,7 @@ public abstract class BaseAnim {
      * 通过动画结束来控制上个界面的隐藏，由{@Link com.ailiwean.lib.delegate.ShareMultiDelegate调用}
      * @param runnable
      */
+    @Deprecated
     public final void operatorLastBuildBack(Runnable runnable) {
         this.runnable = runnable;
     }

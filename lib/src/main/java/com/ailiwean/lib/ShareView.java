@@ -5,40 +5,57 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 import com.ailiwean.lib.delegate.ShareMultiDelegate;
+import com.ailiwean.lib.delegate.ShareTaskDelegate;
 
 public class ShareView extends FrameLayout {
 
-    ShareMultiDelegate delegate;
+    ShareMultiDelegate multiDelegate;
+
+    ShareTaskDelegate taskDelegate;
 
     public ShareView(Context context) {
         super(context);
-        init();
     }
 
     public ShareView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
     }
 
     public ShareView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init();
-    }
-
-    private void init() {
-        delegate = ShareMultiDelegate.getInstance(this);
     }
 
     public ShareMultiDelegate getMultiDelegate() {
-        return delegate;
+        multiDelegate = ShareMultiDelegate.getInstance(this);
+        return multiDelegate;
+    }
+
+    public ShareTaskDelegate getTaskDelegate() {
+        taskDelegate = ShareTaskDelegate.getInstance(this);
+        return taskDelegate;
     }
 
     public void switchType(int type) {
-        delegate.switchType(type);
+
+        if (multiDelegate != null)
+            multiDelegate.switchType(type);
+
+        if (taskDelegate != null)
+            taskDelegate.switchType(type);
+
     }
 
     public int getCurrentType() {
-        return delegate.getCurrentType();
+
+        int currentType = 0;
+
+        if (multiDelegate != null)
+            currentType = multiDelegate.getCurrentType();
+
+        if (taskDelegate != null)
+            currentType = taskDelegate.getCurrentType();
+
+        return currentType;
     }
 
 }

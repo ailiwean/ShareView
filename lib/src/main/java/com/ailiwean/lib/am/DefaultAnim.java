@@ -1,4 +1,4 @@
-package com.ailiwean.lib.animation;
+package com.ailiwean.lib.am;
 
 import android.view.View;
 
@@ -10,7 +10,7 @@ public abstract class DefaultAnim extends CustomAnim implements AnimOutListener,
     /***
      * 通用的监听,被{@link AnimLib}回调，最终调用, 重写的动画监听方法以及{@link BaseAnim 中所必须的方法}
      */
-    AnimStateListener animEnter = new AnimStateListener() {
+    AnimStateListener animStateListener = new AnimStateListener() {
         @Override
         public void enterAnimStar(View view) {
             DefaultAnim.this.defaultEnterAnimStar();
@@ -25,29 +25,6 @@ public abstract class DefaultAnim extends CustomAnim implements AnimOutListener,
 
         @Override
         public void exitAnimStar(View view) {
-
-        }
-
-        @Override
-        public void exitAnimEnd(View view) {
-
-        }
-
-
-    };
-    AnimStateListener animExit = new AnimStateListener() {
-        @Override
-        public void enterAnimStar(View view) {
-
-        }
-
-        @Override
-        public void enterAnimEnd(View view) {
-
-        }
-
-        @Override
-        public void exitAnimStar(View view) {
             DefaultAnim.this.defaultExitAnimStar();
             DefaultAnim.this.exitAnimStar(view);
         }
@@ -57,6 +34,7 @@ public abstract class DefaultAnim extends CustomAnim implements AnimOutListener,
             DefaultAnim.this.defaultExitAnimEnd();
             DefaultAnim.this.exitAnimEnd(view);
         }
+
     };
 
     @Override
@@ -75,13 +53,13 @@ public abstract class DefaultAnim extends CustomAnim implements AnimOutListener,
 
             case AnimHelper.ALPHA_SHOW:
                 AnimLib.getInstance(AnimHelper.ALPHA_SHOW, pageView)
-                        .bindListener(isEnter ? animEnter : animExit)
+                        .bindListener(animStateListener)
                         .start();
                 break;
 
             case AnimHelper.ALPHA_HIDE:
                 AnimLib.getInstance(AnimHelper.ALPHA_HIDE, pageView)
-                        .bindListener(isEnter ? animEnter : animExit)
+                        .bindListener(animStateListener)
                         .start();
                 break;
 

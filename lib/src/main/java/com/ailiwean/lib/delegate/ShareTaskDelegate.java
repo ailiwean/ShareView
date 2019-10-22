@@ -3,8 +3,8 @@ package com.ailiwean.lib.delegate;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import com.ailiwean.lib.animation.CustomAnim;
-import com.ailiwean.lib.animation.NullAnim;
+import com.ailiwean.lib.am.CustomAnim;
+import com.ailiwean.lib.am.NullAnim;
 import com.ailiwean.lib.base.BaseBuild;
 import com.ailiwean.lib.base.BaseMultiDelegate;
 import com.ailiwean.lib.callback.LifeListener;
@@ -24,6 +24,13 @@ public class ShareTaskDelegate extends BaseMultiDelegate<ShareTaskDelegate, Shar
 
     public static ShareTaskDelegate getInstance(FrameLayout controlView) {
         return new ShareTaskDelegate(controlView);
+    }
+
+    @Override
+    public void go() {
+        //栈结构不允许复用布局
+        isReuseLayout(false);
+        super.go();
     }
 
     @Override
@@ -64,6 +71,16 @@ public class ShareTaskDelegate extends BaseMultiDelegate<ShareTaskDelegate, Shar
 
     }
 
+    /***
+     * 栈结构按照注解布局顺序依次添加
+     * @param type
+     * @return
+     */
+    @Override
+    public final BaseMultiDelegate setDefault(int type) {
+        return super.setDefault(-1);
+    }
+
     public static class TaskBuild extends BaseBuild<ShareTaskDelegate> {
 
         CustomAnim anim = new NullAnim();
@@ -71,7 +88,6 @@ public class ShareTaskDelegate extends BaseMultiDelegate<ShareTaskDelegate, Shar
         protected TaskBuild(ShareTaskDelegate delegate, int layout, int type) {
             super(delegate, layout, type);
         }
-
 
         /***
          * 绑定一个动画效果

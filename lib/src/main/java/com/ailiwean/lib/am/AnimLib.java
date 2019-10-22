@@ -1,4 +1,4 @@
-package com.ailiwean.lib.animation;
+package com.ailiwean.lib.am;
 
 import android.view.View;
 import android.view.animation.AlphaAnimation;
@@ -10,6 +10,9 @@ class AnimLib {
 
     int type;
 
+    //是否退出动画
+    boolean isOut;
+
     View pageView;
 
     AnimStateListener animStateListener;
@@ -17,14 +20,18 @@ class AnimLib {
     Animation.AnimationListener listener = new Animation.AnimationListener() {
         @Override
         public void onAnimationStart(Animation animation) {
-            animStateListener.exitAnimStar(pageView);
-            animStateListener.enterAnimStar(pageView);
+            if (isOut)
+                animStateListener.exitAnimStar(pageView);
+            else
+                animStateListener.enterAnimStar(pageView);
         }
 
         @Override
         public void onAnimationEnd(Animation animation) {
-            animStateListener.exitAnimEnd(pageView);
-            animStateListener.enterAnimEnd(pageView);
+            if (isOut)
+                animStateListener.exitAnimEnd(pageView);
+            else
+                animStateListener.enterAnimEnd(pageView);
         }
 
         @Override
@@ -47,6 +54,10 @@ class AnimLib {
         return this;
     }
 
+    public AnimLib isOut(boolean isOut) {
+        return this;
+    }
+
     public void start() {
 
         if (pageView == null)
@@ -65,7 +76,6 @@ class AnimLib {
     }
 
     private void alpha_hide() {
-
         AlphaAnimation alphaAnimation = new AlphaAnimation(1, 0);
         alphaAnimation.setDuration(AnimHelper.DURATION);
         alphaAnimation.setAnimationListener(listener);
@@ -74,7 +84,6 @@ class AnimLib {
     }
 
     private void alpha_show() {
-
         AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
         alphaAnimation.setDuration(AnimHelper.DURATION);
         alphaAnimation.setAnimationListener(listener);

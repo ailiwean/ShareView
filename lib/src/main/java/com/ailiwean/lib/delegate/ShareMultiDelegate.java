@@ -20,11 +20,11 @@ public class ShareMultiDelegate extends BaseMultiDelegate<ShareMultiDelegate, Sh
     protected MultiBuild creatBuild(ShareMultiDelegate delegate, int layout, int type) {
         return new MultiBuild(delegate, layout, type);
     }
-    
+
     public static ShareMultiDelegate getInstance(FrameLayout controlView) {
         return new ShareMultiDelegate(controlView);
     }
-
+        
     @Override
     public void dispatchShowView(int type) {
 

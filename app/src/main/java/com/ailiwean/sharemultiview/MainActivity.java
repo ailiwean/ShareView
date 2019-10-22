@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.ailiwean.lib.animation.AnimHelper;
-import com.ailiwean.lib.animation.DefaultAnim;
 import com.ailiwean.lib.callback.InitListener;
 import com.ailiwean.lib.ShareView;
 
@@ -27,9 +25,8 @@ public class MainActivity extends AppCompatActivity {
                 .registerView(0, R.layout.aa)
                 .init(new InitListener() {
                     @Override
-                    public void init(View view) {
-
-                        view.setOnClickListener(new View.OnClickListener() {
+                    public void init(View pageView) {
+                        pageView.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 shareMultiView.switchType(1);

@@ -62,7 +62,7 @@ public abstract class BaseMultiDelegate<M extends BaseMultiDelegate, T extends B
         buildMap.put(type, build);
         return build;
     }
-
+        
     /***
      * 非懒加载会一次性加载所有布局
      * @param isLazyLoad
