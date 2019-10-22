@@ -12,27 +12,27 @@ import java.util.List;
 
 public class BaseBuild<M extends BaseMultiDelegate> {
 
-    int contentLayout;
+    public int contentLayout;
 
-    M delegate;
+    public M delegate;
 
     //pageView
-    View view;
+    public View view;
 
     //Build与Layout对应的Type
-    int type;
+    public int type;
 
     //是否已经init
-    boolean isInit;
+    public boolean isInit;
 
-    InitListener initListener = new InitListener() {
+    public InitListener initListener = new InitListener() {
         @Override
         public void init(View pageView) {
 
         }
     };
 
-    List<LifeListener> lifeListeners = new ArrayList<>();
+    public List<LifeListener> lifeListeners = new ArrayList<>();
 
     protected BaseBuild(M delegate, @LayoutRes int layout, int type) {
         this.delegate = delegate;

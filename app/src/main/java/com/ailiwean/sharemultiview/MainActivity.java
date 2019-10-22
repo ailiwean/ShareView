@@ -53,17 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 })
-                .bindAnimation(new DefaultAnim() {
-                    @Override
-                    public int enter() {
-                        return AnimHelper.ALPHA_SHOW;
-                    }
 
-                    @Override
-                    public int exit() {
-                        return AnimHelper.ALPHA_HIDE;
-                    }
-                })
 
                 .cp()
                 .registerView(2, R.layout.bb)
@@ -78,17 +68,6 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
 
-                    }
-                })
-                .bindAnimation(new DefaultAnim() {
-                    @Override
-                    public int enter() {
-                        return AnimHelper.ALPHA_SHOW;
-                    }
-
-                    @Override
-                    public int exit() {
-                        return AnimHelper.ALPHA_HIDE;
                     }
                 })
                 .cp()

@@ -214,10 +214,15 @@ public abstract class BaseMultiDelegate<M extends BaseMultiDelegate, T extends B
      * 切换View  {@link #dispatchShowView(int)}
      */
     public void switchType(int type) {
-
         currentType = type;
-        dispatchShowView(type);
 
+        T build = getBuild(type);
+        if (build == null)
+            return;
+
+        //懒加载View,确保切换前View存在
+        lazyCreat(build);
+        dispatchShowView(type);
     }
 
     /***
