@@ -5,7 +5,7 @@ import android.widget.FrameLayout;
 import com.ailiwean.lib.base.BaseBuild;
 import com.ailiwean.lib.base.BaseMultiDelegate;
 
-public class ShareMultiDelegate extends BaseMultiDelegate<ShareMultiDelegate.MultiBuild> {
+public class ShareMultiDelegate extends BaseMultiDelegate<ShareMultiDelegate, ShareMultiDelegate.MultiBuild> {
 
     private ShareMultiDelegate(FrameLayout mControlView) {
         super(mControlView);
@@ -13,9 +13,10 @@ public class ShareMultiDelegate extends BaseMultiDelegate<ShareMultiDelegate.Mul
     }
 
     @Override
-    protected MultiBuild creatBuild(BaseMultiDelegate delegate, int layout, int type) {
-        return MultiBuild.creat(delegate, layout, type);
+    protected MultiBuild creatBuild(ShareMultiDelegate delegate, int layout, int type) {
+        return new MultiBuild(delegate, layout, type);
     }
+
 
     public static ShareMultiDelegate getInstance(FrameLayout controlView) {
         return new ShareMultiDelegate(controlView);
@@ -61,18 +62,11 @@ public class ShareMultiDelegate extends BaseMultiDelegate<ShareMultiDelegate.Mul
 
     }
 
+    public static class MultiBuild extends BaseBuild<ShareMultiDelegate> {
 
-    public static class MultiBuild extends BaseBuild {
-
-        protected MultiBuild(BaseMultiDelegate delegate, int layout, int type) {
+        protected MultiBuild(ShareMultiDelegate delegate, int layout, int type) {
             super(delegate, layout, type);
         }
-
-        public static MultiBuild creat(BaseMultiDelegate delegate, int layout, int type) {
-            return new MultiBuild(delegate, layout, type);
-        }
-
-
     }
 
 

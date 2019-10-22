@@ -10,11 +10,11 @@ import com.ailiwean.lib.callback.LifeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseBuild {
+public class BaseBuild<M extends BaseMultiDelegate> {
 
     int contentLayout;
 
-    BaseMultiDelegate delegate;
+    M delegate;
 
     //pageView
     View view;
@@ -34,14 +34,10 @@ public class BaseBuild {
 
     List<LifeListener> lifeListeners = new ArrayList<>();
 
-    protected BaseBuild(BaseMultiDelegate delegate, @LayoutRes int layout, int type) {
+    protected BaseBuild(M delegate, @LayoutRes int layout, int type) {
         this.delegate = delegate;
         this.contentLayout = layout;
         this.type = type;
-    }
-
-    public static BaseBuild create(BaseMultiDelegate delegate, @LayoutRes int layout, int type) {
-        return new BaseBuild(delegate, layout, type);
     }
 
     /***
@@ -68,7 +64,7 @@ public class BaseBuild {
      * 完成配置,返回代理
      * @return
      */
-    public BaseMultiDelegate cp() {
+    public M cp() {
         return delegate;
     }
 

@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-public abstract class BaseMultiDelegate<T extends BaseBuild> implements Shareable {
+public abstract class BaseMultiDelegate<M extends BaseMultiDelegate, T extends BaseBuild<M>> implements Shareable {
 
     //根View
     FrameLayout rootView;
@@ -57,7 +57,7 @@ public abstract class BaseMultiDelegate<T extends BaseBuild> implements Shareabl
      * @return
      */
     public T registerView(int type, @LayoutRes int layoutId) {
-        T build = creatBuild(this, layoutId, type);
+        T build = creatBuild((M) this, layoutId, type);
         typeMap.put(type, layoutId);
         buildMap.put(type, build);
         return build;
@@ -240,6 +240,6 @@ public abstract class BaseMultiDelegate<T extends BaseBuild> implements Shareabl
         return buildList;
     }
 
-    protected abstract T creatBuild(BaseMultiDelegate delegate, @LayoutRes int layout, int type);
+    protected abstract T creatBuild(M delegate, @LayoutRes int layout, int type);
 
 }
