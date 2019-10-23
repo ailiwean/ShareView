@@ -17,14 +17,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-public abstract class BaseMultiDelegate<M extends BaseMultiDelegate, T extends BaseBuild<M>> implements Shareable {
+public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> implements Shareable {
 
     //根View
     FrameLayout rootView;
 
     //存放Type与Build的Map
     @SuppressLint("UseSparseArrays")
-    LinkedHashMap<Integer, T> buildMap = new LinkedHashMap<>();
+    protected LinkedHashMap<Integer, T> buildMap = new LinkedHashMap<>();
 
     //存放Type与LayoutId的Map
     @SuppressLint("UseSparseArrays")
@@ -46,7 +46,7 @@ public abstract class BaseMultiDelegate<M extends BaseMultiDelegate, T extends B
     //当前展示的Type
     int currentType = -1;
 
-    protected BaseMultiDelegate(FrameLayout controlView) {
+    protected BaseDelegate(FrameLayout controlView) {
         this.rootView = controlView;
     }
 
@@ -62,15 +62,15 @@ public abstract class BaseMultiDelegate<M extends BaseMultiDelegate, T extends B
         buildMap.put(type, build);
         return build;
     }
-        
+
     /***
      * 非懒加载会一次性加载所有布局
      * @param isLazyLoad
      * @return
      */
-    public BaseMultiDelegate isLazyLoad(boolean isLazyLoad) {
+    public M isLazyLoad(boolean isLazyLoad) {
         this.isLazyLoad = isLazyLoad;
-        return this;
+        return (M) this;
     }
 
     /***
@@ -78,9 +78,9 @@ public abstract class BaseMultiDelegate<M extends BaseMultiDelegate, T extends B
      * @param type
      * @return
      */
-    public BaseMultiDelegate setDefault(int type) {
+    public M setDefault(int type) {
         defaultType = type;
-        return this;
+        return (M) this;
     }
 
     /***
@@ -88,9 +88,9 @@ public abstract class BaseMultiDelegate<M extends BaseMultiDelegate, T extends B
      * @param isReuseLayout
      * @return
      */
-    public BaseMultiDelegate isReuseLayout(boolean isReuseLayout) {
+    public M isReuseLayout(boolean isReuseLayout) {
         this.isReuseLayout = isReuseLayout;
-        return this;
+        return (M) this;
     }
 
     public void go() {
@@ -120,6 +120,8 @@ public abstract class BaseMultiDelegate<M extends BaseMultiDelegate, T extends B
                 if (build == null || build.contentLayout == 0)
                     return;
 
+                defaultType = keyList.get(0);
+
                 inflate(build);
 
             } else {
@@ -132,7 +134,10 @@ public abstract class BaseMultiDelegate<M extends BaseMultiDelegate, T extends B
             }
 
         } else {
-            for (Integer key : buildMap.keySet()) {
+
+            List<Integer> keyList = new ArrayList<>(buildMap.keySet());
+
+            for (Integer key : keyList) {
 
                 T build = buildMap.get(key);
 
@@ -140,6 +145,10 @@ public abstract class BaseMultiDelegate<M extends BaseMultiDelegate, T extends B
                     continue;
 
                 inflate(build);
+
+                if (defaultType != -1)
+                    defaultType = keyList.get(0);
+
             }
         }
     }
@@ -246,5 +255,4 @@ public abstract class BaseMultiDelegate<M extends BaseMultiDelegate, T extends B
     }
 
     protected abstract T creatBuild(M delegate, @LayoutRes int layout, int type);
-
 }

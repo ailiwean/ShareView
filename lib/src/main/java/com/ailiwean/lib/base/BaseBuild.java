@@ -10,7 +10,7 @@ import com.ailiwean.lib.callback.LifeListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BaseBuild<M extends BaseMultiDelegate> {
+public class BaseBuild<T extends BaseBuild, M extends BaseDelegate> {
 
     public int contentLayout;
 
@@ -45,9 +45,9 @@ public class BaseBuild<M extends BaseMultiDelegate> {
      * @param initListener
      * @return
      */
-    public BaseBuild init(InitListener initListener) {
+    public T init(InitListener initListener) {
         this.initListener = initListener;
-        return this;
+        return (T) this;
     }
 
     /***
@@ -55,9 +55,9 @@ public class BaseBuild<M extends BaseMultiDelegate> {
      * @param lifeListener
      * @return
      */
-    public BaseBuild addLifeListener(LifeListener lifeListener) {
+    public T addLifeListener(LifeListener lifeListener) {
         lifeListeners.add(lifeListener);
-        return this;
+        return (T) this;
     }
 
     /***

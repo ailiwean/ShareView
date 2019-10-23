@@ -2,53 +2,96 @@ package com.ailiwean.lib.am;
 
 import android.view.View;
 
-public abstract class BaseAnim {
+import com.ailiwean.lib.callback.AnimStateListener;
+
+public abstract class BaseAnim implements AnimStateListener {
 
     View pageView;
 
-    Runnable runnable;
+    Runnable endBack;
+
+    Runnable startBack;
 
     public final void injectPageView(View pageView) {
         this.pageView = pageView;
     }
 
     /***
-     * 通过动画结束来控制上个界面的隐藏，由{@Link com.ailiwean.lib.delegate.ShareMultiDelegate调用}
-     * @param runnable
+     * 为库内提供的动画状态的监听，由{@link com.ailiwean.lib.base.BaseDelegate  调用}
+     * @param endBack
      */
-    @Deprecated
-    public final void operatorLastBuildBack(Runnable runnable) {
-        this.runnable = runnable;
+    public final void operatorEndBack(Runnable endBack) {
+        this.endBack = endBack;
+    }
+
+
+    public final void opetatorStartBack(Runnable startBack) {
+        this.startBack = startBack;
     }
 
     /***
-     * 进入动画开始前执行
+     * 保留库内回调
      */
-    public final void defaultEnterAnimStar() {
+    public void enterAnimStar_Inner() {
+
         pageView.setVisibility(View.VISIBLE);
+
+        if (startBack != null) {
+            startBack.run();
+            startBack = null;
+        }
+
+
     }
 
-    /***
-     * 关闭动画开始前执行
-     */
-    public final void defaultExitAnimStar() {
-        //ageView.setVisibility(View.VISIBLE);
+    public void enterAnimEnd_Inner() {
+        if (endBack != null) {
+            endBack.run();
+            endBack = null;
+        }
     }
 
-    /***
-     * 进入页动画结束后执行
-     */
-    public final void defaultEnterAnimEnd() {
+    public void exitAnimEnd_Inner() {
+
+        if (endBack != null) {
+            endBack.run();
+            endBack = null;
+        }
+    }
+
+    public void exitAnimStar_Inner() {
+
         pageView.setVisibility(View.VISIBLE);
-        //以展示页面为主,进入页动画结束后应该立即隐藏其他页面
-        if (runnable != null)
-            runnable.run();
+
+        if (startBack != null) {
+            startBack.run();
+            startBack = null;
+        }
     }
 
     /***
-     * 关闭页动画结束后执行, 暂时为空， 避免含有空动画切换时白屏
+     * 自定义选择实现
+     * @param view
      */
-    public final void defaultExitAnimEnd() {
+    @Override
+    public void enterAnimStar(View view) {
+
     }
+
+    @Override
+    public void enterAnimEnd(View view) {
+
+    }
+
+    @Override
+    public void exitAnimStar(View view) {
+
+    }
+
+    @Override
+    public void exitAnimEnd(View view) {
+
+    }
+
 
 }

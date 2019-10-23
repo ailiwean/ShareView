@@ -4,27 +4,27 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.ailiwean.lib.base.BaseBuild;
-import com.ailiwean.lib.base.BaseMultiDelegate;
+import com.ailiwean.lib.base.BaseDelegate;
 import com.ailiwean.lib.callback.LifeListener;
 
-public class ShareMultiDelegate extends BaseMultiDelegate<ShareMultiDelegate, ShareMultiDelegate.MultiBuild> {
+public class ShareDelegate extends BaseDelegate<ShareDelegate, ShareDelegate.MultiBuild> {
 
     MultiBuild lastBuild;
 
-    private ShareMultiDelegate(FrameLayout mControlView) {
+    private ShareDelegate(FrameLayout mControlView) {
         super(mControlView);
 
     }
 
     @Override
-    protected MultiBuild creatBuild(ShareMultiDelegate delegate, int layout, int type) {
+    protected MultiBuild creatBuild(ShareDelegate delegate, int layout, int type) {
         return new MultiBuild(delegate, layout, type);
     }
 
-    public static ShareMultiDelegate getInstance(FrameLayout controlView) {
-        return new ShareMultiDelegate(controlView);
+    public static ShareDelegate getInstance(FrameLayout controlView) {
+        return new ShareDelegate(controlView);
     }
-        
+
     @Override
     public void dispatchShowView(int type) {
 
@@ -50,9 +50,9 @@ public class ShareMultiDelegate extends BaseMultiDelegate<ShareMultiDelegate, Sh
         lastBuild = build;
     }
 
-    public static class MultiBuild extends BaseBuild<ShareMultiDelegate> {
+    public static class MultiBuild extends BaseBuild<MultiBuild, ShareDelegate> {
 
-        protected MultiBuild(ShareMultiDelegate delegate, int layout, int type) {
+        protected MultiBuild(ShareDelegate delegate, int layout, int type) {
             super(delegate, layout, type);
         }
     }

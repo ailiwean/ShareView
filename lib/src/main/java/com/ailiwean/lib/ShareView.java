@@ -4,12 +4,12 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
-import com.ailiwean.lib.delegate.ShareMultiDelegate;
+import com.ailiwean.lib.delegate.ShareDelegate;
 import com.ailiwean.lib.delegate.ShareTaskDelegate;
 
 public class ShareView extends FrameLayout {
 
-    ShareMultiDelegate multiDelegate;
+    ShareDelegate multiDelegate;
 
     ShareTaskDelegate taskDelegate;
 
@@ -25,8 +25,8 @@ public class ShareView extends FrameLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public ShareMultiDelegate getMultiDelegate() {
-        multiDelegate = ShareMultiDelegate.getInstance(this);
+    public ShareDelegate getMultiDelegate() {
+        multiDelegate = ShareDelegate.getInstance(this);
         return multiDelegate;
     }
 

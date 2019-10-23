@@ -6,10 +6,10 @@ import android.widget.FrameLayout;
 import com.ailiwean.lib.am.CustomAnim;
 import com.ailiwean.lib.am.NullAnim;
 import com.ailiwean.lib.base.BaseBuild;
-import com.ailiwean.lib.base.BaseMultiDelegate;
+import com.ailiwean.lib.base.BaseDelegate;
 import com.ailiwean.lib.callback.LifeListener;
 
-public class ShareTaskDelegate extends BaseMultiDelegate<ShareTaskDelegate, ShareTaskDelegate.TaskBuild> {
+public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTaskDelegate.TaskBuild> {
 
     TaskBuild lastBuild;
 
@@ -19,18 +19,11 @@ public class ShareTaskDelegate extends BaseMultiDelegate<ShareTaskDelegate, Shar
 
     @Override
     protected TaskBuild creatBuild(ShareTaskDelegate delegate, int layout, int type) {
-        return new TaskBuild(delegate, layout, type);
+        return new TaskBuild(delegate, layout, type, buildMap.size());
     }
 
     public static ShareTaskDelegate getInstance(FrameLayout controlView) {
         return new ShareTaskDelegate(controlView);
-    }
-
-    @Override
-    public void go() {
-        //栈结构不允许复用布局
-        isReuseLayout(false);
-        super.go();
     }
 
     @Override
@@ -43,32 +36,50 @@ public class ShareTaskDelegate extends BaseMultiDelegate<ShareTaskDelegate, Shar
         if (lastBuild == build)
             return;
 
-        if (lastBuild != null)
-            lastBuild.anim.exit(lastBuild.view);
-
-        //回调上个页面的隐藏方法
-        if (lastBuild != null && lastBuild.lifeListeners.size() != 0) {
-            for (LifeListener item : lastBuild.lifeListeners)
-                item.onHide(lastBuild.view);
-        }
-
-        //执行动画并回调
-        build.anim.enter(build.view);
-
-        build.anim.operatorLastBuildBack(new Runnable() {
-            @Override
-            public void run() {
-
-            }
-        });
-
-
+        //回调当前页面的展示方法
         if (build.lifeListeners.size() != 0)
             for (LifeListener item : build.lifeListeners)
                 item.onVisiable(build.view);
 
-        lastBuild = build;
+        //首次进入
+        if (lastBuild == null) {
+            build.anim.enter(build.view, false);
+            lastBuild = build;
+            return;
+        }
 
+        //回调上个页面的隐藏方法
+        if (lastBuild.lifeListeners.size() != 0) {
+            for (LifeListener item : lastBuild.lifeListeners)
+                item.onHide(lastBuild.view);
+        }
+
+        //返回操作
+        if (lastBuild.taskIndex > build.taskIndex) {
+            lastBuild.anim.exit(lastBuild.view, true);
+            lastBuild.anim.operatorEndBack(new Runnable() {
+                @Override
+                public void run() {
+                    lastBuild.view.clearAnimation();
+                    lastBuild.view.setVisibility(View.INVISIBLE);
+                    lastBuild = build;
+                }
+            });
+            build.anim.enter(build.view, true);
+        }
+        //进入操作
+        else {
+            lastBuild.anim.exit(lastBuild.view, true);
+            build.anim.enter(build.view, true);
+            build.anim.operatorEndBack(new Runnable() {
+                @Override
+                public void run() {
+                    lastBuild.view.clearAnimation();
+                    lastBuild.view.setVisibility(View.INVISIBLE);
+                    lastBuild = build;
+                }
+            });
+        }
     }
 
     /***
@@ -77,22 +88,35 @@ public class ShareTaskDelegate extends BaseMultiDelegate<ShareTaskDelegate, Shar
      * @return
      */
     @Override
-    public final BaseMultiDelegate setDefault(int type) {
+    public final ShareTaskDelegate setDefault(int type) {
         return super.setDefault(-1);
     }
 
-    public static class TaskBuild extends BaseBuild<ShareTaskDelegate> {
+    /***
+     * 栈结构不允许复用
+     * @param isReuseLayout
+     * @return
+     */
+    @Override
+    public ShareTaskDelegate isReuseLayout(boolean isReuseLayout) {
+        return super.isReuseLayout(false);
+    }
+
+    public static class TaskBuild extends BaseBuild<TaskBuild, ShareTaskDelegate> {
 
         CustomAnim anim = new NullAnim();
 
-        protected TaskBuild(ShareTaskDelegate delegate, int layout, int type) {
+        int taskIndex;
+
+        protected TaskBuild(ShareTaskDelegate delegate, int layout, int type, int taskIndex) {
             super(delegate, layout, type);
+            this.taskIndex = taskIndex;
         }
 
         /***
          * 绑定一个动画效果
          */
-        public BaseBuild bindAnimation(CustomAnim anim) {
+        public TaskBuild bindAnimation(CustomAnim anim) {
             if (anim != null)
                 this.anim = anim;
             return this;
