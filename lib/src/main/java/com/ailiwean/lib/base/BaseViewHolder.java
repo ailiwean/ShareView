@@ -12,14 +12,18 @@ import androidx.annotation.IdRes;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.ailiwean.lib.callback.BaseHolderClick;
+
 /***
  * 每个PageView的持有,提供快捷操作
  */
-public class BaseViewHolder {
+public class BaseViewHolder implements View.OnClickListener {
 
     View pageView;
 
-    private BaseViewHolder(View pageView) {
+    BaseHolderClick baseHolderClick;
+
+    protected BaseViewHolder(View pageView) {
         this.pageView = pageView;
     }
 
@@ -31,7 +35,7 @@ public class BaseViewHolder {
         return pageView.findViewById(id);
     }
 
-    public <T extends View> T getViewByType(Class<T> type, @IdRes int id) {
+    public <T extends View> T getView(Class<T> type, @IdRes int id) {
         return pageView.findViewById(id);
     }
 
@@ -68,8 +72,36 @@ public class BaseViewHolder {
     }
 
     public BaseViewHolder setText(@IdRes int id, CharSequence charSequence) {
-        this.<TextView>getView(id).setText(charSequence);
+        getTv(id).setText(charSequence);
         return this;
+    }
+
+    public BaseViewHolder addClick(@IdRes int id, View.OnClickListener clickListener) {
+        getView(id).setOnClickListener(clickListener);
+        return this;
+    }
+
+    public BaseViewHolder addClick(@IdRes int id) {
+        getView(id).setOnClickListener(this);
+        return this;
+    }
+
+    /***
+     * 通过 {@link #addClick(int)} 添加后可设定该方法统一点击事件
+     * @param baseHolderClick
+     */
+    public void setOnChildClickListener(BaseHolderClick baseHolderClick) {
+        this.baseHolderClick = baseHolderClick;
+    }
+
+    public View getRootView() {
+        return pageView;
+    }
+
+    @Override
+    public final void onClick(View v) {
+        if (baseHolderClick != null)
+            baseHolderClick.onChildClick(this, v);
     }
 
 

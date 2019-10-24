@@ -56,7 +56,7 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
      * @param layoutId
      * @return
      */
-    public T registerView(int type, @LayoutRes int layoutId) {
+    public T regView(int type, @LayoutRes int layoutId) {
         T build = creatBuild((M) this, layoutId, type);
         typeMap.put(type, layoutId);
         buildMap.put(type, build);
@@ -180,17 +180,17 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
      * @param build
      */
     protected void lazyCreat(T build) {
-        if (build.view == null) {
+        if (build.getPageView() == null) {
             inflate(build);
-            build.initListener.init(build.view);
+            build.initListener.init(build.vH);
             build.isInit = true;
         } else {
             //对于复用的View需要重新走初始化方法
             if (receptType.contains(build.type)) {
-                build.initListener.init(build.view);
+                build.initListener.init(build.vH);
             } else {
                 if (!build.isInit) {
-                    build.initListener.init(build.view);
+                    build.initListener.init(build.vH);
                     build.isInit = true;
                 }
             }

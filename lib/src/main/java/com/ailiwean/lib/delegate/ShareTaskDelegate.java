@@ -7,7 +7,9 @@ import com.ailiwean.lib.am.CustomAnim;
 import com.ailiwean.lib.am.NullAnim;
 import com.ailiwean.lib.base.BaseBuild;
 import com.ailiwean.lib.base.BaseDelegate;
+import com.ailiwean.lib.base.BaseViewHolder;
 import com.ailiwean.lib.callback.LifeListener;
+import com.ailiwean.lib.holder.TaskViewHolder;
 
 public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTaskDelegate.TaskBuild> {
 
@@ -39,11 +41,11 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         //回调当前页面的展示方法
         if (build.lifeListeners.size() != 0)
             for (LifeListener item : build.lifeListeners)
-                item.onVisiable(build.view);
+                item.onVisiable(build.getVH());
 
         //首次进入
         if (lastBuild == null) {
-            build.anim.enter(build.view, false);
+            build.anim.enter(build.getPageView(), false);
             lastBuild = build;
             return;
         }
@@ -51,31 +53,31 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         //回调上个页面的隐藏方法
         if (lastBuild.lifeListeners.size() != 0) {
             for (LifeListener item : lastBuild.lifeListeners)
-                item.onHide(lastBuild.view);
+                item.onHide(lastBuild.getVH());
         }
 
         //返回操作
         if (lastBuild.taskIndex > build.taskIndex) {
-            lastBuild.anim.exit(lastBuild.view, true);
+            lastBuild.anim.exit(lastBuild.getPageView(), true);
             lastBuild.anim.operatorEndBack(new Runnable() {
                 @Override
                 public void run() {
-                    lastBuild.view.clearAnimation();
-                    lastBuild.view.setVisibility(View.INVISIBLE);
+                    lastBuild.getPageView().clearAnimation();
+                    lastBuild.getPageView().setVisibility(View.INVISIBLE);
                     lastBuild = build;
                 }
             });
-            build.anim.enter(build.view, true);
+            build.anim.enter(build.getPageView(), true);
         }
         //进入操作
         else {
-            lastBuild.anim.exit(lastBuild.view, true);
-            build.anim.enter(build.view, true);
+            lastBuild.anim.exit(lastBuild.getPageView(), true);
+            build.anim.enter(build.getPageView(), true);
             build.anim.operatorEndBack(new Runnable() {
                 @Override
                 public void run() {
-                    lastBuild.view.clearAnimation();
-                    lastBuild.view.setVisibility(View.INVISIBLE);
+                    lastBuild.getPageView().clearAnimation();
+                    lastBuild.getPageView().setVisibility(View.INVISIBLE);
                     lastBuild = build;
                 }
             });
@@ -102,7 +104,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         return super.isReuseLayout(false);
     }
 
-    public static class TaskBuild extends BaseBuild<TaskBuild, ShareTaskDelegate> {
+    public static class TaskBuild extends BaseBuild<TaskBuild, ShareTaskDelegate, TaskViewHolder> {
 
         CustomAnim anim = new NullAnim();
 
@@ -120,6 +122,12 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
             if (anim != null)
                 this.anim = anim;
             return this;
+        }
+
+
+        @Override
+        protected TaskViewHolder creatViewHolder(View pageView) {
+            return TaskViewHolder.getInstance(pageView);
         }
 
         @Override

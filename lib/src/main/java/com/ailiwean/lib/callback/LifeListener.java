@@ -1,12 +1,12 @@
 package com.ailiwean.lib.callback;
 
-import android.view.View;
+import com.ailiwean.lib.base.BaseViewHolder;
 
 //Layout的生命周期回调
-public interface LifeListener {
+public interface LifeListener<H extends BaseViewHolder> {
 
-    void onVisiable(View pageView);
+    void onVisiable(H vH);
 
-    void onHide(View pageView);
+    void onHide(H vH);
 
 }

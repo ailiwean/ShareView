@@ -6,6 +6,7 @@ import android.widget.FrameLayout;
 import com.ailiwean.lib.base.BaseBuild;
 import com.ailiwean.lib.base.BaseDelegate;
 import com.ailiwean.lib.callback.LifeListener;
+import com.ailiwean.lib.holder.MultViewHolder;
 
 public class ShareMultiDelegate extends BaseDelegate<ShareMultiDelegate, ShareMultiDelegate.MultiBuild> {
 
@@ -36,24 +37,29 @@ public class ShareMultiDelegate extends BaseDelegate<ShareMultiDelegate, ShareMu
         //回调上个页面的隐藏方法
         if (lastBuild != null && lastBuild.lifeListeners.size() != 0) {
             for (LifeListener item : lastBuild.lifeListeners)
-                item.onHide(lastBuild.view);
+                item.onHide(lastBuild.getVH());
         }
 
         if (build.lifeListeners.size() != 0)
             for (LifeListener item : build.lifeListeners)
-                item.onVisiable(build.view);
+                item.onVisiable(build.getVH());
 
         if (lastBuild != null)
-            lastBuild.view.setVisibility(View.INVISIBLE);
-        build.view.setVisibility(View.VISIBLE);
+            lastBuild.getPageView().setVisibility(View.INVISIBLE);
+        build.getPageView().setVisibility(View.VISIBLE);
 
         lastBuild = build;
     }
 
-    public static class MultiBuild extends BaseBuild<MultiBuild, ShareMultiDelegate> {
+    public static class MultiBuild extends BaseBuild<MultiBuild, ShareMultiDelegate, MultViewHolder> {
 
         protected MultiBuild(ShareMultiDelegate delegate, int layout, int type) {
             super(delegate, layout, type);
+        }
+
+        @Override
+        protected MultViewHolder creatViewHolder(View pageView) {
+            return MultViewHolder.getInstance(pageView);
         }
     }
 

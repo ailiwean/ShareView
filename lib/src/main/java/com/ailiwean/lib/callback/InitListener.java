@@ -1,8 +1,8 @@
 package com.ailiwean.lib.callback;
 
-import android.view.View;
+import com.ailiwean.lib.base.BaseViewHolder;
 
 //Layout 初始化接口
-public interface InitListener {
-    void init(View pageView);
+public interface InitListener<H extends BaseViewHolder> {
+    void init(H vH);
 }

@@ -9,6 +9,7 @@ import com.ailiwean.lib.am.AnimHelper;
 import com.ailiwean.lib.am.DefaultAnim;
 import com.ailiwean.lib.callback.InitListener;
 import com.ailiwean.lib.ShareView;
+import com.ailiwean.lib.holder.TaskViewHolder;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,11 +25,12 @@ public class MainActivity extends AppCompatActivity {
         shareMultiView.getTaskDelegate().isLazyLoad(true)
                 .isReuseLayout(false)
                 .setDefault(2)
-                .registerView(0, R.layout.aa)
-                .init(new InitListener() {
+                .regView(0, R.layout.aa)
+                .init(new InitListener<TaskViewHolder>() {
                     @Override
-                    public void init(View pageView) {
-                        pageView.setOnClickListener(new View.OnClickListener() {
+                    public void init(TaskViewHolder vH) {
+
+                        vH.getRootView().setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 shareMultiView.switchType(1);
@@ -38,12 +40,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .cp()
-                .registerView(1, R.layout.bb)
-                .init(new InitListener() {
+                .regView(1, R.layout.bb)
+                .init(new InitListener<TaskViewHolder>() {
                     @Override
-                    public void init(View view) {
+                    public void init(TaskViewHolder vH) {
 
-                        view.setOnClickListener(new View.OnClickListener() {
+                        vH.getRootView().setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 shareMultiView.switchType(2);
@@ -64,12 +66,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .cp()
-                .registerView(2, R.layout.bb)
-                .init(new InitListener() {
+                .regView(2, R.layout.bb)
+                .init(new InitListener<TaskViewHolder>() {
                     @Override
-                    public void init(View pageView) {
+                    public void init(TaskViewHolder vH) {
 
-                        pageView.setOnClickListener(new View.OnClickListener() {
+                        vH.getRootView().setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 shareMultiView.switchType(0);
