@@ -7,22 +7,22 @@ import com.ailiwean.lib.base.BaseBuild;
 import com.ailiwean.lib.base.BaseDelegate;
 import com.ailiwean.lib.callback.LifeListener;
 
-public class ShareDelegate extends BaseDelegate<ShareDelegate, ShareDelegate.MultiBuild> {
+public class ShareMultiDelegate extends BaseDelegate<ShareMultiDelegate, ShareMultiDelegate.MultiBuild> {
 
     MultiBuild lastBuild;
 
-    private ShareDelegate(FrameLayout mControlView) {
+    private ShareMultiDelegate(FrameLayout mControlView) {
         super(mControlView);
 
     }
 
     @Override
-    protected MultiBuild creatBuild(ShareDelegate delegate, int layout, int type) {
+    protected MultiBuild creatBuild(ShareMultiDelegate delegate, int layout, int type) {
         return new MultiBuild(delegate, layout, type);
     }
 
-    public static ShareDelegate getInstance(FrameLayout controlView) {
-        return new ShareDelegate(controlView);
+    public static ShareMultiDelegate getInstance(FrameLayout controlView) {
+        return new ShareMultiDelegate(controlView);
     }
 
     @Override
@@ -50,9 +50,9 @@ public class ShareDelegate extends BaseDelegate<ShareDelegate, ShareDelegate.Mul
         lastBuild = build;
     }
 
-    public static class MultiBuild extends BaseBuild<MultiBuild, ShareDelegate> {
+    public static class MultiBuild extends BaseBuild<MultiBuild, ShareMultiDelegate> {
 
-        protected MultiBuild(ShareDelegate delegate, int layout, int type) {
+        protected MultiBuild(ShareMultiDelegate delegate, int layout, int type) {
             super(delegate, layout, type);
         }
     }

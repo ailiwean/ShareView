@@ -1,4 +1,4 @@
-package com.ailiwean.sharemultiview;
+package com.ailiwean.shareview;
 
 import androidx.appcompat.app.AppCompatActivity;
 
