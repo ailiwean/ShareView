@@ -39,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 })
+                .bindAnimation(new DefaultAnim() {
+
+                })
                 .cp()
                 .regView(1, R.layout.bb)
                 .init(new InitListener<TaskViewHolder>() {
@@ -55,15 +58,27 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .bindAnimation(new DefaultAnim() {
+
                     @Override
-                    public int enter() {
-                        return AnimHelper.ALPHA_SHOW;
+                    public int taskTopEnter() {
+                        return AnimHelper.LEFT_ALL_SHOW;
                     }
 
                     @Override
-                    public int exit() {
-                        return AnimHelper.ALPHA_HIDE;
+                    public int taskTopExit() {
+                        return AnimHelper.RIGHT_ALL_HIDE;
                     }
+
+                    @Override
+                    public int taskInnerEnter() {
+                        return AnimHelper.LEFT_ALL_SHOW;
+                    }
+
+                    @Override
+                    public int taskInnerExit() {
+                        return AnimHelper.LEFT_HALF_HIDE;
+                    }
+
                 })
                 .cp()
                 .regView(2, R.layout.bb)
@@ -82,13 +97,23 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .bindAnimation(new DefaultAnim() {
                     @Override
-                    public int enter() {
-                        return AnimHelper.ALPHA_SHOW;
+                    public int taskTopEnter() {
+                        return AnimHelper.LEFT_ALL_SHOW;
                     }
 
                     @Override
-                    public int exit() {
-                        return AnimHelper.ALPHA_HIDE;
+                    public int taskTopExit() {
+                        return AnimHelper.RIGHT_ALL_HIDE;
+                    }
+
+                    @Override
+                    public int taskInnerEnter() {
+                        return AnimHelper.RIGHT_HALF_SHOW;
+                    }
+
+                    @Override
+                    public int taskInnerExit() {
+                        return AnimHelper.LEFT_HALF_HIDE;
                     }
                 })
                 .cp()

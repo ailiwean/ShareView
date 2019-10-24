@@ -10,8 +10,8 @@ import com.ailiwean.lib.delegate.ShareMultiDelegate;
  */
 public interface AnimInnerListener {
 
-    void enter(View pageView, boolean isExecute);
+    void enter(View pageView, boolean isTopTask, boolean isExecute);
 
-    void exit(View pageView, boolean isExecute);
+    void exit(View pageView, boolean isTopTask, boolean isExecute);
 
 }

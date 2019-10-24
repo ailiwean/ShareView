@@ -45,7 +45,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
 
         //首次进入
         if (lastBuild == null) {
-            build.anim.enter(build.getPageView(), false);
+            build.anim.enter(build.getPageView(), false, false);
             lastBuild = build;
             return;
         }
@@ -58,25 +58,23 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
 
         //返回操作
         if (lastBuild.taskIndex > build.taskIndex) {
-            lastBuild.anim.exit(lastBuild.getPageView(), true);
+            build.anim.enter(build.getPageView(), false, true);
+            lastBuild.anim.exit(lastBuild.getPageView(), true, true);
             lastBuild.anim.operatorEndBack(new Runnable() {
                 @Override
                 public void run() {
-                    lastBuild.getPageView().clearAnimation();
                     lastBuild.getPageView().setVisibility(View.INVISIBLE);
                     lastBuild = build;
                 }
             });
-            build.anim.enter(build.getPageView(), true);
         }
         //进入操作
         else {
-            lastBuild.anim.exit(lastBuild.getPageView(), true);
-            build.anim.enter(build.getPageView(), true);
+            lastBuild.anim.exit(lastBuild.getPageView(), false, true);
+            build.anim.enter(build.getPageView(), true, true);
             build.anim.operatorEndBack(new Runnable() {
                 @Override
                 public void run() {
-                    lastBuild.getPageView().clearAnimation();
                     lastBuild.getPageView().setVisibility(View.INVISIBLE);
                     lastBuild = build;
                 }

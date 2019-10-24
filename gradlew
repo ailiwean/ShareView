@@ -41,7 +41,7 @@ die () {
     echo
     echo "$*"
     echo
-    exit 1
+    pushTaskEnter 1
 }
 
 # OS specific support (must be 'true' or 'false').

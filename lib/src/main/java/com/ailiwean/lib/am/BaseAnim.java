@@ -32,7 +32,7 @@ public abstract class BaseAnim implements AnimStateListener {
     /***
      * 保留库内回调
      */
-    public void enterAnimStar_Inner() {
+    public final void enterAnimStar_Inner() {
 
         pageView.setVisibility(View.VISIBLE);
 
@@ -40,18 +40,17 @@ public abstract class BaseAnim implements AnimStateListener {
             startBack.run();
             startBack = null;
         }
-
-
+        
     }
 
-    public void enterAnimEnd_Inner() {
+    public final void enterAnimEnd_Inner() {
         if (endBack != null) {
             endBack.run();
             endBack = null;
         }
     }
 
-    public void exitAnimEnd_Inner() {
+    public final void exitAnimEnd_Inner() {
 
         if (endBack != null) {
             endBack.run();
@@ -59,7 +58,7 @@ public abstract class BaseAnim implements AnimStateListener {
         }
     }
 
-    public void exitAnimStar_Inner() {
+    public final void exitAnimStar_Inner() {
 
         pageView.setVisibility(View.VISIBLE);
 
@@ -74,22 +73,22 @@ public abstract class BaseAnim implements AnimStateListener {
      * @param view
      */
     @Override
-    public void enterAnimStar(View view) {
+    public void enterAnimStar(View view, boolean isTaskTop) {
 
     }
 
     @Override
-    public void enterAnimEnd(View view) {
+    public void enterAnimEnd(View view, boolean isTaskTop) {
 
     }
 
     @Override
-    public void exitAnimStar(View view) {
+    public void exitAnimStar(View view, boolean isTaskTop) {
 
     }
 
     @Override
-    public void exitAnimEnd(View view) {
+    public void exitAnimEnd(View view, boolean isTaskTop) {
 
     }
 

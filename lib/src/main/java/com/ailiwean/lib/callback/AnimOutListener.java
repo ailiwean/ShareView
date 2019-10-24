@@ -9,9 +9,16 @@ import com.ailiwean.lib.am.AnimHelper;
 public interface AnimOutListener {
 
     @AnimHelper.Type
-    int enter();
+    int taskTopEnter();
 
     @AnimHelper.Type
-    int exit();
+    int taskTopExit();
+
+    @AnimHelper.Type
+    int taskInnerEnter();
+
+    @AnimHelper.Type
+    int taskInnerExit();
+
 
 }
