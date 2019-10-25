@@ -2,18 +2,29 @@ package com.ailiwean.lib.am;
 
 import android.view.View;
 
+import com.ailiwean.lib.callback.AnimInnerListener;
 import com.ailiwean.lib.callback.AnimStateListener;
 
-public abstract class BaseAnim implements AnimStateListener {
-
-    View pageView;
+public abstract class BaseAnim implements AnimStateListener, AnimInnerListener {
 
     Runnable endBack;
 
     Runnable startBack;
 
-    public final void injectPageView(View pageView) {
-        this.pageView = pageView;
+    //动画优先级
+    int priority = 1;  //new出来的>com>自带
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public BaseAnim setPriority(int priority) {
+        this.priority = priority;
+        return this;
+    }
+
+    public BaseAnim() {
+        priority = 10;
     }
 
     /***
@@ -24,7 +35,6 @@ public abstract class BaseAnim implements AnimStateListener {
         this.endBack = endBack;
     }
 
-
     public final void opetatorStartBack(Runnable startBack) {
         this.startBack = startBack;
     }
@@ -32,25 +42,20 @@ public abstract class BaseAnim implements AnimStateListener {
     /***
      * 保留库内回调
      */
-    public final void enterAnimStar_Inner() {
+    private final void enterAnimStar_Inner(View pageView) {
 
         pageView.setVisibility(View.VISIBLE);
 
-        if (startBack != null) {
-            startBack.run();
-            startBack = null;
-        }
-        
     }
 
-    public final void enterAnimEnd_Inner() {
+    private final void enterAnimEnd_Inner(View pageView) {
         if (endBack != null) {
             endBack.run();
             endBack = null;
         }
     }
 
-    public final void exitAnimEnd_Inner() {
+    private final void exitAnimEnd_Inner(View pageView) {
 
         if (endBack != null) {
             endBack.run();
@@ -58,7 +63,7 @@ public abstract class BaseAnim implements AnimStateListener {
         }
     }
 
-    public final void exitAnimStar_Inner() {
+    private final void exitAnimStar_Inner(View pageView) {
 
         pageView.setVisibility(View.VISIBLE);
 
@@ -92,5 +97,29 @@ public abstract class BaseAnim implements AnimStateListener {
 
     }
 
+    /***
+     * 子类的最终调用
+     * @param view
+     * @param isTaskTop
+     */
+    final void finalEnterAnimStar(View view, boolean isTaskTop) {
+        enterAnimStar_Inner(view);
+        enterAnimStar(view, isTaskTop);
+    }
+
+    final void finalEnterAnimEnd(View view, boolean isTaskTop) {
+        enterAnimEnd_Inner(view);
+        enterAnimEnd(view, isTaskTop);
+    }
+
+    final void finalExitAnimStar(View view, boolean isTaskTop) {
+        exitAnimStar_Inner(view);
+        exitAnimStar(view, isTaskTop);
+    }
+
+    final void finalExitAnimEnd(View view, boolean isTaskTop) {
+        exitAnimEnd_Inner(view);
+        exitAnimEnd(view, isTaskTop);
+    }
 
 }

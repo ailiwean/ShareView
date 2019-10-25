@@ -161,12 +161,14 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
 
         if (!isReuseLayout) {
             View view = LayoutInflater.from(rootView.getContext()).inflate(build.contentLayout, rootView, false);
+            view.setVisibility(View.INVISIBLE);
             rootView.addView(view);
             build.bindInstanceView(view);
             return;
         }
         if (reuseMap.get(build.contentLayout) == null) {
             View view = LayoutInflater.from(rootView.getContext()).inflate(build.contentLayout, rootView, false);
+            view.setVisibility(View.INVISIBLE);
             rootView.addView(view);
             reuseMap.put(build.contentLayout, view);
             build.bindInstanceView(view);
@@ -195,7 +197,7 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
                 }
             }
         }
-
+        build.getPageView().setVisibility(View.VISIBLE);
     }
 
     /***
@@ -228,7 +230,6 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
         T build = getBuild(type);
         if (build == null)
             return;
-
         //懒加载View,确保切换前View存在
         lazyCreat(build);
         dispatchShowView(type);

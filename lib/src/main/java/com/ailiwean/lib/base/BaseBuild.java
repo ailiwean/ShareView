@@ -31,7 +31,7 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
     InitListener initListener = new InitListener<H>() {
 
         @Override
-        public void init(H vH) {
+        public void init(H vh) {
 
         }
     };

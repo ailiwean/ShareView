@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.ailiwean.lib.am.AnimHelper;
 import com.ailiwean.lib.am.DefaultAnim;
+import com.ailiwean.lib.am.NullAnim;
 import com.ailiwean.lib.callback.InitListener;
 import com.ailiwean.lib.ShareView;
 import com.ailiwean.lib.holder.TaskViewHolder;
@@ -22,71 +23,67 @@ public class MainActivity extends AppCompatActivity {
 
         shareMultiView = findViewById(R.id.mult);
 
+
+        DefaultAnim anim = new DefaultAnim() {
+            @Override
+            public int taskTopEnter() {
+                return AnimHelper.LEFT_ALL_SHOW;
+            }
+
+            @Override
+            public int taskTopExit() {
+                return AnimHelper.RIGHT_ALL_HIDE;
+            }
+
+            @Override
+            public int taskInnerEnter() {
+                return AnimHelper.RIGHT_HALF_SHOW;
+            }
+
+            @Override
+            public int taskInnerExit() {
+                return AnimHelper.LEFT_HALF_HIDE;
+            }
+        };
+
         shareMultiView.getTaskDelegate().isLazyLoad(true)
                 .isReuseLayout(false)
                 .setDefault(2)
                 .regView(0, R.layout.aa)
                 .init(new InitListener<TaskViewHolder>() {
                     @Override
-                    public void init(TaskViewHolder vH) {
-
-                        vH.getRootView().setOnClickListener(new View.OnClickListener() {
+                    public void init(TaskViewHolder vh) {
+                        vh.getRootView().setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 shareMultiView.switchType(1);
                             }
                         });
-
                     }
                 })
-                .bindAnimation(new DefaultAnim() {
-
-                })
+                .bindAnimation(new NullAnim())
                 .cp()
                 .regView(1, R.layout.bb)
                 .init(new InitListener<TaskViewHolder>() {
                     @Override
-                    public void init(TaskViewHolder vH) {
+                    public void init(TaskViewHolder vh) {
 
-                        vH.getRootView().setOnClickListener(new View.OnClickListener() {
+                        vh.getRootView().setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 shareMultiView.switchType(2);
                             }
                         });
-
+            
                     }
-                })
-                .bindAnimation(new DefaultAnim() {
-
-                    @Override
-                    public int taskTopEnter() {
-                        return AnimHelper.LEFT_ALL_SHOW;
-                    }
-
-                    @Override
-                    public int taskTopExit() {
-                        return AnimHelper.RIGHT_ALL_HIDE;
-                    }
-
-                    @Override
-                    public int taskInnerEnter() {
-                        return AnimHelper.LEFT_ALL_SHOW;
-                    }
-
-                    @Override
-                    public int taskInnerExit() {
-                        return AnimHelper.LEFT_HALF_HIDE;
-                    }
-
                 })
                 .cp()
-                .regView(2, R.layout.bb)
+                .regView(2, R.layout.cc)
                 .init(new InitListener<TaskViewHolder>() {
                     @Override
-                    public void init(TaskViewHolder vH) {
+                    public void init(TaskViewHolder vh) {
 
-                        vH.getRootView().setOnClickListener(new View.OnClickListener() {
+                        vh.getRootView().setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 shareMultiView.switchType(0);
@@ -95,28 +92,8 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 })
-                .bindAnimation(new DefaultAnim() {
-                    @Override
-                    public int taskTopEnter() {
-                        return AnimHelper.LEFT_ALL_SHOW;
-                    }
-
-                    @Override
-                    public int taskTopExit() {
-                        return AnimHelper.RIGHT_ALL_HIDE;
-                    }
-
-                    @Override
-                    public int taskInnerEnter() {
-                        return AnimHelper.RIGHT_HALF_SHOW;
-                    }
-
-                    @Override
-                    public int taskInnerExit() {
-                        return AnimHelper.LEFT_HALF_HIDE;
-                    }
-                })
                 .cp()
+                .bindCommonAnimation(anim)
                 .go();
 
     }

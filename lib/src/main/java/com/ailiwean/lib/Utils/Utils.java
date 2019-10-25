@@ -14,7 +14,6 @@ public class Utils {
         weakReference = new WeakReference<>(mContext);
     }
 
-
     public static Point getScreenPoint() {
 
         if (weakReference.get() == null)

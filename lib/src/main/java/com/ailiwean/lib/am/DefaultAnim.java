@@ -5,7 +5,7 @@ import android.view.View;
 import com.ailiwean.lib.callback.AnimOutListener;
 import com.ailiwean.lib.callback.AnimStateListener;
 
-public abstract class DefaultAnim extends CustomAnim implements AnimOutListener {
+public abstract class DefaultAnim extends BaseAnim implements AnimOutListener {
 
     /***
      * 通用的监听,被{@link AnimLib}回调，最终调用, 重写的动画监听方法以及{@link BaseAnim 中所必须的方法}
@@ -35,7 +35,7 @@ public abstract class DefaultAnim extends CustomAnim implements AnimOutListener 
 
     @Override
     public int taskTopEnter() {
-        return AnimHelper.ALPHA_UP_SHOW;
+        return AnimHelper.NULL;
     }
 
     @Override
@@ -56,8 +56,8 @@ public abstract class DefaultAnim extends CustomAnim implements AnimOutListener 
     @Override
     public final void enter(View pageView, boolean isTopTask, boolean isExecute) {
         if (isTopTask)
-            commonExecute(taskTopEnter(), true, true, isExecute);
-        else commonExecute(taskInnerEnter(), true, false, isExecute);
+            commonExecute(pageView, taskTopEnter(), true, true, isExecute);
+        else commonExecute(pageView, taskInnerEnter(), true, false, isExecute);
 
     }
 
@@ -65,12 +65,12 @@ public abstract class DefaultAnim extends CustomAnim implements AnimOutListener 
     public final void exit(View pageView, boolean isTopTask, boolean isExecute) {
 
         if (isTopTask)
-            commonExecute(taskTopExit(), false, true, isExecute);
-        else commonExecute(taskInnerExit(), false, false, isExecute);
+            commonExecute(pageView, taskTopExit(), false, true, isExecute);
+        else commonExecute(pageView, taskInnerExit(), false, false, isExecute);
 
     }
 
-    private void commonExecute(int type, boolean isEnter, boolean isTopTask, boolean isExecute) {
+    private void commonExecute(View pageView, int type, boolean isEnter, boolean isTopTask, boolean isExecute) {
 
         if (!isExecute)
             return;
@@ -137,23 +137,4 @@ public abstract class DefaultAnim extends CustomAnim implements AnimOutListener 
         }
     }
 
-    private void finalEnterAnimStar(View view, boolean isTaskTop) {
-        enterAnimStar_Inner();
-        DefaultAnim.this.enterAnimStar(view, isTaskTop);
-    }
-
-    private void finalEnterAnimEnd(View view, boolean isTaskTop) {
-        enterAnimEnd_Inner();
-        DefaultAnim.this.enterAnimEnd(view, isTaskTop);
-    }
-
-    private void finalExitAnimStar(View view, boolean isTaskTop) {
-        exitAnimStar_Inner();
-        DefaultAnim.this.exitAnimStar(view, isTaskTop);
-    }
-
-    private void finalExitAnimEnd(View view, boolean isTaskTop) {
-        exitAnimEnd_Inner();
-        DefaultAnim.this.exitAnimEnd(view, isTaskTop);
-    }
 }
