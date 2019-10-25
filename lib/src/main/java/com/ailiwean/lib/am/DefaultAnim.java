@@ -53,6 +53,14 @@ public abstract class DefaultAnim extends BaseAnim implements AnimOutListener {
         return AnimHelper.NULL;
     }
 
+    public DefaultAnim(int duration) {
+        this.duration = duration;
+    }
+
+    public DefaultAnim() {
+
+    }
+
     @Override
     public final void enter(View pageView, boolean isTopTask, boolean isExecute) {
         if (isTopTask)
@@ -70,6 +78,7 @@ public abstract class DefaultAnim extends BaseAnim implements AnimOutListener {
 
     }
 
+
     private void commonExecute(View pageView, int type, boolean isEnter, boolean isTopTask, boolean isExecute) {
 
         if (!isExecute)
@@ -78,51 +87,31 @@ public abstract class DefaultAnim extends BaseAnim implements AnimOutListener {
         switch (type) {
 
             case AnimHelper.ALPHA_UP_SHOW:
-                AnimLib.getInstance(AnimHelper.ALPHA_UP_SHOW, pageView)
-                        .isEnter(isEnter)
-                        .isTopTask(isTopTask)
-                        .bindListener(animStateListener)
-                        .start();
+                commonExeAnimLib(AnimLib.getInstance(AnimHelper.ALPHA_UP_SHOW, pageView), isEnter, isTopTask);
+
                 break;
             case AnimHelper.ALPHA_DOWN_HIDE:
-                AnimLib.getInstance(AnimHelper.ALPHA_DOWN_HIDE, pageView)
-                        .isEnter(isEnter)
-                        .isTopTask(isTopTask)
-                        .bindListener(animStateListener)
-                        .start();
+                commonExeAnimLib(AnimLib.getInstance(AnimHelper.ALPHA_DOWN_HIDE, pageView), isEnter, isTopTask);
+
                 break;
 
             case AnimHelper.LEFT_ALL_SHOW:
-                AnimLib.getInstance(AnimHelper.LEFT_ALL_SHOW, pageView)
-                        .isEnter(isEnter)
-                        .isTopTask(isTopTask)
-                        .bindListener(animStateListener)
-                        .start();
-
+                commonExeAnimLib(AnimLib.getInstance(AnimHelper.LEFT_ALL_SHOW, pageView), isEnter, isTopTask);
                 break;
 
             case AnimHelper.RIGHT_ALL_HIDE:
-                AnimLib.getInstance(AnimHelper.RIGHT_ALL_HIDE, pageView)
-                        .isEnter(isEnter)
-                        .isTopTask(isTopTask)
-                        .bindListener(animStateListener)
-                        .start();
+                commonExeAnimLib(AnimLib.getInstance(AnimHelper.RIGHT_ALL_HIDE, pageView), isEnter, isTopTask);
+
                 break;
 
             case AnimHelper.LEFT_HALF_HIDE:
-                AnimLib.getInstance(AnimHelper.LEFT_HALF_HIDE, pageView)
-                        .isEnter(isEnter)
-                        .isTopTask(isTopTask)
-                        .bindListener(animStateListener)
-                        .start();
+                commonExeAnimLib(AnimLib.getInstance(AnimHelper.LEFT_HALF_HIDE, pageView), isEnter, isTopTask);
+
                 break;
 
             case AnimHelper.RIGHT_HALF_SHOW:
-                AnimLib.getInstance(AnimHelper.RIGHT_HALF_SHOW, pageView)
-                        .isEnter(isEnter)
-                        .isTopTask(isTopTask)
-                        .bindListener(animStateListener)
-                        .start();
+                commonExeAnimLib(AnimLib.getInstance(AnimHelper.RIGHT_HALF_SHOW, pageView), isEnter, isTopTask);
+
                 break;
 
             default:
@@ -135,6 +124,14 @@ public abstract class DefaultAnim extends BaseAnim implements AnimOutListener {
                 }
                 break;
         }
+    }
+
+    private void commonExeAnimLib(AnimLib animLib, boolean isEnter, boolean isTopTask) {
+        animLib.isEnter(isEnter)
+                .isTopTask(isTopTask)
+                .isDuration(duration)
+                .bindListener(animStateListener)
+                .start();
     }
 
 }

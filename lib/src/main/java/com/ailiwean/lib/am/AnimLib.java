@@ -23,6 +23,8 @@ class AnimLib {
 
     AnimStateListener animStateListener;
 
+    long duration;
+
     Animation.AnimationListener listener = new Animation.AnimationListener() {
         @Override
         public void onAnimationStart(Animation animation) {
@@ -70,6 +72,11 @@ class AnimLib {
         return this;
     }
 
+    public AnimLib isDuration(long duration) {
+        this.duration = duration;
+        return this;
+    }
+
     public void start() {
 
         if (pageView == null)
@@ -112,10 +119,10 @@ class AnimLib {
 
     private Animation aplha_down_hide() {
         AlphaAnimation alphaAnimation = new AlphaAnimation(1, 0);
-        alphaAnimation.setDuration(AnimHelper.DURATION);
+        alphaAnimation.setDuration(duration);
 
         TranslateAnimation tranAnimation = new TranslateAnimation(0f, 0f, 0f, 300f);
-        tranAnimation.setDuration(AnimHelper.DURATION);
+        tranAnimation.setDuration(duration);
 
         AnimationSet set = new AnimationSet(true);
         set.addAnimation(alphaAnimation);
@@ -127,9 +134,9 @@ class AnimLib {
 
     private Animation alpha_up_show() {
         AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
-        alphaAnimation.setDuration(AnimHelper.DURATION);
+        alphaAnimation.setDuration(duration);
         TranslateAnimation tranAnimation = new TranslateAnimation(0f, 0f, 300f, 0);
-        tranAnimation.setDuration(AnimHelper.DURATION);
+        tranAnimation.setDuration(duration);
 
         AnimationSet set = new AnimationSet(true);
         set.addAnimation(alphaAnimation);
@@ -141,27 +148,27 @@ class AnimLib {
 
     private Animation left_all_show() {
         TranslateAnimation translateAnimation = new TranslateAnimation(Utils.getScreenPoint().x, 0, 0, 0);
-        translateAnimation.setDuration(AnimHelper.DURATION);
+        translateAnimation.setDuration(duration);
         return translateAnimation;
     }
 
     private Animation right_all_hide() {
         TranslateAnimation translateAnimation = new TranslateAnimation(0, Utils.getScreenPoint().x, 0, 0);
-        translateAnimation.setDuration(AnimHelper.DURATION);
+        translateAnimation.setDuration(duration);
         return translateAnimation;
     }
 
     private Animation right_half_show() {
 
         TranslateAnimation translateAnimation = new TranslateAnimation(-Utils.getScreenPoint().x / 2F, 0, 0, 0);
-        translateAnimation.setDuration(AnimHelper.DURATION);
+        translateAnimation.setDuration(duration);
         return translateAnimation;
     }
 
     private Animation left_half_hide() {
 
         TranslateAnimation translateAnimation = new TranslateAnimation(0, -Utils.getScreenPoint().x / 2F, 0, 0);
-        translateAnimation.setDuration(AnimHelper.DURATION);
+        translateAnimation.setDuration(duration);
         return translateAnimation;
     }
 }

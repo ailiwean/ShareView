@@ -14,5 +14,9 @@ public abstract class CustomAnim extends BaseAnim {
 
     }
 
+    public CustomAnim(int duration) {
+        super(duration);
+    }
+
 
 }

@@ -47,8 +47,9 @@ public class ShareMultiDelegate extends BaseDelegate<ShareMultiDelegate, ShareMu
         if (lastBuild != null)
             lastBuild.getPageView().setVisibility(View.INVISIBLE);
         build.getPageView().setVisibility(View.VISIBLE);
-
         lastBuild = build;
+        
+        updateCurrentType(type);
     }
 
     public static class MultiBuild extends BaseBuild<MultiBuild, ShareMultiDelegate, MultViewHolder> {

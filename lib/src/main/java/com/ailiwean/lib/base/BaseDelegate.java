@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.LayoutRes;
 
 import com.ailiwean.lib.Shareable;
+import com.ailiwean.lib.am.AnimHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -151,6 +152,7 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
 
             }
         }
+        currentType = defaultType;
     }
 
     /***
@@ -225,7 +227,6 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
      * 切换View  {@link #dispatchShowView(int)}
      */
     public void switchType(int type) {
-        currentType = type;
 
         T build = getBuild(type);
         if (build == null)
@@ -240,8 +241,17 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
      * @return
      */
     public int getCurrentType() {
-        return getCurrentType();
+        return currentType;
     }
+
+    /***
+     * 更新CurrentType
+     * @param currentType
+     */
+    protected void updateCurrentType(int currentType) {
+        this.currentType = currentType;
+    }
+
 
     protected T getBuild(int type) {
         return buildMap.get(type);

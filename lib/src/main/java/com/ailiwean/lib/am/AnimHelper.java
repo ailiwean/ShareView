@@ -18,8 +18,6 @@ public class AnimHelper {
 
     public static final int LEFT_HALF_HIDE = 10005;
 
-    public static final int DURATION = 3000;
-
     @IntDef({NULL, ALPHA_DOWN_HIDE, ALPHA_UP_SHOW, RIGHT_ALL_HIDE, LEFT_ALL_SHOW, RIGHT_HALF_SHOW, LEFT_HALF_HIDE})
     public @interface Type {
     }

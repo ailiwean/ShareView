@@ -11,6 +11,8 @@ public abstract class BaseAnim implements AnimStateListener, AnimInnerListener {
 
     Runnable startBack;
 
+    public int duration = 300;
+
     //动画优先级
     int priority = 1;  //new出来的>com>自带
 
@@ -25,6 +27,11 @@ public abstract class BaseAnim implements AnimStateListener, AnimInnerListener {
 
     public BaseAnim() {
         priority = 10;
+    }
+
+    public BaseAnim(int duration) {
+        this.duration = duration;
+        this.priority = 10;
     }
 
     /***
@@ -45,7 +52,10 @@ public abstract class BaseAnim implements AnimStateListener, AnimInnerListener {
     private final void enterAnimStar_Inner(View pageView) {
 
         pageView.setVisibility(View.VISIBLE);
-
+        if (startBack != null) {
+            startBack.run();
+            startBack = null;
+        }
     }
 
     private final void enterAnimEnd_Inner(View pageView) {

@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                                 shareMultiView.switchType(2);
                             }
                         });
-            
+
                     }
                 })
                 .cp()
@@ -90,6 +90,27 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
 
+                    }
+                })
+                .bindAnimation(new DefaultAnim(5000) {
+                    @Override
+                    public int taskTopEnter() {
+                        return AnimHelper.LEFT_ALL_SHOW;
+                    }
+
+                    @Override
+                    public int taskTopExit() {
+                        return AnimHelper.RIGHT_ALL_HIDE;
+                    }
+
+                    @Override
+                    public int taskInnerEnter() {
+                        return AnimHelper.RIGHT_HALF_SHOW;
+                    }
+
+                    @Override
+                    public int taskInnerExit() {
+                        return AnimHelper.LEFT_HALF_HIDE;
                     }
                 })
                 .cp()
