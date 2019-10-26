@@ -8,6 +8,7 @@ import com.ailiwean.lib.callback.InitListener;
 import com.ailiwean.lib.callback.LifeListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H extends BaseViewHolder> {
@@ -38,6 +39,8 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
 
     public List<LifeListener<H>> lifeListeners = new ArrayList<>();
 
+    HashMap<Class, BaseObserve> baseObserves = new HashMap<Class, BaseObserve>();
+
     protected BaseBuild(M delegate, @LayoutRes int layout, int type) {
         this.delegate = delegate;
         this.contentLayout = layout;
@@ -61,6 +64,12 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
      */
     public T addLifeListener(LifeListener<H> lifeListener) {
         lifeListeners.add(lifeListener);
+        return (T) this;
+    }
+
+    //订阅数据类型
+    public T subscibe(BaseObserve<?> baseObserve) {
+        baseObserves.put(baseObserve.getType(), baseObserve);
         return (T) this;
     }
 

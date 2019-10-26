@@ -68,4 +68,13 @@ public class ShareView extends FrameLayout {
         return currentType;
     }
 
+    public void postData(int type, Object data) {
+
+        if (multiDelegate != null)
+            multiDelegate.postData(type, data);
+        if (taskDelegate != null)
+            taskDelegate.postData(type, data);
+
+    }
+
 }

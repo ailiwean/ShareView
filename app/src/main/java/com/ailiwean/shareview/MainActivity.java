@@ -7,10 +7,12 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.Toast;
 
 import com.ailiwean.lib.am.AnimHelper;
 import com.ailiwean.lib.am.CustomAnim;
 import com.ailiwean.lib.am.DefaultAnim;
+import com.ailiwean.lib.base.BaseObserve;
 import com.ailiwean.lib.callback.InitListener;
 import com.ailiwean.lib.ShareView;
 import com.ailiwean.lib.holder.TaskViewHolder;
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+
         shareMultiView.getTaskDelegate()
                 .isLazyLoad(true)
                 .isReuseLayout(false)
@@ -65,7 +68,21 @@ public class MainActivity extends AppCompatActivity {
                         });
                     }
                 })
+                .subscibe(new BaseObserve<String>() {
+                    @Override
+                    public void response(String s) {
+                        Toast.makeText(MainActivity.this, s, Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .subscibe(new BaseObserve<Integer>() {
+                    @Override
+                    public void response(Integer integer) {
+                        Toast.makeText(MainActivity.this, "接收到数字" + integer, Toast.LENGTH_SHORT).show();
+                    }
+                })
                 .cp()
+
+
                 .regLayout(1, R.layout.bb)
                 .init(new InitListener<TaskViewHolder>() {
                     @Override
@@ -74,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
                         vh.getRootView().setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                shareMultiView.postData(0, "sdsd");
                                 shareMultiView.switchType(2);
                             }
                         });
@@ -81,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .cp()
+
+
                 .regLayout(2, R.layout.cc)
                 .init(new InitListener<TaskViewHolder>() {
                     @Override
@@ -96,6 +116,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .cp()
+
+
                 .bindCommonAnimation(anim)
                 .go();
 

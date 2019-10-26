@@ -9,6 +9,7 @@ import androidx.annotation.LayoutRes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -234,6 +235,18 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
     }
 
     protected abstract void dispatchShowView(int type);
+
+    /***
+     * 发送数据
+     * @param type
+     * @param data
+     */
+    public void postData(int type, Object data) {
+        BaseBuild baseBuild = getBuild(type);
+        BaseObserve observe = (BaseObserve) baseBuild.baseObserves.get(data.getClass());
+        if (observe != null)
+            observe.response(data);
+    }
 
     /***
      * 获取当前显示页的Type
