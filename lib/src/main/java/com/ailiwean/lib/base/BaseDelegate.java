@@ -7,9 +7,6 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.LayoutRes;
 
-import com.ailiwean.lib.Shareable;
-import com.ailiwean.lib.am.AnimHelper;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -18,7 +15,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> implements Shareable {
+public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> {
 
     //根View
     FrameLayout rootView;
@@ -57,7 +54,7 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
      * @param layoutId
      * @return
      */
-    public T regView(int type, @LayoutRes int layoutId) {
+    public T regLayout(int type, @LayoutRes int layoutId) {
         T build = creatBuild((M) this, layoutId, type);
         typeMap.put(type, layoutId);
         buildMap.put(type, build);
@@ -236,6 +233,8 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
         dispatchShowView(type);
     }
 
+    protected abstract void dispatchShowView(int type);
+
     /***
      * 获取当前显示页的Type
      * @return
@@ -251,7 +250,6 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
     protected void updateCurrentType(int currentType) {
         this.currentType = currentType;
     }
-
 
     protected T getBuild(int type) {
         return buildMap.get(type);

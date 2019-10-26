@@ -23,6 +23,8 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
     //所有布局通用的Anim
     BaseAnim comAnim;
 
+    long currentTime;
+
     protected ShareTaskDelegate(FrameLayout controlView) {
         super(controlView);
     }
@@ -37,7 +39,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
     }
 
     @Override
-    public void dispatchShowView(final int type) {
+    protected void dispatchShowView(final int type) {
 
         final TaskBuild build = getBuild(type);
 
@@ -53,7 +55,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
 
         //首次进入
         if (lastBuild == null) {
-            build.anim.enter(build.getPageView(), false, false);
+            build.anim.enter(build.getPageView(), true, false);
             lastBuild = build;
             return;
         }
@@ -71,13 +73,13 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
                 public void run() {
                     build.setRunning(true);
                 }
-            });
+            }, build.getPageView());
             build.anim.operatorEndBack(new Runnable() {
                 @Override
                 public void run() {
                     build.setRunning(false);
                 }
-            });
+            }, build.getPageView());
             build.anim.enter(build.getPageView(), false, true);
 
             lastBuild.anim.opetatorStartBack(new Runnable() {
@@ -85,7 +87,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
                 public void run() {
                     lastBuild.setRunning(true);
                 }
-            });
+            }, lastBuild.getPageView());
 
             //返回动画结束后才将lastBuild指向当前页
             lastBuild.anim.operatorEndBack(new Runnable() {
@@ -95,7 +97,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
                     lastBuild.setRunning(false);
                     lastBuild = build;
                 }
-            });
+            }, lastBuild.getPageView());
             lastBuild.anim.exit(lastBuild.getPageView(), true, true);
         }
         //进入操作
@@ -106,13 +108,13 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
                 public void run() {
                     lastBuild.setRunning(true);
                 }
-            });
+            }, lastBuild.getPageView());
             lastBuild.anim.operatorEndBack(new Runnable() {
                 @Override
                 public void run() {
                     lastBuild.setRunning(false);
                 }
-            });
+            }, lastBuild.getPageView());
             lastBuild.anim.exit(lastBuild.getPageView(), false, true);
 
 
@@ -121,7 +123,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
                 public void run() {
                     build.setRunning(true);
                 }
-            });
+            }, build.getPageView());
 
             //进入动画结束后才将lastBuild指向当前页
             build.anim.operatorEndBack(new Runnable() {
@@ -131,7 +133,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
                     lastBuild = build;
                     build.setRunning(false);
                 }
-            });
+            }, build.getPageView());
             build.anim.enter(build.getPageView(), true, true);
         }
 
@@ -144,6 +146,10 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         TaskBuild build = getBuild(type);
         if (build == null)
             return;
+
+        if (System.currentTimeMillis() - currentTime < 50)
+            return;
+        currentTime = System.currentTimeMillis();
 
         if (lastBuild != null) {
             if (lastBuild.isRunning || getBuild(getCurrentType()).isRunning)

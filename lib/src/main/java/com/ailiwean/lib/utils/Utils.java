@@ -1,4 +1,4 @@
-package com.ailiwean.lib.Utils;
+package com.ailiwean.lib.utils;
 
 import android.content.Context;
 import android.graphics.Point;

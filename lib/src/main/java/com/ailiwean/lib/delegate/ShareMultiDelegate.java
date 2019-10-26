@@ -27,7 +27,7 @@ public class ShareMultiDelegate extends BaseDelegate<ShareMultiDelegate, ShareMu
     }
 
     @Override
-    public void dispatchShowView(int type) {
+    protected void dispatchShowView(int type) {
 
         final MultiBuild build = getBuild(type);
 
@@ -48,7 +48,7 @@ public class ShareMultiDelegate extends BaseDelegate<ShareMultiDelegate, ShareMu
             lastBuild.getPageView().setVisibility(View.INVISIBLE);
         build.getPageView().setVisibility(View.VISIBLE);
         lastBuild = build;
-        
+
         updateCurrentType(type);
     }
 

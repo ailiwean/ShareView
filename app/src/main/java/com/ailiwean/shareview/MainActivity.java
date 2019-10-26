@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 
 import com.ailiwean.lib.am.AnimHelper;
+import com.ailiwean.lib.am.CustomAnim;
 import com.ailiwean.lib.am.DefaultAnim;
-import com.ailiwean.lib.am.NullAnim;
 import com.ailiwean.lib.callback.InitListener;
 import com.ailiwean.lib.ShareView;
 import com.ailiwean.lib.holder.TaskViewHolder;
@@ -46,10 +49,11 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        shareMultiView.getTaskDelegate().isLazyLoad(true)
+        shareMultiView.getTaskDelegate()
+                .isLazyLoad(true)
                 .isReuseLayout(false)
                 .setDefault(2)
-                .regView(0, R.layout.aa)
+                .regLayout(0, R.layout.aa)
                 .init(new InitListener<TaskViewHolder>() {
                     @Override
                     public void init(TaskViewHolder vh) {
@@ -61,9 +65,8 @@ public class MainActivity extends AppCompatActivity {
                         });
                     }
                 })
-                .bindAnimation(new NullAnim())
                 .cp()
-                .regView(1, R.layout.bb)
+                .regLayout(1, R.layout.bb)
                 .init(new InitListener<TaskViewHolder>() {
                     @Override
                     public void init(TaskViewHolder vh) {
@@ -78,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .cp()
-                .regView(2, R.layout.cc)
+                .regLayout(2, R.layout.cc)
                 .init(new InitListener<TaskViewHolder>() {
                     @Override
                     public void init(TaskViewHolder vh) {
@@ -90,27 +93,6 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
 
-                    }
-                })
-                .bindAnimation(new DefaultAnim(5000) {
-                    @Override
-                    public int taskTopEnter() {
-                        return AnimHelper.LEFT_ALL_SHOW;
-                    }
-
-                    @Override
-                    public int taskTopExit() {
-                        return AnimHelper.RIGHT_ALL_HIDE;
-                    }
-
-                    @Override
-                    public int taskInnerEnter() {
-                        return AnimHelper.RIGHT_HALF_SHOW;
-                    }
-
-                    @Override
-                    public int taskInnerExit() {
-                        return AnimHelper.LEFT_HALF_HIDE;
                     }
                 })
                 .cp()

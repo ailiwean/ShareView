@@ -6,7 +6,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.TranslateAnimation;
 
-import com.ailiwean.lib.Utils.Utils;
+import com.ailiwean.lib.utils.Utils;
 import com.ailiwean.lib.callback.AnimStateListener;
 
 class AnimLib {
