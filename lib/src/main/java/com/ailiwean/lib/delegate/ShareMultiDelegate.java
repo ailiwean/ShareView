@@ -7,6 +7,8 @@ import com.ailiwean.lib.base.BaseBuild;
 import com.ailiwean.lib.base.BaseDelegate;
 import com.ailiwean.lib.callback.LifeListener;
 import com.ailiwean.lib.holder.MultViewHolder;
+import com.ailiwean.lib.observe.MultiObserve;
+import com.ailiwean.lib.observe.TaskObserve;
 
 public class ShareMultiDelegate extends BaseDelegate<ShareMultiDelegate, ShareMultiDelegate.MultiBuild> {
 
@@ -52,7 +54,7 @@ public class ShareMultiDelegate extends BaseDelegate<ShareMultiDelegate, ShareMu
         updateCurrentType(type);
     }
 
-    public static class MultiBuild extends BaseBuild<MultiBuild, ShareMultiDelegate, MultViewHolder> {
+    public static class MultiBuild extends BaseBuild<MultiBuild, ShareMultiDelegate, MultViewHolder, MultiObserve> {
 
         protected MultiBuild(ShareMultiDelegate delegate, int layout, int type) {
             super(delegate, layout, type);
@@ -62,6 +64,12 @@ public class ShareMultiDelegate extends BaseDelegate<ShareMultiDelegate, ShareMu
         protected MultViewHolder creatViewHolder(View pageView) {
             return MultViewHolder.getInstance(pageView);
         }
+
+        public ShareMultiDelegate.MultiBuild subscibe(MultiObserve<?> baseObserve) {
+            baseObserves.put(baseObserve.getType(), baseObserve);
+            return this;
+        }
+
     }
 
 }

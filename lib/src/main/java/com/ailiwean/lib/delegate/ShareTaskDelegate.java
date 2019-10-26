@@ -12,7 +12,9 @@ import com.ailiwean.lib.base.BaseDelegate;
 import com.ailiwean.lib.base.BaseViewHolder;
 import com.ailiwean.lib.callback.LifeListener;
 import com.ailiwean.lib.holder.TaskViewHolder;
+import com.ailiwean.lib.observe.TaskObserve;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -207,7 +209,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         }
     }
 
-    public static class TaskBuild extends BaseBuild<TaskBuild, ShareTaskDelegate, TaskViewHolder> {
+    public static class TaskBuild extends BaseBuild<TaskBuild, ShareTaskDelegate, TaskViewHolder, TaskObserve> {
 
         private BaseAnim anim = new NullAnim();
 
@@ -230,12 +232,18 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
             return this;
         }
 
+
         /***
          * 绑定一个动画效果
          */
         public TaskBuild bindAnimation(BaseAnim anim) {
             if (anim != null && anim.getPriority() > this.anim.getPriority())
                 this.anim = anim;
+            return this;
+        }
+
+        public TaskBuild subscibe(TaskObserve<?> baseObserve) {
+            baseObserves.put(baseObserve.getType(), baseObserve);
             return this;
         }
 

@@ -13,13 +13,22 @@ import com.ailiwean.lib.am.AnimHelper;
 import com.ailiwean.lib.am.CustomAnim;
 import com.ailiwean.lib.am.DefaultAnim;
 import com.ailiwean.lib.base.BaseObserve;
+import com.ailiwean.lib.base.BaseViewHolder;
+import com.ailiwean.lib.callback.BaseHolderClick;
 import com.ailiwean.lib.callback.InitListener;
 import com.ailiwean.lib.ShareView;
 import com.ailiwean.lib.holder.TaskViewHolder;
+import com.ailiwean.lib.observe.TaskObserve;
 
 public class MainActivity extends AppCompatActivity {
 
     ShareView shareMultiView;
+
+    public static final int CONTENT = 0;
+
+    public static final int INPUT = 1;
+
+    public static final int OTHER = 2;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -28,8 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         shareMultiView = findViewById(R.id.mult);
 
-
-        DefaultAnim anim = new DefaultAnim() {
+        DefaultAnim anim = new DefaultAnim(300) {
             @Override
             public int taskTopEnter() {
                 return AnimHelper.LEFT_ALL_SHOW;
@@ -51,12 +59,11 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-
         shareMultiView.getTaskDelegate()
                 .isLazyLoad(true)
                 .isReuseLayout(false)
                 .setDefault(2)
-                .regLayout(0, R.layout.aa)
+                .regLayout(CONTENT, R.layout.aa)
                 .init(new InitListener<TaskViewHolder>() {
                     @Override
                     public void init(TaskViewHolder vh) {
@@ -68,31 +75,42 @@ public class MainActivity extends AppCompatActivity {
                         });
                     }
                 })
-                .subscibe(new BaseObserve<String>() {
+                .subscibe(new TaskObserve<String>() {
                     @Override
-                    public void response(String s) {
-                        Toast.makeText(MainActivity.this, s, Toast.LENGTH_SHORT).show();
+                    public void response(TaskViewHolder vh, String s) {
+                        vh.setText(R.id.name, s);
                     }
                 })
-                .subscibe(new BaseObserve<Integer>() {
+                .subscibe(new TaskObserve<Integer>() {
                     @Override
-                    public void response(Integer integer) {
-                        Toast.makeText(MainActivity.this, "接收到数字" + integer, Toast.LENGTH_SHORT).show();
+                    public void response(TaskViewHolder vh, Integer integer) {
+                        vh.setText(R.id.age, integer.toString());
                     }
                 })
                 .cp()
 
-
-                .regLayout(1, R.layout.bb)
+                .regLayout(INPUT, R.layout.bb)
                 .init(new InitListener<TaskViewHolder>() {
                     @Override
-                    public void init(TaskViewHolder vh) {
+                    public void init(final TaskViewHolder vh) {
 
-                        vh.getRootView().setOnClickListener(new View.OnClickListener() {
+                        vh.getView(R.id.send).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                shareMultiView.postData(0, "sdsd");
-                                shareMultiView.switchType(2);
+
+                                shareMultiView.postData(CONTENT, vh.getText(R.id.name));
+                                shareMultiView.postData(CONTENT, Integer.parseInt(vh.getText(R.id.age)));
+
+                            }
+                        });
+
+
+                        vh.getView(R.id.next).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                shareMultiView.switchType(OTHER);
+
                             }
                         });
 
@@ -101,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                 .cp()
 
 
-                .regLayout(2, R.layout.cc)
+                .regLayout(OTHER, R.layout.cc)
                 .init(new InitListener<TaskViewHolder>() {
                     @Override
                     public void init(TaskViewHolder vh) {
@@ -109,14 +127,13 @@ public class MainActivity extends AppCompatActivity {
                         vh.getRootView().setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                shareMultiView.switchType(0);
+                                shareMultiView.switchType(CONTENT);
                             }
                         });
 
                     }
                 })
                 .cp()
-
 
                 .bindCommonAnimation(anim)
                 .go();

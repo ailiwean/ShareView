@@ -7,13 +7,14 @@ import java.lang.reflect.Type;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
 
-public abstract class BaseObserve<T> {
+public abstract class BaseObserve<T, V extends BaseViewHolder> {
 
     Class<T> tType;
 
     public BaseObserve() {
         autoCreateType();
     }
+
 
     private void autoCreateType() {
         try {
@@ -49,6 +50,6 @@ public abstract class BaseObserve<T> {
         return tType;
     }
 
-    public abstract void response(T t);
+    public abstract void response(V vh, T t);
 
 }

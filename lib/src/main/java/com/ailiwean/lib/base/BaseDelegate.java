@@ -9,7 +9,6 @@ import androidx.annotation.LayoutRes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -184,15 +183,15 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
     protected void lazyCreat(T build) {
         if (build.getPageView() == null) {
             inflate(build);
-            build.initListener.init(build.vH);
+            build.initListener.init(build.vh);
             build.isInit = true;
         } else {
             //对于复用的View需要重新走初始化方法
             if (receptType.contains(build.type)) {
-                build.initListener.init(build.vH);
+                build.initListener.init(build.vh);
             } else {
                 if (!build.isInit) {
-                    build.initListener.init(build.vH);
+                    build.initListener.init(build.vh);
                     build.isInit = true;
                 }
             }
@@ -243,9 +242,11 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
      */
     public void postData(int type, Object data) {
         BaseBuild baseBuild = getBuild(type);
+        if (baseBuild == null)
+            return;
         BaseObserve observe = (BaseObserve) baseBuild.baseObserves.get(data.getClass());
         if (observe != null)
-            observe.response(data);
+            observe.response(baseBuild.vh, data);
     }
 
     /***

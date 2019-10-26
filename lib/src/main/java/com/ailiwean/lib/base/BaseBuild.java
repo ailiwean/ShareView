@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H extends BaseViewHolder> {
+public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H extends BaseViewHolder, D extends BaseObserve> {
 
     int contentLayout;
 
@@ -25,9 +25,11 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
     boolean isInit;
 
     //pageView的持有类，并扩展其他方法
-    H vH;
+    H vh;
 
     private M delegate;
+
+    protected HashMap<Class, D> baseObserves = new HashMap<>();
 
     InitListener initListener = new InitListener<H>() {
 
@@ -38,8 +40,6 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
     };
 
     public List<LifeListener<H>> lifeListeners = new ArrayList<>();
-
-    HashMap<Class, BaseObserve> baseObserves = new HashMap<Class, BaseObserve>();
 
     protected BaseBuild(M delegate, @LayoutRes int layout, int type) {
         this.delegate = delegate;
@@ -67,12 +67,6 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         return (T) this;
     }
 
-    //订阅数据类型
-    public T subscibe(BaseObserve<?> baseObserve) {
-        baseObserves.put(baseObserve.getType(), baseObserve);
-        return (T) this;
-    }
-
     /***
      * 获取页的根View
      * @return
@@ -84,7 +78,7 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
     protected abstract H creatViewHolder(View pageView);
 
     public H getVH() {
-        return vH;
+        return vh;
     }
 
     /***
@@ -97,7 +91,7 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
 
     protected void bindInstanceView(View view) {
         this.pageView = view;
-        vH = creatViewHolder(pageView);
+        vh = creatViewHolder(pageView);
     }
 
 }

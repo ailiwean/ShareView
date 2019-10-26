@@ -1,6 +1,7 @@
 package com.ailiwean.lib.base;
 
 import android.view.View;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,6 +48,10 @@ public class BaseViewHolder implements View.OnClickListener {
         return pageView.findViewById(id);
     }
 
+    public EditText getEv(@IdRes int id) {
+        return pageView.findViewById(id);
+    }
+
     public TableLayout getTl(@IdRes int id) {
         return pageView.findViewById(id);
     }
@@ -84,6 +89,19 @@ public class BaseViewHolder implements View.OnClickListener {
     public BaseViewHolder addClick(@IdRes int id) {
         getView(id).setOnClickListener(this);
         return this;
+    }
+
+    public String getText(@IdRes int id) {
+
+        View tv = getView(id);
+
+        if (tv == null)
+            return "";
+
+        if (tv instanceof TextView)
+            return ((TextView) tv).getText().toString();
+
+        return "";
     }
 
     /***
