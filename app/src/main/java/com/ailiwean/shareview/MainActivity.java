@@ -3,6 +3,7 @@ package com.ailiwean.shareview;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -17,6 +18,8 @@ import com.ailiwean.lib.base.BaseViewHolder;
 import com.ailiwean.lib.callback.BaseHolderClick;
 import com.ailiwean.lib.callback.InitListener;
 import com.ailiwean.lib.ShareView;
+import com.ailiwean.lib.callback.LazyLoad;
+import com.ailiwean.lib.callback.LifeListener;
 import com.ailiwean.lib.holder.TaskViewHolder;
 import com.ailiwean.lib.observe.TaskObserve;
 
@@ -37,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
         shareMultiView = findViewById(R.id.mult);
 
-        DefaultAnim anim = new DefaultAnim(300) {
+        DefaultAnim anim = new DefaultAnim(3000) {
             @Override
             public int taskTopEnter() {
                 return AnimHelper.LEFT_ALL_SHOW;
@@ -75,6 +78,34 @@ public class MainActivity extends AppCompatActivity {
                         });
                     }
                 })
+                .bindAnimation(new DefaultAnim() {
+                    @Override
+                    public int taskInnerExit() {
+                        return super.taskInnerExit();
+                    }
+
+                    @Override
+                    public int taskTopExit() {
+                        return super.taskTopExit();
+                    }
+                })
+                .lazy(new LazyLoad<TaskViewHolder>() {
+                    @Override
+                    public void onLazy(TaskViewHolder vh) {
+                    }
+                })
+                .addLifeListener(new LifeListener<TaskViewHolder>() {
+                    @Override
+                    public void onVisiable(TaskViewHolder vH) {
+                        Log.e("api", "creat");
+                    }
+
+                    @Override
+                    public void onHide(TaskViewHolder vH) {
+                        Log.e("api", "aa---隐藏");
+
+                    }
+                })
                 .subscibe(new TaskObserve<String>() {
                     @Override
                     public void response(TaskViewHolder vh, String s) {
@@ -93,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
                 .init(new InitListener<TaskViewHolder>() {
                     @Override
                     public void init(final TaskViewHolder vh) {
+
 
                         vh.getView(R.id.send).setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -113,6 +145,25 @@ public class MainActivity extends AppCompatActivity {
 
                             }
                         });
+
+                    }
+                })
+                .lazy(new LazyLoad<TaskViewHolder>() {
+                    @Override
+                    public void onLazy(TaskViewHolder vh) {
+
+                    }
+                })
+                .addLifeListener(new LifeListener<TaskViewHolder>() {
+                    @Override
+                    public void onVisiable(TaskViewHolder vH) {
+                        Log.e("api", "aa执行lazy方法");
+
+                    }
+
+                    @Override
+                    public void onHide(TaskViewHolder vH) {
+                        Log.e("api", "aa执行init方法");
 
                     }
                 })

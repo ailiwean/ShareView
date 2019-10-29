@@ -25,7 +25,7 @@ public class LifeManager {
     public void onHide(int type) {
         onVisiable(buildMap.get(type));
     }
-        
+
     public void onVisiable(BaseBuild baseBuild) {
         if (baseBuild == null)
             return;
@@ -45,12 +45,12 @@ public class LifeManager {
     }
 
     public void onInit(BaseBuild baseBuild) {
-        baseBuild.initListener.init(baseBuild.getVH());
+        baseBuild.getInitListener().init(baseBuild.getVH());
         baseBuild.isInit = true;
     }
 
     public void onLazy(BaseBuild baseBuild) {
-        baseBuild.lazyLoad.onLazy(baseBuild.getVH());
+        baseBuild.getLazyLoad().onLazy(baseBuild.getVH());
         baseBuild.isLazy = true;
     }
 

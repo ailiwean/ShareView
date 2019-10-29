@@ -182,7 +182,7 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
             build.bindInstanceView(reuseMap.get(build.contentLayout));
         }
     }
-        
+
     /***
      * 懒加载
      * @param build

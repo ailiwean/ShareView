@@ -80,9 +80,10 @@ public abstract class DefaultAnim extends BaseAnim implements AnimOutListener {
 
     private void commonExecute(View pageView, int type, boolean isEnter, boolean isTopTask, boolean isExecute) {
 
-        if (!isExecute)
+        if (!isExecute) {
+            noAnima(isEnter, pageView, isTopTask);
             return;
-
+        }
         switch (type) {
 
             case AnimHelper.ALPHA_UP_SHOW:
@@ -114,14 +115,18 @@ public abstract class DefaultAnim extends BaseAnim implements AnimOutListener {
                 break;
 
             default:
-                if (isEnter) {
-                    finalEnterAnimStar(pageView, isTopTask);
-                    finalEnterAnimEnd(pageView, isTopTask);
-                } else {
-                    finalExitAnimStar(pageView, isTopTask);
-                    finalExitAnimEnd(pageView, isTopTask);
-                }
+                noAnima(isEnter, pageView, isTopTask);
                 break;
+        }
+    }
+
+    private void noAnima(boolean isEnter, View pageView, boolean isTopTask) {
+        if (isEnter) {
+            finalEnterAnimStar(pageView, isTopTask);
+            finalEnterAnimEnd(pageView, isTopTask);
+        } else {
+            finalExitAnimStar(pageView, isTopTask);
+            finalExitAnimEnd(pageView, isTopTask);
         }
     }
 

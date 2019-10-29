@@ -35,7 +35,7 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
 
     protected HashMap<Class, D> baseObserves = new HashMap<>();
 
-    public InitListener initListener = new InitListener<H>() {
+    InitListener initListener = new InitListener<H>() {
 
         @Override
         public void init(H vh) {
@@ -43,7 +43,7 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         }
     };
 
-    public LazyLoad lazyLoad = new LazyLoad() {
+    LazyLoad lazyLoad = new LazyLoad() {
         @Override
         public void onLazy(BaseViewHolder vh) {
 
@@ -98,6 +98,14 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
 
     public H getVH() {
         return vh;
+    }
+
+    public InitListener getInitListener() {
+        return initListener;
+    }
+
+    public LazyLoad getLazyLoad() {
+        return lazyLoad;
     }
 
     /***

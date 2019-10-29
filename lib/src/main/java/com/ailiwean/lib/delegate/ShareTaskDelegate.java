@@ -39,7 +39,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
     public static ShareTaskDelegate getInstance(FrameLayout controlView) {
         return new ShareTaskDelegate(controlView);
     }
-
+        
     @Override
     protected void dispatchShowView(final int type) {
 
@@ -53,13 +53,14 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         //首次进入
         if (lastBuild == null) {
             build.anim.enter(build.getPageView(), true, false);
+            onLazy(build);
+            onVisiable(build);
             lastBuild = build;
             return;
         }
 
         //返回操作
         if (lastBuild.taskIndex > build.taskIndex) {
-
             build.anim.opetatorStartBack(new Runnable() {
                 @Override
                 public void run() {
@@ -72,7 +73,6 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
                 public void run() {
                     build.setRunning(false);
                     //回调声明周期
-                    onVisiable(build);
                 }
             }, build.getPageView());
             build.anim.enter(build.getPageView(), false, true);
@@ -91,6 +91,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
                     lastBuild.getPageView().setVisibility(View.INVISIBLE);
                     lastBuild.setRunning(false);
                     onHide(lastBuild);
+                    onVisiable(build);
                     lastBuild = build;
                 }
             }, lastBuild.getPageView());
@@ -99,22 +100,21 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         }
         //进入操作
         else {
-
+            //保存last临时变量, 进入也动画<退出页，页将last置为当前,从而回调时发生问题
+            final TaskBuild temBuild = lastBuild;
             lastBuild.anim.opetatorStartBack(new Runnable() {
                 @Override
                 public void run() {
-                    lastBuild.setRunning(true);
+                    temBuild.setRunning(true);
                 }
             }, lastBuild.getPageView());
             lastBuild.anim.operatorEndBack(new Runnable() {
                 @Override
                 public void run() {
-                    lastBuild.setRunning(false);
-                    onHide(lastBuild);
+                    temBuild.setRunning(false);
                 }
             }, lastBuild.getPageView());
             lastBuild.anim.exit(lastBuild.getPageView(), false, true);
-
 
             build.anim.opetatorStartBack(new Runnable() {
                 @Override
@@ -122,19 +122,20 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
                     build.setRunning(true);
                 }
             }, build.getPageView());
-
             //进入动画结束后才将lastBuild指向当前页
             build.anim.operatorEndBack(new Runnable() {
                 @Override
                 public void run() {
                     lastBuild.getPageView().setVisibility(View.INVISIBLE);
-                    lastBuild = build;
                     onVisiable(build);
+                    onHide(lastBuild);
+                    lastBuild = build;
                     if (!build.isLazy)
                         onLazy(build);
                     build.setRunning(false);
                 }
             }, build.getPageView());
+
             build.anim.enter(build.getPageView(), true, true);
         }
 
