@@ -7,6 +7,9 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.LayoutRes;
 
+import com.ailiwean.lib.callback.LifeListenerInner;
+import com.ailiwean.lib.manager.LifeManager;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -15,7 +18,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> {
+public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> implements LifeListenerInner {
 
     //根View
     FrameLayout rootView;
@@ -43,6 +46,8 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
     int defaultType = -1;
     //当前展示的Type
     int currentType = -1;
+
+    protected LifeManager lifeManager;
 
     protected BaseDelegate(FrameLayout controlView) {
         this.rootView = controlView;
@@ -96,6 +101,8 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
         creatReceptType();
 
         loadView();
+
+        lifeManager = LifeManager.getInstance((LinkedHashMap<Integer, BaseBuild>) buildMap);
 
         switchType(defaultType);
 
@@ -175,7 +182,7 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
             build.bindInstanceView(reuseMap.get(build.contentLayout));
         }
     }
-
+        
     /***
      * 懒加载
      * @param build
@@ -183,16 +190,14 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
     protected void lazyCreat(T build) {
         if (build.getPageView() == null) {
             inflate(build);
-            build.initListener.init(build.vh);
-            build.isInit = true;
+            onInit(build);
         } else {
             //对于复用的View需要重新走初始化方法
             if (receptType.contains(build.type)) {
-                build.initListener.init(build.vh);
+                onInit(build);
             } else {
                 if (!build.isInit) {
-                    build.initListener.init(build.vh);
-                    build.isInit = true;
+                    onInit(build);
                 }
             }
         }
@@ -234,6 +239,30 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
     }
 
     protected abstract void dispatchShowView(int type);
+
+    /***
+     * 将View的声明周期管理交给 {@link LifeManager}
+     * @param type
+     */
+    @Override
+    public void onVisiable(BaseBuild type) {
+        lifeManager.onVisiable(type);
+    }
+
+    @Override
+    public void onHide(BaseBuild type) {
+        lifeManager.onHide(type);
+    }
+
+    @Override
+    public void onInit(BaseBuild baseBuild) {
+        lifeManager.onInit(baseBuild);
+    }
+
+    @Override
+    public void onLazy(BaseBuild baseBuild) {
+        lifeManager.onLazy(baseBuild);
+    }
 
     /***
      * 发送数据

@@ -50,11 +50,6 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         if (lastBuild == build)
             return;
 
-        //回调当前页面的展示方法
-        if (build.lifeListeners.size() != 0)
-            for (LifeListener item : build.lifeListeners)
-                item.onVisiable(build.getVH());
-
         //首次进入
         if (lastBuild == null) {
             build.anim.enter(build.getPageView(), true, false);
@@ -62,24 +57,22 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
             return;
         }
 
-        //回调上个页面的隐藏方法
-        if (lastBuild.lifeListeners.size() != 0) {
-            for (LifeListener item : lastBuild.lifeListeners)
-                item.onHide(lastBuild.getVH());
-        }
-
         //返回操作
         if (lastBuild.taskIndex > build.taskIndex) {
+
             build.anim.opetatorStartBack(new Runnable() {
                 @Override
                 public void run() {
                     build.setRunning(true);
                 }
             }, build.getPageView());
+
             build.anim.operatorEndBack(new Runnable() {
                 @Override
                 public void run() {
                     build.setRunning(false);
+                    //回调声明周期
+                    onVisiable(build);
                 }
             }, build.getPageView());
             build.anim.enter(build.getPageView(), false, true);
@@ -97,10 +90,12 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
                 public void run() {
                     lastBuild.getPageView().setVisibility(View.INVISIBLE);
                     lastBuild.setRunning(false);
+                    onHide(lastBuild);
                     lastBuild = build;
                 }
             }, lastBuild.getPageView());
             lastBuild.anim.exit(lastBuild.getPageView(), true, true);
+
         }
         //进入操作
         else {
@@ -115,6 +110,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
                 @Override
                 public void run() {
                     lastBuild.setRunning(false);
+                    onHide(lastBuild);
                 }
             }, lastBuild.getPageView());
             lastBuild.anim.exit(lastBuild.getPageView(), false, true);
@@ -133,6 +129,9 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
                 public void run() {
                     lastBuild.getPageView().setVisibility(View.INVISIBLE);
                     lastBuild = build;
+                    onVisiable(build);
+                    if (!build.isLazy)
+                        onLazy(build);
                     build.setRunning(false);
                 }
             }, build.getPageView());
@@ -223,15 +222,10 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
             anim.setPriority(1);
         }
 
-        public boolean isRunning() {
-            return isRunning;
-        }
-
-        public TaskBuild setRunning(boolean running) {
+        TaskBuild setRunning(boolean running) {
             isRunning = running;
             return this;
         }
-
 
         /***
          * 绑定一个动画效果

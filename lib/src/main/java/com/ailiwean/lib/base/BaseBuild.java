@@ -5,6 +5,7 @@ import android.view.View;
 import androidx.annotation.LayoutRes;
 
 import com.ailiwean.lib.callback.InitListener;
+import com.ailiwean.lib.callback.LazyLoad;
 import com.ailiwean.lib.callback.LifeListener;
 
 import java.util.ArrayList;
@@ -22,7 +23,10 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
     public int type;
 
     //是否已经init
-    boolean isInit;
+    public boolean isInit;
+
+    //是否已经lazy
+    public boolean isLazy;
 
     //pageView的持有类，并扩展其他方法
     H vh;
@@ -31,10 +35,17 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
 
     protected HashMap<Class, D> baseObserves = new HashMap<>();
 
-    InitListener initListener = new InitListener<H>() {
+    public InitListener initListener = new InitListener<H>() {
 
         @Override
         public void init(H vh) {
+
+        }
+    };
+
+    public LazyLoad lazyLoad = new LazyLoad() {
+        @Override
+        public void onLazy(BaseViewHolder vh) {
 
         }
     };
@@ -64,6 +75,14 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
      */
     public T addLifeListener(LifeListener<H> lifeListener) {
         lifeListeners.add(lifeListener);
+        return (T) this;
+    }
+
+    /***
+     * 懒加载  :   View创建完成并展示动画播放完毕
+     */
+    public T lazy(LazyLoad<H> lazyLoad) {
+        this.lazyLoad = lazyLoad;
         return (T) this;
     }
 

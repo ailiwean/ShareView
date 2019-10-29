@@ -78,7 +78,6 @@ public abstract class DefaultAnim extends BaseAnim implements AnimOutListener {
 
     }
 
-
     private void commonExecute(View pageView, int type, boolean isEnter, boolean isTopTask, boolean isExecute) {
 
         if (!isExecute)
