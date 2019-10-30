@@ -5,7 +5,7 @@ import android.view.View;
 import androidx.annotation.LayoutRes;
 
 import com.ailiwean.lib.callback.InitListener;
-import com.ailiwean.lib.callback.LazyLoad;
+import com.ailiwean.lib.callback.LazyLoadInter;
 import com.ailiwean.lib.callback.LifeListener;
 
 import java.util.ArrayList;
@@ -43,7 +43,7 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         }
     };
 
-    LazyLoad lazyLoad = new LazyLoad() {
+    LazyLoadInter lazyLoadInter = new LazyLoadInter() {
         @Override
         public void onLazy(BaseViewHolder vh) {
 
@@ -81,8 +81,8 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
     /***
      * 懒加载  :   View创建完成并展示动画播放完毕
      */
-    public T lazy(LazyLoad<H> lazyLoad) {
-        this.lazyLoad = lazyLoad;
+    public T lazy(LazyLoadInter<H> lazyLoadInter) {
+        this.lazyLoadInter = lazyLoadInter;
         return (T) this;
     }
 
@@ -104,8 +104,8 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         return initListener;
     }
 
-    public LazyLoad getLazyLoad() {
-        return lazyLoad;
+    public LazyLoadInter getLazyLoadInter() {
+        return lazyLoadInter;
     }
 
     /***

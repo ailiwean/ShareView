@@ -11,19 +11,23 @@ import com.ailiwean.lib.base.BaseBuild;
 import com.ailiwean.lib.base.BaseDelegate;
 import com.ailiwean.lib.base.BaseViewHolder;
 import com.ailiwean.lib.callback.LifeListener;
+import com.ailiwean.lib.callback.RollBackInter;
 import com.ailiwean.lib.holder.TaskViewHolder;
+import com.ailiwean.lib.manager.RollBackManager;
 import com.ailiwean.lib.observe.TaskObserve;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTaskDelegate.TaskBuild> {
+public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTaskDelegate.TaskBuild> implements RollBackInter {
 
     TaskBuild lastBuild;
 
     //所有布局通用的Anim
     BaseAnim comAnim;
+
+    RollBackManager rollBackManager;
 
     long currentTime;
 
@@ -39,7 +43,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
     public static ShareTaskDelegate getInstance(FrameLayout controlView) {
         return new ShareTaskDelegate(controlView);
     }
-        
+
     @Override
     protected void dispatchShowView(final int type) {
 
@@ -161,6 +165,14 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         //懒加载View,确保切换前View存在
         lazyCreat(build);
         dispatchShowView(type);
+
+        //委托返回栈
+        rollBackManager.switchType(type);
+    }
+
+    @Override
+    public boolean back() {
+        return rollBackManager.back();
     }
 
     /***
@@ -197,6 +209,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
     @Override
     public void go() {
         initAnim();
+        rollBackManager = RollBackManager.getInstance(this);
         super.go();
     }
 

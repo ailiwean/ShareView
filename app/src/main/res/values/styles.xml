@@ -6,6 +6,20 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+
+    </style>
+
+
+    <style name="AnimActivityTheme">
+        <item name="android:windowAnimationStyle">@style/FeelyouWindowAnimTheme</item>
+    </style>
+
+    <style name="FeelyouWindowAnimTheme" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/trans</item>
+        <item name="android:activityOpenExitAnimation">@anim/trans</item>
+        <item name="android:activityCloseEnterAnimation">@anim/trans</item>
+        <item name="android:activityCloseExitAnimation">@anim/trans</item>
     </style>
 
 </resources>

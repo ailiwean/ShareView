@@ -4,6 +4,8 @@ import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
 import android.view.animation.TranslateAnimation;
 
 import com.ailiwean.lib.utils.Utils;
@@ -113,6 +115,7 @@ class AnimLib {
         if (animation == null)
             return;
 
+        animation.setInterpolator(new DecelerateInterpolator());
         animation.setAnimationListener(listener);
         pageView.startAnimation(animation);
     }

@@ -5,20 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
-import android.widget.Toast;
 
 import com.ailiwean.lib.am.AnimHelper;
-import com.ailiwean.lib.am.CustomAnim;
 import com.ailiwean.lib.am.DefaultAnim;
-import com.ailiwean.lib.base.BaseObserve;
-import com.ailiwean.lib.base.BaseViewHolder;
-import com.ailiwean.lib.callback.BaseHolderClick;
 import com.ailiwean.lib.callback.InitListener;
 import com.ailiwean.lib.ShareView;
-import com.ailiwean.lib.callback.LazyLoad;
+import com.ailiwean.lib.callback.LazyLoadInter;
 import com.ailiwean.lib.callback.LifeListener;
 import com.ailiwean.lib.holder.TaskViewHolder;
 import com.ailiwean.lib.observe.TaskObserve;
@@ -40,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         shareMultiView = findViewById(R.id.mult);
 
-        DefaultAnim anim = new DefaultAnim(3000) {
+        DefaultAnim anim = new DefaultAnim(400) {
             @Override
             public int taskTopEnter() {
                 return AnimHelper.LEFT_ALL_SHOW;
@@ -74,22 +66,16 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View v) {
                                 shareMultiView.switchType(1);
+//                                Intent a = new Intent(MainActivity.this, B.class);
+//                                startActivity(a);
+//                                overridePendingTransition(R.anim.trans, 0);
+
                             }
                         });
-                    }
-                })
-                .bindAnimation(new DefaultAnim() {
-                    @Override
-                    public int taskInnerExit() {
-                        return super.taskInnerExit();
-                    }
 
-                    @Override
-                    public int taskTopExit() {
-                        return super.taskTopExit();
                     }
                 })
-                .lazy(new LazyLoad<TaskViewHolder>() {
+                .lazy(new LazyLoadInter<TaskViewHolder>() {
                     @Override
                     public void onLazy(TaskViewHolder vh) {
                     }
@@ -97,12 +83,10 @@ public class MainActivity extends AppCompatActivity {
                 .addLifeListener(new LifeListener<TaskViewHolder>() {
                     @Override
                     public void onVisiable(TaskViewHolder vH) {
-                        Log.e("api", "creat");
                     }
 
                     @Override
                     public void onHide(TaskViewHolder vH) {
-                        Log.e("api", "aa---隐藏");
 
                     }
                 })
@@ -148,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 })
-                .lazy(new LazyLoad<TaskViewHolder>() {
+                .lazy(new LazyLoadInter<TaskViewHolder>() {
                     @Override
                     public void onLazy(TaskViewHolder vh) {
 
@@ -157,18 +141,15 @@ public class MainActivity extends AppCompatActivity {
                 .addLifeListener(new LifeListener<TaskViewHolder>() {
                     @Override
                     public void onVisiable(TaskViewHolder vH) {
-                        Log.e("api", "aa执行lazy方法");
 
                     }
 
                     @Override
                     public void onHide(TaskViewHolder vH) {
-                        Log.e("api", "aa执行init方法");
 
                     }
                 })
                 .cp()
-
 
                 .regLayout(OTHER, R.layout.cc)
                 .init(new InitListener<TaskViewHolder>() {
@@ -189,5 +170,14 @@ public class MainActivity extends AppCompatActivity {
                 .bindCommonAnimation(anim)
                 .go();
 
+    }
+    
+    @Override
+    public void onBackPressed() {
+
+        if (shareMultiView.back())
+            return;
+
+        super.onBackPressed();
     }
 }
