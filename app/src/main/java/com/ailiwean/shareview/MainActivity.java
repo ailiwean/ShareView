@@ -3,14 +3,13 @@ package com.ailiwean.shareview;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import com.ailiwean.lib.am.AnimHelper;
 import com.ailiwean.lib.am.DefaultAnim;
 import com.ailiwean.lib.callback.InitListener;
 import com.ailiwean.lib.ShareView;
-import com.ailiwean.lib.callback.LazyLoadInter;
+import com.ailiwean.lib.callback.LazyListener;
 import com.ailiwean.lib.callback.LifeListener;
 import com.ailiwean.lib.holder.TaskViewHolder;
 import com.ailiwean.lib.observe.TaskObserve;
@@ -75,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 })
-                .lazy(new LazyLoadInter<TaskViewHolder>() {
+                .lazy(new LazyListener<TaskViewHolder>() {
                     @Override
                     public void onLazy(TaskViewHolder vh) {
                     }
@@ -132,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 })
-                .lazy(new LazyLoadInter<TaskViewHolder>() {
+                .lazy(new LazyListener<TaskViewHolder>() {
                     @Override
                     public void onLazy(TaskViewHolder vh) {
 
@@ -171,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 .go();
 
     }
-    
+
     @Override
     public void onBackPressed() {
 

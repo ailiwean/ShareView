@@ -2,8 +2,8 @@ package com.ailiwean.lib.callback;
 
 import com.ailiwean.lib.base.BaseViewHolder;
 
-public interface LazyLoadInter<H extends BaseViewHolder> {
+public interface PreLoadListener<H extends BaseViewHolder> {
 
-    void onLazy(H vh);
+    void preLoad(H vh);
 
 }

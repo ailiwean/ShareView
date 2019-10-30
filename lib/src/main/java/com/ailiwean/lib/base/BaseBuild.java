@@ -5,15 +5,16 @@ import android.view.View;
 import androidx.annotation.LayoutRes;
 
 import com.ailiwean.lib.callback.InitListener;
-import com.ailiwean.lib.callback.LazyLoadInter;
+import com.ailiwean.lib.callback.LazyListener;
 import com.ailiwean.lib.callback.LifeListener;
+import com.ailiwean.lib.callback.PreLoadListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H extends BaseViewHolder, D extends BaseObserve> {
-
+        
     int contentLayout;
 
     //ViewHolder
@@ -43,9 +44,16 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         }
     };
 
-    LazyLoadInter lazyLoadInter = new LazyLoadInter() {
+    LazyListener lazyListener = new LazyListener() {
         @Override
         public void onLazy(BaseViewHolder vh) {
+
+        }
+    };
+
+    PreLoadListener preLoadListener = new PreLoadListener() {
+        @Override
+        public void preLoad(BaseViewHolder vh) {
 
         }
     };
@@ -69,20 +77,30 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
     }
 
     /***
+     * 懒加载  :   View创建完成并展示动画播放完毕
+     */
+    public T lazy(LazyListener<H> lazyListener) {
+        this.lazyListener = lazyListener;
+        return (T) this;
+    }
+
+    /***
+     * 页面预加载回调
+     * @param preLoadListener
+     * @return
+     */
+    public T preLoad(PreLoadListener<H> preLoadListener) {
+        this.preLoadListener = preLoadListener;
+        return (T) this;
+    }
+
+    /***
      * 添加生命周期回调
      * @param lifeListener
      * @return
      */
     public T addLifeListener(LifeListener<H> lifeListener) {
         lifeListeners.add(lifeListener);
-        return (T) this;
-    }
-
-    /***
-     * 懒加载  :   View创建完成并展示动画播放完毕
-     */
-    public T lazy(LazyLoadInter<H> lazyLoadInter) {
-        this.lazyLoadInter = lazyLoadInter;
         return (T) this;
     }
 
@@ -104,8 +122,8 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         return initListener;
     }
 
-    public LazyLoadInter getLazyLoadInter() {
-        return lazyLoadInter;
+    public LazyListener getLazyListener() {
+        return lazyListener;
     }
 
     /***

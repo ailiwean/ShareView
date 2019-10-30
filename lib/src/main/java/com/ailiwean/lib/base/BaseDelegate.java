@@ -124,7 +124,7 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
                 T build = buildMap.get(keyList.get(0));
                 if (build == null || build.contentLayout == 0)
                     return;
-
+          
                 defaultType = keyList.get(0);
 
                 inflate(build);

@@ -50,8 +50,13 @@ public class LifeManager {
     }
 
     public void onLazy(BaseBuild baseBuild) {
-        baseBuild.getLazyLoadInter().onLazy(baseBuild.getVH());
+        baseBuild.getLazyListener().onLazy(baseBuild.getVH());
         baseBuild.isLazy = true;
     }
+
+    public void onPreLoad(BaseBuild baseBuild) {
+
+    }
+
 
 }
