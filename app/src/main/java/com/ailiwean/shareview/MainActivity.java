@@ -2,6 +2,7 @@ package com.ailiwean.shareview;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         shareMultiView = findViewById(R.id.mult);
 
-        DefaultAnim anim = new DefaultAnim(400) {
+        DefaultAnim anim = new DefaultAnim(300) {
             @Override
             public int taskTopEnter() {
                 return AnimHelper.LEFT_ALL_SHOW;
@@ -54,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         shareMultiView.getTaskDelegate()
-                .isLazyLoad(true)
+                .isLazyLoad(false)
                 .isReuseLayout(false)
                 .setDefault(2)
                 .regLayout(CONTENT, R.layout.aa)
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
                             }
                         });
-
+                        
                     }
                 })
                 .lazy(new LazyListener<TaskViewHolder>() {
