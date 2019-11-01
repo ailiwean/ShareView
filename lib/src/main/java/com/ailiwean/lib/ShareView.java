@@ -77,6 +77,18 @@ public class ShareView extends FrameLayout {
 
     }
 
+    public void preload(int type) {
+
+        if (multiDelegate != null)
+            multiDelegate.onPreload(type);
+
+        if (taskDelegate != null)
+            taskDelegate.onPreload(type);
+
+
+    }
+
+
     public boolean back() {
 
         if (multiDelegate != null)

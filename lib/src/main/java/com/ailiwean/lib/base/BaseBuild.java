@@ -14,27 +14,27 @@ import java.util.HashMap;
 import java.util.List;
 
 public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H extends BaseViewHolder, D extends BaseObserve> {
-        
-    int contentLayout;
+
+    private int contentLayout;
 
     //ViewHolder
     private View pageView;
 
     //Build与Layout对应的Type
-    public int type;
+    private int type;
 
     //是否已经init
-    public boolean isInit;
+    private boolean isInit;
 
     //是否已经lazy
-    public boolean isLazy;
+    private boolean isLazy;
 
     //pageView的持有类，并扩展其他方法
-    H vh;
+    private H vh;
 
     private M delegate;
 
-    protected HashMap<Class, D> baseObserves = new HashMap<>();
+    private HashMap<Class, D> baseObserves = new HashMap<>();
 
     InitListener initListener = new InitListener<H>() {
 
@@ -126,6 +126,10 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         return lazyListener;
     }
 
+    public PreLoadListener getPreLoadListener() {
+        return preLoadListener;
+    }
+
     /***
      * 完成配置,返回代理
      * @return
@@ -137,6 +141,34 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
     protected void bindInstanceView(View view) {
         this.pageView = view;
         vh = creatViewHolder(pageView);
+    }
+
+    protected int getContentLayout() {
+        return contentLayout;
+    }
+
+    protected int getType() {
+        return type;
+    }
+
+    protected boolean isInit() {
+        return isInit;
+    }
+
+    public void setInit(boolean isInit) {
+        this.isInit = isInit;
+    }
+
+    protected boolean isLazy() {
+        return isLazy;
+    }
+
+    public void setLazy(boolean isLazy) {
+        this.isLazy = isLazy;
+    }
+
+    protected HashMap<Class, D> getBaseObserves() {
+        return baseObserves;
     }
 
 }

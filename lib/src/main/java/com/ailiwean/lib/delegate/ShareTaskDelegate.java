@@ -4,20 +4,14 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.ailiwean.lib.am.BaseAnim;
-import com.ailiwean.lib.am.CustomAnim;
-import com.ailiwean.lib.am.DefaultAnim;
 import com.ailiwean.lib.am.NullAnim;
 import com.ailiwean.lib.base.BaseBuild;
 import com.ailiwean.lib.base.BaseDelegate;
-import com.ailiwean.lib.base.BaseViewHolder;
-import com.ailiwean.lib.callback.LifeListener;
 import com.ailiwean.lib.callback.RollBackInter;
 import com.ailiwean.lib.holder.TaskViewHolder;
 import com.ailiwean.lib.manager.RollBackManager;
 import com.ailiwean.lib.observe.TaskObserve;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTaskDelegate.TaskBuild> implements RollBackInter {
@@ -53,7 +47,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
 
         if (lastBuild == build)
             return;
-
+                    
         //首次进入
         if (lastBuild == null) {
             build.anim.enter(build.getPageView(), true, false);
@@ -134,7 +128,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
                     onVisiable(build);
                     onHide(lastBuild);
                     lastBuild = build;
-                    if (!build.isLazy)
+                    if (!build.isLazy())
                         onLazy(build);
                     build.setRunning(false);
                 }
@@ -251,7 +245,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         }
 
         public TaskBuild subscibe(TaskObserve<?> baseObserve) {
-            baseObserves.put(baseObserve.getType(), baseObserve);
+            getBaseObserves().put(baseObserve.getType(), baseObserve);
             return this;
         }
 
@@ -264,6 +258,11 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         protected void bindInstanceView(View view) {
             super.bindInstanceView(view);
         }
+
+        protected boolean isLazy() {
+            return isLazy();
+        }
+
     }
 
 }

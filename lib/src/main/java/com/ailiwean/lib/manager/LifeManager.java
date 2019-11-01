@@ -1,21 +1,25 @@
 package com.ailiwean.lib.manager;
 
 import com.ailiwean.lib.base.BaseBuild;
+import com.ailiwean.lib.base.BaseDelegate;
 import com.ailiwean.lib.callback.LifeListener;
+import com.ailiwean.lib.callback.LifeListenerInner;
 
 import java.util.LinkedHashMap;
 
-public class LifeManager {
+public class LifeManager implements LifeListenerInner {
 
     LinkedHashMap<Integer, BaseBuild> buildMap;
 
-    private LifeManager(LinkedHashMap<Integer, BaseBuild> buildMap) {
-        this.buildMap = buildMap;
+    BaseDelegate delegate;
+
+    private LifeManager(BaseDelegate delegate) {
+        this.delegate = delegate;
+        buildMap = delegate.getBuildMap();
     }
 
-
-    public static LifeManager getInstance(LinkedHashMap<Integer, BaseBuild> buildMap) {
-        return new LifeManager(buildMap);
+    public static LifeManager getInstance(BaseDelegate delegate) {
+        return new LifeManager(delegate);
     }
 
     public void onVisiable(int type) {
@@ -26,6 +30,7 @@ public class LifeManager {
         onVisiable(buildMap.get(type));
     }
 
+    @Override
     public void onVisiable(BaseBuild baseBuild) {
         if (baseBuild == null)
             return;
@@ -35,6 +40,7 @@ public class LifeManager {
         }
     }
 
+    @Override
     public void onHide(BaseBuild baseBuild) {
         if (baseBuild == null)
             return;
@@ -44,18 +50,28 @@ public class LifeManager {
         }
     }
 
+    @Override
     public void onInit(BaseBuild baseBuild) {
         baseBuild.getInitListener().init(baseBuild.getVH());
-        baseBuild.isInit = true;
+        baseBuild.setInit(true);
     }
 
+    @Override
     public void onLazy(BaseBuild baseBuild) {
         baseBuild.getLazyListener().onLazy(baseBuild.getVH());
-        baseBuild.isLazy = true;
+        baseBuild.setLazy(true);
     }
 
-    public void onPreLoad(BaseBuild baseBuild) {
+    @Override
+    public void onPreload(int type) {
 
+        BaseBuild baseBuild = buildMap.get(type);
+        if (baseBuild == null)
+            return;
+        if (baseBuild.getPageView() == null) {
+            delegate.inflate(baseBuild);
+            baseBuild.getPreLoadListener().preLoad(baseBuild.getVH());
+        }
     }
 
 

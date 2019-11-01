@@ -12,4 +12,6 @@ public interface LifeListenerInner {
 
     void onLazy(BaseBuild baseBuild);
 
+    void onPreload(int type);
+
 }

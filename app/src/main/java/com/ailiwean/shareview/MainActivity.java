@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
                             }
                         });
-                        
+
                     }
                 })
                 .lazy(new LazyListener<TaskViewHolder>() {
@@ -116,6 +116,12 @@ public class MainActivity extends AppCompatActivity {
 
                                 shareMultiView.postData(CONTENT, vh.getText(R.id.name));
                                 shareMultiView.postData(CONTENT, Integer.parseInt(vh.getText(R.id.age)));
+
+
+                                shareMultiView.preload(OTHER);
+                                shareMultiView.preload(OTHER);
+                                shareMultiView.preload(OTHER);
+                                shareMultiView.preload(OTHER);
 
                             }
                         });

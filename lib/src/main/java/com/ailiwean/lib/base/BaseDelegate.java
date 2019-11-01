@@ -102,7 +102,7 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
 
         loadView();
 
-        lifeManager = LifeManager.getInstance((LinkedHashMap<Integer, BaseBuild>) buildMap);
+        lifeManager = LifeManager.getInstance(this);
 
         switchType(defaultType);
 
@@ -122,7 +122,7 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
 
                 List<Integer> keyList = new ArrayList<>(buildMap.keySet());
                 T build = buildMap.get(keyList.get(0));
-                if (build == null || build.contentLayout == 0)
+                if (build == null || build.getContentLayout() == 0)
                     return;
 
                 defaultType = keyList.get(0);
@@ -132,7 +132,7 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
             } else {
 
                 T build = buildMap.get(defaultType);
-                if (build == null || build.contentLayout == 0)
+                if (build == null || build.getContentLayout() == 0)
                     return;
 
                 inflate(build);
@@ -146,7 +146,7 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
 
                 T build = buildMap.get(key);
 
-                if (build == null || build.contentLayout == 0)
+                if (build == null || build.getContentLayout() == 0)
                     continue;
 
                 inflate(build);
@@ -163,23 +163,23 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
      * 区分是否复用，将View加载到rootView中并建立在Build中
      * @return
      */
-    private void inflate(T build) {
+    public void inflate(T build) {
 
         if (!isReuseLayout) {
-            View view = LayoutInflater.from(rootView.getContext()).inflate(build.contentLayout, rootView, false);
+            View view = LayoutInflater.from(rootView.getContext()).inflate(build.getContentLayout(), rootView, false);
             view.setVisibility(View.INVISIBLE);
             rootView.addView(view);
             build.bindInstanceView(view);
             return;
         }
-        if (reuseMap.get(build.contentLayout) == null) {
-            View view = LayoutInflater.from(rootView.getContext()).inflate(build.contentLayout, rootView, false);
+        if (reuseMap.get(build.getContentLayout()) == null) {
+            View view = LayoutInflater.from(rootView.getContext()).inflate(build.getContentLayout(), rootView, false);
             view.setVisibility(View.INVISIBLE);
             rootView.addView(view);
-            reuseMap.put(build.contentLayout, view);
+            reuseMap.put(build.getContentLayout(), view);
             build.bindInstanceView(view);
         } else {
-            build.bindInstanceView(reuseMap.get(build.contentLayout));
+            build.bindInstanceView(reuseMap.get(build.getContentLayout()));
         }
     }
 
@@ -193,10 +193,10 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
             onInit(build);
         } else {
             //对于复用的View需要重新走初始化方法
-            if (receptType.contains(build.type)) {
+            if (receptType.contains(build.getType())) {
                 onInit(build);
             } else {
-                if (!build.isInit) {
+                if (!build.isInit()) {
                     onInit(build);
                 }
             }
@@ -264,6 +264,11 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
         lifeManager.onLazy(baseBuild);
     }
 
+    @Override
+    public void onPreload(int type) {
+        lifeManager.onPreload(type);
+    }
+
     /***
      * 发送数据
      * @param type
@@ -273,9 +278,9 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
         BaseBuild baseBuild = getBuild(type);
         if (baseBuild == null)
             return;
-        BaseObserve observe = (BaseObserve) baseBuild.baseObserves.get(data.getClass());
+        BaseObserve observe = (BaseObserve) baseBuild.getBaseObserves().get(data.getClass());
         if (observe != null)
-            observe.response(baseBuild.vh, data);
+            observe.response(baseBuild.getVH(), data);
     }
 
     /***
@@ -284,6 +289,14 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
      */
     public int getCurrentType() {
         return currentType;
+    }
+
+
+    /***
+     * 返回Build集合
+     */
+    public LinkedHashMap<Integer, T> getBuildMap() {
+        return buildMap;
     }
 
     /***
@@ -307,4 +320,5 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
     }
 
     protected abstract T creatBuild(M delegate, @LayoutRes int layout, int type);
+
 }
