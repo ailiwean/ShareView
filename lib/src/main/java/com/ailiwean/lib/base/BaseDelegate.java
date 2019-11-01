@@ -49,6 +49,7 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
     int currentType = -1;
 
     protected LifeManager lifeManager;
+    private AnimSurface surface;
 
     protected BaseDelegate(FrameLayout controlView) {
         this.rootView = controlView;
@@ -116,6 +117,10 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
         if (buildMap.size() == 0)
             return;
 
+        surface = new AnimSurface(rootView.getContext());
+        rootView.addView(surface);
+        surface.start();
+
         if (isLazyLoad) {
 
             //加载第一项
@@ -156,11 +161,8 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
                     defaultType = keyList.get(0);
 
             }
-        }
 
-        AnimSurface surface = new AnimSurface(rootView.getContext());
-        rootView.addView(surface);
-        // surface.start();
+        }
 
         currentType = defaultType;
     }
@@ -174,19 +176,20 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
         if (!isReuseLayout) {
             View view = LayoutInflater.from(rootView.getContext()).inflate(build.contentLayout, rootView, false);
             view.setVisibility(View.INVISIBLE);
-            rootView.addView(view, rootView.getChildCount() - 1);
+            rootView.addView(view);
             build.bindInstanceView(view);
             return;
         }
         if (reuseMap.get(build.contentLayout) == null) {
             View view = LayoutInflater.from(rootView.getContext()).inflate(build.contentLayout, rootView, false);
             view.setVisibility(View.INVISIBLE);
-            rootView.addView(view, rootView.getChildCount() - 1);
+            rootView.addView(view);
             reuseMap.put(build.contentLayout, view);
             build.bindInstanceView(view);
         } else {
             build.bindInstanceView(reuseMap.get(build.contentLayout));
         }
+
     }
 
     /***

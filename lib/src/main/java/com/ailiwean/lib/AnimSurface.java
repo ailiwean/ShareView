@@ -29,6 +29,7 @@ public class AnimSurface extends SurfaceView implements SurfaceHolder.Callback, 
     private Bitmap upBitMap;
     private ExecutorService executor;
     private Paint paint;
+    private Bitmap bitmap;
 
     public AnimSurface(Context context) {
         super(context);
@@ -99,7 +100,11 @@ public class AnimSurface extends SurfaceView implements SurfaceHolder.Callback, 
     public void start() {
         setVisibility(VISIBLE);
         executor.submit(this);
+        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
     }
+
+
+    int i = 0;
 
     private void draw() {
 
@@ -109,7 +114,7 @@ public class AnimSurface extends SurfaceView implements SurfaceHolder.Callback, 
         Canvas canvas = mSurfaceHolder.lockCanvas();
 
         //画布清屏
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 
         if (downBitMap != null) {
 
@@ -131,14 +136,16 @@ public class AnimSurface extends SurfaceView implements SurfaceHolder.Callback, 
 
         }
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
+
         Rect rectSrc = new Rect();
         rectSrc.set(0, 0, bitmap.getWidth(), bitmap.getHeight());
         Rect rectSelf = new Rect();
-        rectSelf.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
+        rectSelf.set(0, 0, getMeasuredWidth() - i, getMeasuredHeight());
         canvas.drawBitmap(bitmap, rectSrc, rectSelf, paint);
 
         mSurfaceHolder.unlockCanvasAndPost(canvas);
+
+        i += 100;
 
     }
 
