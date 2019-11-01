@@ -1,6 +1,7 @@
 package com.ailiwean.lib;
 
 import android.content.Context;
+import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 

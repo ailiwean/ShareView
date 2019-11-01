@@ -7,6 +7,7 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.LayoutRes;
 
+import com.ailiwean.lib.AnimSurface;
 import com.ailiwean.lib.callback.LifeListenerInner;
 import com.ailiwean.lib.manager.LifeManager;
 
@@ -156,6 +157,11 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
 
             }
         }
+
+        AnimSurface surface = new AnimSurface(rootView.getContext());
+        rootView.addView(surface);
+        // surface.start();
+
         currentType = defaultType;
     }
 
@@ -168,14 +174,14 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
         if (!isReuseLayout) {
             View view = LayoutInflater.from(rootView.getContext()).inflate(build.contentLayout, rootView, false);
             view.setVisibility(View.INVISIBLE);
-            rootView.addView(view);
+            rootView.addView(view, rootView.getChildCount() - 1);
             build.bindInstanceView(view);
             return;
         }
         if (reuseMap.get(build.contentLayout) == null) {
             View view = LayoutInflater.from(rootView.getContext()).inflate(build.contentLayout, rootView, false);
             view.setVisibility(View.INVISIBLE);
-            rootView.addView(view);
+            rootView.addView(view, rootView.getChildCount() - 1);
             reuseMap.put(build.contentLayout, view);
             build.bindInstanceView(view);
         } else {

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.ailiwean.lib.am.AnimHelper;
+import com.ailiwean.lib.am.CustomAnim;
 import com.ailiwean.lib.am.DefaultAnim;
 import com.ailiwean.lib.callback.InitListener;
 import com.ailiwean.lib.ShareView;
@@ -72,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
                             }
                         });
-                        
+
                     }
                 })
                 .lazy(new LazyListener<TaskViewHolder>() {
@@ -102,6 +103,12 @@ public class MainActivity extends AppCompatActivity {
                         vh.setText(R.id.age, integer.toString());
                     }
                 })
+//                .bindAnimation(new DefaultAnim() {
+//                    @Override
+//                    public int taskTopEnter() {
+//                        return super.taskTopEnter();
+//                    }
+//                })
                 .cp()
 
                 .regLayout(INPUT, R.layout.bb)

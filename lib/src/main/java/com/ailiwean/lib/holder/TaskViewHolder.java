@@ -14,5 +14,4 @@ public class TaskViewHolder extends BaseViewHolder {
         return new TaskViewHolder(pageView);
     }
 
-
 }
