@@ -51,6 +51,7 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
 
     protected BaseDelegate(FrameLayout controlView) {
         this.rootView = controlView;
+        lifeManager = LifeManager.getInstance(this);
     }
 
     /***
@@ -101,8 +102,6 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
         creatReceptType();
 
         loadView();
-
-        lifeManager = LifeManager.getInstance(this);
 
         switchType(defaultType);
 
@@ -188,6 +187,7 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
      * @param build
      */
     protected void lazyCreat(T build) {
+
         if (build.getPageView() == null) {
             inflate(build);
             onInit(build);

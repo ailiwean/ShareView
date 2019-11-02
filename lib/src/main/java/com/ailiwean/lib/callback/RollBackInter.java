@@ -2,7 +2,7 @@ package com.ailiwean.lib.callback;
 
 public interface RollBackInter {
 
-    void switchType(int type);
+    void record(int type);
 
     boolean back();
 

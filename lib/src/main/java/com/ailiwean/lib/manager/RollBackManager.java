@@ -25,7 +25,7 @@ public class RollBackManager implements RollBackInter {
      * @param type
      */
     @Override
-    public void switchType(int type) {
+    public void record(int type) {
         if (runTaskList.contains(type)) {
             List<Integer> newRunTaskList = new ArrayList<>();
             for (Integer item : runTaskList) {
@@ -39,7 +39,6 @@ public class RollBackManager implements RollBackInter {
             }
 
         } else runTaskList.add(type);
-
     }
 
     /***

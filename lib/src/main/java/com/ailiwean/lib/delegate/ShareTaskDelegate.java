@@ -27,6 +27,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
 
     protected ShareTaskDelegate(FrameLayout controlView) {
         super(controlView);
+        rollBackManager = RollBackManager.getInstance(this);
     }
 
     @Override
@@ -43,11 +44,9 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
 
         final TaskBuild build = getBuild(type);
 
-        lazyCreat(build);
-
         if (lastBuild == build)
             return;
-                    
+
         //首次进入
         if (lastBuild == null) {
             build.anim.enter(build.getPageView(), true, false);
@@ -160,8 +159,13 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         lazyCreat(build);
         dispatchShowView(type);
 
+        record(type);
+    }
+
+    @Override
+    public void record(int type) {
         //委托返回栈
-        rollBackManager.switchType(type);
+        rollBackManager.record(type);
     }
 
     @Override
@@ -203,7 +207,6 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
     @Override
     public void go() {
         initAnim();
-        rollBackManager = RollBackManager.getInstance(this);
         super.go();
     }
 
@@ -260,7 +263,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         }
 
         protected boolean isLazy() {
-            return isLazy();
+            return isLazy;
         }
 
     }

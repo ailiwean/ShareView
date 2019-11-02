@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
         shareMultiView = findViewById(R.id.mult);
 
-        DefaultAnim anim = new DefaultAnim(300) {
+        DefaultAnim anim = new DefaultAnim(1000) {
             @Override
             public int taskTopEnter() {
                 return AnimHelper.LEFT_ALL_SHOW;
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
                 return AnimHelper.LEFT_HALF_HIDE;
             }
         };
+
 
         shareMultiView.getTaskDelegate()
                 .isLazyLoad(false)
@@ -102,6 +103,8 @@ public class MainActivity extends AppCompatActivity {
                         vh.setText(R.id.age, integer.toString());
                     }
                 })
+                .bindAnimation(new DefaultAnim() {
+                })
                 .cp()
 
                 .regLayout(INPUT, R.layout.bb)
@@ -110,24 +113,7 @@ public class MainActivity extends AppCompatActivity {
                     public void init(final TaskViewHolder vh) {
 
 
-                        vh.getView(R.id.send).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-
-                                shareMultiView.postData(CONTENT, vh.getText(R.id.name));
-                                shareMultiView.postData(CONTENT, Integer.parseInt(vh.getText(R.id.age)));
-
-
-                                shareMultiView.preload(OTHER);
-                                shareMultiView.preload(OTHER);
-                                shareMultiView.preload(OTHER);
-                                shareMultiView.preload(OTHER);
-
-                            }
-                        });
-
-
-                        vh.getView(R.id.next).setOnClickListener(new View.OnClickListener() {
+                        vh.getView(R.id.name).setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
 

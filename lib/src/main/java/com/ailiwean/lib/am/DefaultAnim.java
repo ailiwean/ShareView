@@ -8,7 +8,7 @@ import com.ailiwean.lib.callback.AnimStateListener;
 public abstract class DefaultAnim extends BaseAnim implements AnimOutListener {
 
     /***
-     * 通用的监听,被{@link AnimLib}回调，最终调用, 重写的动画监听方法以及{@link BaseAnim 中所必须的方法}
+     * 通用的监听,被{@link AnimHolder}回调，最终调用, 重写的动画监听方法以及{@link BaseAnim 中所必须的方法}
      */
     AnimStateListener animStateListener = new AnimStateListener() {
         @Override
@@ -63,79 +63,75 @@ public abstract class DefaultAnim extends BaseAnim implements AnimOutListener {
 
     @Override
     public final void enter(View pageView, boolean isTopTask, boolean isExecute) {
-        if (isTopTask)
-            commonExecute(pageView, taskTopEnter(), true, true, isExecute);
-        else commonExecute(pageView, taskInnerEnter(), true, false, isExecute);
 
+        if (isTopTask)
+            creatAnimHolder(pageView, taskTopEnter(), true, true, isExecute);
+        else creatAnimHolder(pageView, taskInnerEnter(), true, false, isExecute);
     }
 
     @Override
     public final void exit(View pageView, boolean isTopTask, boolean isExecute) {
 
+
         if (isTopTask)
-            commonExecute(pageView, taskTopExit(), false, true, isExecute);
-        else commonExecute(pageView, taskInnerExit(), false, false, isExecute);
+            creatAnimHolder(pageView, taskTopExit(), false, true, isExecute);
+        else creatAnimHolder(pageView, taskInnerExit(), false, false, isExecute);
+
 
     }
 
-    private void commonExecute(View pageView, int type, boolean isEnter, boolean isTopTask, boolean isExecute) {
+    private AnimHolder creatAnimHolder(View pageView, int type, boolean isEnter, boolean isTopTask, boolean isExecute) {
 
         if (!isExecute) {
-            noAnima(isEnter, pageView, isTopTask);
-            return;
+            if (isEnter) {
+                finalEnterAnimStar(pageView, isTopTask);
+                finalEnterAnimEnd(pageView, isTopTask);
+            } else {
+                finalExitAnimStar(pageView, isTopTask);
+                finalExitAnimEnd(pageView, isTopTask);
+            }
+            return null;
         }
+
         switch (type) {
 
             case AnimHelper.ALPHA_UP_SHOW:
-                commonExeAnimLib(AnimLib.getInstance(AnimHelper.ALPHA_UP_SHOW, pageView), isEnter, isTopTask);
+                return commonExeAnimLib(AnimHolder.getInstance(AnimHelper.ALPHA_UP_SHOW, pageView), isEnter, isTopTask);
 
-                break;
+
             case AnimHelper.ALPHA_DOWN_HIDE:
-                commonExeAnimLib(AnimLib.getInstance(AnimHelper.ALPHA_DOWN_HIDE, pageView), isEnter, isTopTask);
+                return commonExeAnimLib(AnimHolder.getInstance(AnimHelper.ALPHA_DOWN_HIDE, pageView), isEnter, isTopTask);
 
-                break;
 
             case AnimHelper.LEFT_ALL_SHOW:
-                commonExeAnimLib(AnimLib.getInstance(AnimHelper.LEFT_ALL_SHOW, pageView), isEnter, isTopTask);
-                break;
+                return commonExeAnimLib(AnimHolder.getInstance(AnimHelper.LEFT_ALL_SHOW, pageView), isEnter, isTopTask);
+
 
             case AnimHelper.RIGHT_ALL_HIDE:
-                commonExeAnimLib(AnimLib.getInstance(AnimHelper.RIGHT_ALL_HIDE, pageView), isEnter, isTopTask);
+                return commonExeAnimLib(AnimHolder.getInstance(AnimHelper.RIGHT_ALL_HIDE, pageView), isEnter, isTopTask);
 
-                break;
 
             case AnimHelper.LEFT_HALF_HIDE:
-                commonExeAnimLib(AnimLib.getInstance(AnimHelper.LEFT_HALF_HIDE, pageView), isEnter, isTopTask);
+                return commonExeAnimLib(AnimHolder.getInstance(AnimHelper.LEFT_HALF_HIDE, pageView), isEnter, isTopTask);
 
-                break;
 
             case AnimHelper.RIGHT_HALF_SHOW:
-                commonExeAnimLib(AnimLib.getInstance(AnimHelper.RIGHT_HALF_SHOW, pageView), isEnter, isTopTask);
+                return commonExeAnimLib(AnimHolder.getInstance(AnimHelper.RIGHT_HALF_SHOW, pageView), isEnter, isTopTask);
 
-                break;
+            case AnimHelper.NULL:
+                return commonExeAnimLib(AnimHolder.getInstance(AnimHelper.NULL, pageView), isEnter, isTopTask);
 
-            default:
-                noAnima(isEnter, pageView, isTopTask);
-                break;
         }
+
+        return null;
     }
 
-    private void noAnima(boolean isEnter, View pageView, boolean isTopTask) {
-        if (isEnter) {
-            finalEnterAnimStar(pageView, isTopTask);
-            finalEnterAnimEnd(pageView, isTopTask);
-        } else {
-            finalExitAnimStar(pageView, isTopTask);
-            finalExitAnimEnd(pageView, isTopTask);
-        }
-    }
-
-    private void commonExeAnimLib(AnimLib animLib, boolean isEnter, boolean isTopTask) {
-        animLib.isEnter(isEnter)
+    private AnimHolder commonExeAnimLib(AnimHolder animHolder, boolean isEnter, boolean isTopTask) {
+        return animHolder.isEnter(isEnter)
                 .isTopTask(isTopTask)
                 .isDuration(duration)
                 .bindListener(animStateListener)
-                .start();
+                .build();
     }
 
 }

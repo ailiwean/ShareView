@@ -8,23 +8,28 @@ import java.lang.ref.WeakReference;
 
 public class Utils {
 
-    private static WeakReference<Context> weakReference;
+
+    private static Point point = new Point();
 
     public static void init(Context mContext) {
-        weakReference = new WeakReference<>(mContext);
+        getScreenPoint(mContext);
     }
 
-    public static Point getScreenPoint() {
+    private static void getScreenPoint(Context mContext) {
 
-        if (weakReference.get() == null)
-            return new Point();
-        WindowManager wm = (WindowManager) weakReference.get().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
         if (wm == null)
-            return new Point();
-        Point point = new Point();
+            return;
         wm.getDefaultDisplay().getSize(point);
-        return point;
+    }
 
+    public static int getX() {
+        return point.x;
+    }
+
+
+    public static int getY() {
+        return point.y;
     }
 
 

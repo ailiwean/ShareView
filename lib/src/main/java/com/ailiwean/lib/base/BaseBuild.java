@@ -21,13 +21,13 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
     private View pageView;
 
     //Build与Layout对应的Type
-    private int type;
+    protected int type;
 
     //是否已经init
-    private boolean isInit;
+    protected boolean isInit;
 
     //是否已经lazy
-    private boolean isLazy;
+    protected boolean isLazy;
 
     //pageView的持有类，并扩展其他方法
     private H vh;
@@ -125,7 +125,7 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
     public LazyListener getLazyListener() {
         return lazyListener;
     }
-
+        
     public PreLoadListener getPreLoadListener() {
         return preLoadListener;
     }
