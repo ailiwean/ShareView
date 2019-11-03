@@ -125,7 +125,7 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
     public LazyListener getLazyListener() {
         return lazyListener;
     }
-        
+
     public PreLoadListener getPreLoadListener() {
         return preLoadListener;
     }

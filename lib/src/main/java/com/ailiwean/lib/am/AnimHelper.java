@@ -14,9 +14,9 @@ public class AnimHelper {
 
     public static final int LEFT_ALL_SHOW = 100003;
 
-    public static final int RIGHT_HALF_SHOW = 10004;
+    public static final int RIGHT_HALF_SHOW = 100004;
 
-    public static final int LEFT_HALF_HIDE = 10005;
+    public static final int LEFT_HALF_HIDE = 100005;
 
     @IntDef({NULL, ALPHA_DOWN_HIDE, ALPHA_UP_SHOW, RIGHT_ALL_HIDE, LEFT_ALL_SHOW, RIGHT_HALF_SHOW, LEFT_HALF_HIDE})
     public @interface Type {

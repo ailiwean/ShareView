@@ -3,6 +3,8 @@ package com.ailiwean.lib.delegate;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import androidx.annotation.LayoutRes;
+
 import com.ailiwean.lib.am.BaseAnim;
 import com.ailiwean.lib.am.NullAnim;
 import com.ailiwean.lib.base.BaseBuild;
@@ -12,7 +14,10 @@ import com.ailiwean.lib.holder.TaskViewHolder;
 import com.ailiwean.lib.manager.RollBackManager;
 import com.ailiwean.lib.observe.TaskObserve;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTaskDelegate.TaskBuild> implements RollBackInter {
 
@@ -24,6 +29,8 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
     RollBackManager rollBackManager;
 
     long currentTime;
+
+    TaskBuild rootBuild;
 
     protected ShareTaskDelegate(FrameLayout controlView) {
         super(controlView);
@@ -37,6 +44,52 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
 
     public static ShareTaskDelegate getInstance(FrameLayout controlView) {
         return new ShareTaskDelegate(controlView);
+    }
+
+    /***
+     * 注册根Layout
+     * @param type
+     * @param layoutId
+     * @return
+     */
+    public TaskBuild regRootLayout(int type, @LayoutRes int layoutId) {
+        TaskBuild build = creatBuild(this, layoutId, type);
+        typeMap.put(type, layoutId);
+        rootBuild = build;
+        return build;
+    }
+
+    /***
+     * 栈结构不推荐这种创建方式,  建议使用新的可指定front{@link #regLayout(int, int, int)}
+     * @param type
+     * @param layoutId
+     * @return
+     */
+    @Deprecated
+    @Override
+    public TaskBuild regLayout(int type, int layoutId) {
+        if (rootBuild == null) {
+            regRootLayout(type, layoutId);
+            return rootBuild;
+        } else {
+            List<TaskBuild> taskBuildList = getBuildLinkList();
+            int lastFrontType;
+            if (taskBuildList.size() == 0)
+                lastFrontType = rootBuild.getType();
+            else
+                lastFrontType = taskBuildList.get(taskBuildList.size() - 1).getFrontType();
+            regLayout(type, layoutId, lastFrontType);
+            return buildMap.get(type);
+        }
+    }
+
+    @Override
+    public TaskBuild regLayout(int type, int layoutId, int frontType) {
+        TaskBuild build = creatBuild(this, layoutId, type);
+        typeMap.put(type, layoutId);
+        buildMap.put(type, build);
+        build.frontType = frontType;
+        return build;
     }
 
     @Override
@@ -149,7 +202,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         if (System.currentTimeMillis() - currentTime < 50)
             return;
         currentTime = System.currentTimeMillis();
-            
+
         if (lastBuild != null) {
             if (lastBuild.isRunning || getBuild(getCurrentType()).isRunning)
                 return;
@@ -195,7 +248,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
 
     /***
      * 为所有布局设定通用动画
-     * @param customAnim
+     * @param customAnim 通用动画
      * @return
      */
     public ShareTaskDelegate bindCommonAnimation(BaseAnim customAnim) {
@@ -207,10 +260,60 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
     @Override
     public void go() {
         initAnim();
+        buildSort();
         super.go();
     }
 
+    /***
+     * 将创建时无序的Build重置为有序的栈结构
+     */
+    private void buildSort() {
+
+        if (rootBuild == null) {
+            try {
+                throw new Exception("must add a Root Layout");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return;
+        }
+
+        List<TaskBuild> temList = new ArrayList<>();
+        temList.add(rootBuild);
+        temList.addAll(getBuildLinkList());
+        for (Map.Entry<Integer, TaskBuild> tem : buildMap.entrySet()) {
+            int findType = tem.getValue().getFrontType();
+            TaskBuild findTask = buildMap.get(findType);
+            if (findTask == null) {
+                try {
+                    throw new Exception("Not find Type" + findType);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    continue;
+                }
+            }
+            temList.remove(tem.getValue());
+            int targetIndex = temList.indexOf(findTask) + 1;
+            temList.add(targetIndex, tem.getValue());
+        }
+
+        LinkedHashMap<Integer, TaskBuild> newBuildMap = new LinkedHashMap<>();
+        int taskIndex = 0;
+        for (TaskBuild tem : temList) {
+            tem.setTaskIndex(taskIndex);
+            taskIndex++;
+            newBuildMap.put(tem.getType(), tem);
+        }
+        buildMap = newBuildMap;
+    }
+
+    /***
+     * 设定通用动画
+     */
     private void initAnim() {
+
+        if (comAnim == null)
+            return;
 
         List<TaskBuild> baseBuildList = getBuildLinkList();
         //设定通用动画
@@ -226,6 +329,8 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         boolean isRunning = false;
 
         int taskIndex;
+
+        int frontType;
 
         protected TaskBuild(ShareTaskDelegate delegate, int layout, int type, int taskIndex) {
             super(delegate, layout, type);
@@ -257,6 +362,15 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
             return TaskViewHolder.getInstance(pageView);
         }
 
+        public int getFrontType() {
+            return frontType;
+        }
+
+        public TaskBuild setFrontType(int frontType) {
+            this.frontType = frontType;
+            return this;
+        }
+
         @Override
         protected void bindInstanceView(View view) {
             super.bindInstanceView(view);
@@ -264,6 +378,14 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
 
         protected boolean isLazy() {
             return isLazy;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setTaskIndex(int index) {
+            this.taskIndex = index;
         }
 
     }

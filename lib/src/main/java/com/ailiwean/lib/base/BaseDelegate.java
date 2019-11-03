@@ -29,7 +29,7 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
 
     //存放Type与LayoutId的Map
     @SuppressLint("UseSparseArrays")
-    HashMap<Integer, Integer> typeMap = new HashMap<>();
+    protected LinkedHashMap<Integer, Integer> typeMap = new LinkedHashMap<>();
 
     //存放复用配置下的LayoutId与实例化View的Map
     @SuppressLint("UseSparseArrays")
@@ -49,6 +49,8 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
 
     protected LifeManager lifeManager;
 
+    private BaseBuild rootBuild;
+
     protected BaseDelegate(FrameLayout controlView) {
         this.rootView = controlView;
         lifeManager = LifeManager.getInstance(this);
@@ -67,12 +69,27 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
         return build;
     }
 
+    /***
+     * 注册多布局
+     * @param type  页View的type
+     * @param layoutId  布局ID
+     * @param frontType 在那个type的后边
+     * @return
+     */
+    public T regLayout(int type, @LayoutRes int layoutId, int frontType) {
+        T build = creatBuild((M) this, layoutId, type);
+        typeMap.put(type, layoutId);
+        buildMap.put(type, build);
+        return build;
+    }
 
     /***
      * 注册适配器, 单独的Page配置管理
      * @return
      */
     public M regAdapter() {
+
+        //TODO ...
 
         return (M) this;
     }
@@ -301,7 +318,6 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
     public int getCurrentType() {
         return currentType;
     }
-
 
     /***
      * 返回Build集合

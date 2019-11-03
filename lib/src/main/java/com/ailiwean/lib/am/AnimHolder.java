@@ -161,7 +161,15 @@ class AnimHolder {
         Keyframe tranK2 = Keyframe.ofFloat(1f, Utils.getY());
         PropertyValuesHolder translation = PropertyValuesHolder.ofKeyframe("translationY", tranK1, tranK2);
 
-        return ObjectAnimator.ofPropertyValuesHolder(pageView, alpha, translation);
+        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(pageView, alpha, translation);
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                pageView.setAlpha(1f);
+                pageView.setTranslationY(0);
+            }
+        });
+        return animator;
     }
 
     private ObjectAnimator alpha_up_show() {
@@ -187,9 +195,16 @@ class AnimHolder {
 
     private ObjectAnimator right_all_hide() {
 
-        return ObjectAnimator.ofFloat(pageView, "translationX", 0, Utils.getX())
+        ObjectAnimator animator = ObjectAnimator.ofFloat(pageView, "translationX", 0, Utils.getX())
                 .setDuration(duration);
 
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                pageView.setTranslationX(0);
+            }
+        });
+        return animator;
     }
 
     private ObjectAnimator right_half_show() {
@@ -200,8 +215,16 @@ class AnimHolder {
 
     private ObjectAnimator left_half_hide() {
 
-        return ObjectAnimator.ofFloat(pageView, "translationX", 0, -Utils.getX() / 2f)
+        ObjectAnimator animator = ObjectAnimator.ofFloat(pageView, "translationX", 0, -Utils.getX() / 2f)
                 .setDuration(duration);
+
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                pageView.setTranslationX(0);
+            }
+        });
+        return animator;
     }
 
 }

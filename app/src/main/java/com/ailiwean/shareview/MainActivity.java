@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                         vh.getRootView().setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-//                                shareMultiView.switchType(1);
+                                shareMultiView.switchType(1);
 //                                Intent a = new Intent(MainActivity.this, B.class);
 //                                startActivity(a);
 //                                overridePendingTransition(R.anim.trans, 0);
@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                 .preLoad(new PreLoadListener<TaskViewHolder>() {
                     @Override
                     public void preLoad(TaskViewHolder vh) {
-        
+
                         Toast.makeText(MainActivity.this, "与加载", Toast.LENGTH_SHORT).show();
                     }
                 })
