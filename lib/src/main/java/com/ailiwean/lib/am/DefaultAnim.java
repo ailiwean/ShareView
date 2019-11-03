@@ -72,14 +72,12 @@ public abstract class DefaultAnim extends BaseAnim implements AnimOutListener {
     @Override
     public final void exit(View pageView, boolean isTopTask, boolean isExecute) {
 
-
         if (isTopTask)
             creatAnimHolder(pageView, taskTopExit(), false, true, isExecute);
         else creatAnimHolder(pageView, taskInnerExit(), false, false, isExecute);
 
-
     }
-
+        
     private AnimHolder creatAnimHolder(View pageView, int type, boolean isEnter, boolean isTopTask, boolean isExecute) {
 
         if (!isExecute) {
@@ -121,9 +119,11 @@ public abstract class DefaultAnim extends BaseAnim implements AnimOutListener {
             case AnimHelper.NULL:
                 return commonExeAnimLib(AnimHolder.getInstance(AnimHelper.NULL, pageView), isEnter, isTopTask);
 
+            default:
+                return commonExeAnimLib(AnimHolder.getInstance(AnimHelper.NULL, pageView), isEnter, isTopTask);
+
         }
 
-        return null;
     }
 
     private AnimHolder commonExeAnimLib(AnimHolder animHolder, boolean isEnter, boolean isTopTask) {

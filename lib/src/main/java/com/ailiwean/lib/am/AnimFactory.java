@@ -58,7 +58,6 @@ public class AnimFactory {
         set.playTogether(temStart.getAnimator(), temEnd.getAnimator());
         set.start();
 
-
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {

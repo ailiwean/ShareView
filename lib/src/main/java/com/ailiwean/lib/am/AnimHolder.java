@@ -129,7 +129,7 @@ class AnimHolder {
             animator.setDuration(duration);
 
         animator.addListener(listener);
-        animator.setInterpolator(new DecelerateInterpolator());
+        animator.setInterpolator(new DecelerateInterpolator(1.5f));
         AnimFactory.getInstance().bind(this);
         return this;
     }

@@ -149,7 +149,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         if (System.currentTimeMillis() - currentTime < 50)
             return;
         currentTime = System.currentTimeMillis();
-
+            
         if (lastBuild != null) {
             if (lastBuild.isRunning || getBuild(getCurrentType()).isRunning)
                 return;

@@ -62,6 +62,10 @@ public class LifeManager implements LifeListenerInner {
         baseBuild.setLazy(true);
     }
 
+    /***
+     * 预加载功能，多次调用，创建一次View，回调多次preLoad()
+     * @param type
+     */
     @Override
     public void onPreload(int type) {
 
@@ -70,8 +74,8 @@ public class LifeManager implements LifeListenerInner {
             return;
         if (baseBuild.getPageView() == null) {
             delegate.inflate(baseBuild);
-            baseBuild.getPreLoadListener().preLoad(baseBuild.getVH());
         }
+        baseBuild.getPreLoadListener().preLoad(baseBuild.getVH());
     }
 
 

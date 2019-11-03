@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.ailiwean.lib.am.AnimHelper;
 import com.ailiwean.lib.am.DefaultAnim;
@@ -12,6 +13,7 @@ import com.ailiwean.lib.callback.InitListener;
 import com.ailiwean.lib.ShareView;
 import com.ailiwean.lib.callback.LazyListener;
 import com.ailiwean.lib.callback.LifeListener;
+import com.ailiwean.lib.callback.PreLoadListener;
 import com.ailiwean.lib.holder.TaskViewHolder;
 import com.ailiwean.lib.observe.TaskObserve;
 
@@ -32,15 +34,15 @@ public class MainActivity extends AppCompatActivity {
 
         shareMultiView = findViewById(R.id.mult);
 
-        DefaultAnim anim = new DefaultAnim(1000) {
+        DefaultAnim anim = new DefaultAnim(400) {
             @Override
             public int taskTopEnter() {
-                return AnimHelper.LEFT_ALL_SHOW;
+                return AnimHelper.ALPHA_UP_SHOW;
             }
 
             @Override
             public int taskTopExit() {
-                return AnimHelper.RIGHT_ALL_HIDE;
+                return AnimHelper.ALPHA_DOWN_HIDE;
             }
 
             @Override
@@ -66,11 +68,12 @@ public class MainActivity extends AppCompatActivity {
                         vh.getRootView().setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                shareMultiView.switchType(1);
+//                                shareMultiView.switchType(1);
 //                                Intent a = new Intent(MainActivity.this, B.class);
 //                                startActivity(a);
 //                                overridePendingTransition(R.anim.trans, 0);
 
+                                shareMultiView.preload(INPUT);
                             }
                         });
 
@@ -122,6 +125,13 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
 
+                    }
+                })
+                .preLoad(new PreLoadListener<TaskViewHolder>() {
+                    @Override
+                    public void preLoad(TaskViewHolder vh) {
+        
+                        Toast.makeText(MainActivity.this, "与加载", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .lazy(new LazyListener<TaskViewHolder>() {
