@@ -58,7 +58,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         rootBuild = build;
         return build;
     }
-        
+
     /***
      * 手动控制顺序  也可使用新的可指定front{@link #regLayout(int, int, int)}
      * @param type
