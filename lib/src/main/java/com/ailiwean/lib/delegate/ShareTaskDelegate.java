@@ -1,5 +1,6 @@
 package com.ailiwean.lib.delegate;
 
+import android.annotation.SuppressLint;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -15,6 +16,8 @@ import com.ailiwean.lib.manager.RollBackManager;
 import com.ailiwean.lib.observe.TaskObserve;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -279,22 +282,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
 
         List<TaskBuild> temList = new ArrayList<>();
         temList.add(rootBuild);
-        temList.addAll(getBuildLinkList());
-        for (Map.Entry<Integer, TaskBuild> tem : buildMap.entrySet()) {
-            int findType = tem.getValue().getFrontType();
-            TaskBuild findTask = buildMap.get(findType);
-            if (findTask == null) {
-                try {
-                    throw new Exception("Not find Type" + findType);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    continue;
-                }
-            }
-            temList.remove(tem.getValue());
-            int targetIndex = temList.indexOf(findTask) + 1;
-            temList.add(targetIndex, tem.getValue());
-        }
+        reCurSort(temList, rootBuild);
 
         LinkedHashMap<Integer, TaskBuild> newBuildMap = new LinkedHashMap<>();
         int taskIndex = 0;
@@ -305,6 +293,29 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         }
         buildMap = newBuildMap;
     }
+
+
+    /***
+     * 递归已RootBuild为入口， 将FrontType指向的Type排序
+     * @param temList
+     */
+    private void reCurSort(List<TaskBuild> temList, TaskBuild build) {
+
+        @SuppressLint("UseSparseArrays")
+        HashMap<Integer, TaskBuild> temMap = new HashMap<>(buildMap);
+        Iterator<Map.Entry<Integer, TaskBuild>> iterator = temMap.entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry<Integer, TaskBuild> item = iterator.next();
+            if (item.getValue().getFrontType() == build.getType()) {
+                temList.add(item.getValue());
+                //添加后移除BuildMap里的
+                buildMap.remove(item.getKey());
+                reCurSort(temList, item.getValue());
+            }
+        }
+    }
+
 
     /***
      * 设定通用动画

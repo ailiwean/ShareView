@@ -61,60 +61,11 @@ public class MainActivity extends AppCompatActivity {
                 .isLazyLoad(false)
                 .isReuseLayout(false)
                 .setDefault(2)
-                .regLayout(CONTENT, R.layout.aa)
-                .init(new InitListener<TaskViewHolder>() {
-                    @Override
-                    public void init(TaskViewHolder vh) {
-                        vh.getRootView().setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                shareMultiView.switchType(1);
-//                                Intent a = new Intent(MainActivity.this, B.class);
-//                                startActivity(a);
-//                                overridePendingTransition(R.anim.trans, 0);
 
-                                shareMultiView.preload(INPUT);
-                            }
-                        });
-
-                    }
-                })
-                .lazy(new LazyListener<TaskViewHolder>() {
-                    @Override
-                    public void onLazy(TaskViewHolder vh) {
-                    }
-                })
-                .addLifeListener(new LifeListener<TaskViewHolder>() {
-                    @Override
-                    public void onVisiable(TaskViewHolder vH) {
-                    }
-
-                    @Override
-                    public void onHide(TaskViewHolder vH) {
-
-                    }
-                })
-                .subscibe(new TaskObserve<String>() {
-                    @Override
-                    public void response(TaskViewHolder vh, String s) {
-                        vh.setText(R.id.name, s);
-                    }
-                })
-                .subscibe(new TaskObserve<Integer>() {
-                    @Override
-                    public void response(TaskViewHolder vh, Integer integer) {
-                        vh.setText(R.id.age, integer.toString());
-                    }
-                })
-                .bindAnimation(new DefaultAnim() {
-                })
-                .cp()
-
-                .regLayout(INPUT, R.layout.bb)
+                .regLayout(INPUT, R.layout.bb, OTHER)
                 .init(new InitListener<TaskViewHolder>() {
                     @Override
                     public void init(final TaskViewHolder vh) {
-
 
                         vh.getView(R.id.name).setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -153,7 +104,8 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .cp()
 
-                .regLayout(OTHER, R.layout.cc)
+
+                .regLayout(OTHER, R.layout.cc, CONTENT)
                 .init(new InitListener<TaskViewHolder>() {
                     @Override
                     public void init(TaskViewHolder vh) {
@@ -166,6 +118,56 @@ public class MainActivity extends AppCompatActivity {
                         });
 
                     }
+                })
+                .cp()
+
+
+                .regRootLayout(CONTENT, R.layout.aa)
+                .init(new InitListener<TaskViewHolder>() {
+                    @Override
+                    public void init(TaskViewHolder vh) {
+                        vh.getRootView().setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                shareMultiView.switchType(INPUT);
+//                                Intent a = new Intent(MainActivity.this, B.class);
+//                                startActivity(a);
+//                                overridePendingTransition(R.anim.trans, 0);
+
+                                shareMultiView.preload(INPUT);
+                            }
+                        });
+
+                    }
+                })
+                .lazy(new LazyListener<TaskViewHolder>() {
+                    @Override
+                    public void onLazy(TaskViewHolder vh) {
+                    }
+                })
+                .addLifeListener(new LifeListener<TaskViewHolder>() {
+                    @Override
+                    public void onVisiable(TaskViewHolder vH) {
+                    }
+
+                    @Override
+                    public void onHide(TaskViewHolder vH) {
+
+                    }
+                })
+                .subscibe(new TaskObserve<String>() {
+                    @Override
+                    public void response(TaskViewHolder vh, String s) {
+                        vh.setText(R.id.name, s);
+                    }
+                })
+                .subscibe(new TaskObserve<Integer>() {
+                    @Override
+                    public void response(TaskViewHolder vh, Integer integer) {
+                        vh.setText(R.id.age, integer.toString());
+                    }
+                })
+                .bindAnimation(new DefaultAnim() {
                 })
                 .cp()
 
