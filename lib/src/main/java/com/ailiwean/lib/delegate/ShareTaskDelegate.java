@@ -58,14 +58,13 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         rootBuild = build;
         return build;
     }
-
+        
     /***
-     * 栈结构不推荐这种创建方式,  建议使用新的可指定front{@link #regLayout(int, int, int)}
+     * 手动控制顺序  也可使用新的可指定front{@link #regLayout(int, int, int)}
      * @param type
      * @param layoutId
      * @return
      */
-    @Deprecated
     @Override
     public TaskBuild regLayout(int type, int layoutId) {
         if (rootBuild == null) {
