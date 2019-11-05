@@ -70,20 +70,6 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
     }
 
     /***
-     * 注册多布局
-     * @param type  页View的type
-     * @param layoutId  布局ID
-     * @param frontType 在那个type的后边
-     * @return
-     */
-    public T regLayout(int type, @LayoutRes int layoutId, int frontType) {
-        T build = creatBuild((M) this, layoutId, type);
-        typeMap.put(type, layoutId);
-        buildMap.put(type, build);
-        return build;
-    }
-
-    /***
      * 注册适配器, 单独的Page配置管理
      * @return
      */

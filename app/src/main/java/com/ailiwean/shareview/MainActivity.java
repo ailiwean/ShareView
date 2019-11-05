@@ -58,11 +58,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         shareMultiView.getTaskDelegate()
-                .isLazyLoad(false)
+                .isLazyLoad(true)
                 .isReuseLayout(false)
                 .setDefault(2)
 
-                .regLayout(INPUT, R.layout.bb, OTHER)
+                .regLayout(INPUT, R.layout.bb, CONTENT)
                 .init(new InitListener<TaskViewHolder>() {
                     @Override
                     public void init(final TaskViewHolder vh) {
@@ -104,8 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .cp()
 
-
-                .regLayout(OTHER, R.layout.cc, CONTENT)
+                .regLayout(OTHER, R.layout.cc, INPUT)
                 .init(new InitListener<TaskViewHolder>() {
                     @Override
                     public void init(TaskViewHolder vh) {
@@ -126,6 +125,9 @@ public class MainActivity extends AppCompatActivity {
                 .init(new InitListener<TaskViewHolder>() {
                     @Override
                     public void init(TaskViewHolder vh) {
+
+                        shareMultiView.preload(OTHER);
+
                         vh.getRootView().setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -134,7 +136,6 @@ public class MainActivity extends AppCompatActivity {
 //                                startActivity(a);
 //                                overridePendingTransition(R.anim.trans, 0);
 
-                                shareMultiView.preload(INPUT);
                             }
                         });
 

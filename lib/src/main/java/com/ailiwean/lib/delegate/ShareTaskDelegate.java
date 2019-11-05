@@ -12,6 +12,7 @@ import com.ailiwean.lib.base.BaseBuild;
 import com.ailiwean.lib.base.BaseDelegate;
 import com.ailiwean.lib.callback.RollBackInter;
 import com.ailiwean.lib.holder.TaskViewHolder;
+import com.ailiwean.lib.manager.LifeManager;
 import com.ailiwean.lib.manager.RollBackManager;
 import com.ailiwean.lib.observe.TaskObserve;
 
@@ -85,7 +86,6 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         }
     }
 
-    @Override
     public TaskBuild regLayout(int type, int layoutId, int frontType) {
         TaskBuild build = creatBuild(this, layoutId, type);
         typeMap.put(type, layoutId);
@@ -292,11 +292,13 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
             newBuildMap.put(tem.getType(), tem);
         }
         buildMap = newBuildMap;
+
+        //buildMap发生更改， 重置lifeMananger
+        lifeManager = LifeManager.getInstance(this);
     }
 
-
     /***
-     * 递归已RootBuild为入口， 将FrontType指向的Type排序
+     * 递归RootBuild为入口， 将FrontType指向的Type排序
      * @param temList
      */
     private void reCurSort(List<TaskBuild> temList, TaskBuild build) {
