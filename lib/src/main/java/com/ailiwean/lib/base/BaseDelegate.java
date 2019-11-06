@@ -3,6 +3,7 @@ package com.ailiwean.lib.base;
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewStub;
 import android.widget.FrameLayout;
 
 import androidx.annotation.LayoutRes;
@@ -12,6 +13,7 @@ import com.ailiwean.lib.manager.LifeManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -128,6 +130,12 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
         if (buildMap.size() == 0)
             return;
 
+        //初始化ViewStub
+        Iterator<T> iterator = getBuildLinkList().iterator();
+        while (iterator.hasNext()) {
+            inflateStub(iterator.next());
+        }
+
         if (isLazyLoad) {
 
             //加载第一项
@@ -172,30 +180,49 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
         currentType = defaultType;
     }
 
+    public void inflateStub(T build) {
+
+        if (!isReuseLayout) {
+            build.bindPageRoot(rootView);
+            return;
+        }
+
+        //复用状态下, 若存在相同Type的则传递引用
+        if (reuseMap.get(build.getContentLayout()) == null) {
+            reuseMap.put(build.getContentLayout(), build.bindPageRoot(rootView));
+        } else {
+            build.copyPageRoot((ViewStub) reuseMap.get(build.getContentLayout()));
+        }
+
+    }
+
     /***
      * 区分是否复用，将View加载到rootView中并建立在Build中
      * @return
      */
     public void inflate(T build) {
 
-        if (!isReuseLayout) {
-            View view = LayoutInflater.from(rootView.getContext()).inflate(build.getContentLayout(), rootView, false);
-            view.setVisibility(View.INVISIBLE);
-            rootView.addView(view);
-            build.bindInstanceView(view);
-            return;
-        }
-        if (reuseMap.get(build.getContentLayout()) == null) {
-            View view = LayoutInflater.from(rootView.getContext()).inflate(build.getContentLayout(), rootView, false);
-            view.setVisibility(View.INVISIBLE);
-            rootView.addView(view);
-            reuseMap.put(build.getContentLayout(), view);
-            build.bindInstanceView(view);
-        } else {
-            build.bindInstanceView(reuseMap.get(build.getContentLayout()));
-        }
-    }
+//        if (!isReuseLayout) {
+//            //非复用则直接从
+//            build.bindInstanceView();
+//            return;
+//        }
+//
+//        if (reuseMap.get(build.getContentLayout()) == null) {
+//            View view = LayoutInflater.from(rootView.getContext()).inflate(build.getContentLayout(), rootView, false);
+//            view.setVisibility(View.INVISIBLE);
+//            rootView.addView(view);
+//            reuseMap.put(build.getContentLayout(), view);
+//            build.bindInstanceView(view);
+//        } else {
+//            build.bindInstanceView(reuseMap.get(build.getContentLayout()));
+//        }
 
+        build.bindInstanceView();
+        build.hide();
+
+    }
+        
     /***
      * 懒加载
      * @param build
@@ -215,7 +242,7 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
                 }
             }
         }
-        build.getPageView().setVisibility(View.VISIBLE);
+        build.show();
     }
 
     /***

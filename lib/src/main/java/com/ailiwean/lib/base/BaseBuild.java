@@ -1,6 +1,9 @@
 package com.ailiwean.lib.base;
 
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewStub;
 
 import androidx.annotation.LayoutRes;
 
@@ -19,6 +22,8 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
 
     //ViewHolder
     private View pageView;
+
+    private ViewStub pageRoot;
 
     //Build与Layout对应的Type
     protected int type;
@@ -138,8 +143,10 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         return delegate;
     }
 
-    protected void bindInstanceView(View view) {
-        this.pageView = view;
+    protected void bindInstanceView() {
+        if (pageView != null)
+            return;
+        pageView = pageRoot.inflate();
         vh = creatViewHolder(pageView);
     }
 
@@ -169,6 +176,34 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
 
     protected HashMap<Class, D> getBaseObserves() {
         return baseObserves;
+    }
+
+    protected View bindPageRoot(ViewGroup rootView) {
+        if (pageRoot == null) {
+            pageRoot = new ViewStub(rootView.getContext());
+            rootView.addView(pageRoot);
+            pageRoot.setLayoutResource(contentLayout);
+            pageRoot.setLayoutInflater(LayoutInflater.from(rootView.getContext()));
+        }
+        return pageRoot;
+    }
+
+    protected void copyPageRoot(ViewStub pageRoot) {
+        this.pageRoot = pageRoot;
+    }
+
+    protected void hide() {
+
+        if (pageView != null)
+            pageView.setVisibility(View.INVISIBLE);
+
+    }
+
+    protected void show() {
+
+        if (pageView != null)
+            pageView.setVisibility(View.VISIBLE);
+
     }
 
 }

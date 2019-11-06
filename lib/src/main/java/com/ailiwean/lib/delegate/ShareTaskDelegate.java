@@ -383,11 +383,6 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
             return this;
         }
 
-        @Override
-        protected void bindInstanceView(View view) {
-            super.bindInstanceView(view);
-        }
-
         protected boolean isLazy() {
             return isLazy;
         }
