@@ -180,7 +180,7 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
         currentType = defaultType;
     }
 
-    public void inflateStub(T build) {
+    private void inflateStub(T build) {
 
         if (!isReuseLayout) {
             build.bindPageRoot(rootView);
@@ -202,27 +202,11 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
      */
     public void inflate(T build) {
 
-//        if (!isReuseLayout) {
-//            //非复用则直接从
-//            build.bindInstanceView();
-//            return;
-//        }
-//
-//        if (reuseMap.get(build.getContentLayout()) == null) {
-//            View view = LayoutInflater.from(rootView.getContext()).inflate(build.getContentLayout(), rootView, false);
-//            view.setVisibility(View.INVISIBLE);
-//            rootView.addView(view);
-//            reuseMap.put(build.getContentLayout(), view);
-//            build.bindInstanceView(view);
-//        } else {
-//            build.bindInstanceView(reuseMap.get(build.getContentLayout()));
-//        }
-
         build.bindInstanceView();
         build.hide();
 
     }
-        
+
     /***
      * 懒加载
      * @param build

@@ -76,6 +76,9 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
      * @param initListener
      * @return
      */
+    /**
+     * @hide
+     **/
     public T init(InitListener<H> initListener) {
         this.initListener = initListener;
         return (T) this;
@@ -117,6 +120,16 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         return pageView;
     }
 
+
+    /***
+     * 获取填充ViewStub
+     * @return
+     */
+    public ViewStub getPageRoot() {
+        return pageRoot;
+    }
+
+
     protected abstract H creatViewHolder(View pageView);
 
     public H getVH() {
@@ -143,10 +156,25 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         return delegate;
     }
 
+    /***
+     * 自身实例化View, 非复用布局pageView会为null继而调用inflate,复用布局则会从ViewStub中通过通用ID获取实例的PageView
+     */
     protected void bindInstanceView() {
-        if (pageView != null)
+
+        if (pageView != null) {
+            vh = creatViewHolder(pageView);
             return;
+        }
+
+        pageView = (View) pageRoot.getTag();
+
+        if (pageView != null) {
+            vh = creatViewHolder(pageView);
+            return;
+        }
         pageView = pageRoot.inflate();
+        pageRoot.setTag(pageView);
+
         vh = creatViewHolder(pageView);
     }
 
@@ -178,7 +206,7 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         return baseObserves;
     }
 
-    protected View bindPageRoot(ViewGroup rootView) {
+    protected ViewStub bindPageRoot(ViewGroup rootView) {
         if (pageRoot == null) {
             pageRoot = new ViewStub(rootView.getContext());
             rootView.addView(pageRoot);

@@ -20,6 +20,8 @@
         <activity android:name=".B" />
 
 
+
+
     </application>
 
 </manifest>
