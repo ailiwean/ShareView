@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ailiwean.lib.ShareView;
-import com.ailiwean.lib.callback.InitListener;
+import com.ailiwean.lib.interfaces.InitListener;
 import com.ailiwean.lib.holder.MultViewHolder;
 
 public class B extends AppCompatActivity {
@@ -33,7 +33,7 @@ public class B extends AppCompatActivity {
                                 shareView.switchType(1);
                             }
                         });
-                    }   
+                    }
                 })
                 .cp()
                 .regLayout(1, R.layout.cc)

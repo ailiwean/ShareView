@@ -1,4 +1,4 @@
-package com.ailiwean.lib.callback;
+package com.ailiwean.lib.interfaces;
 
 import com.ailiwean.lib.base.BaseBuild;
 

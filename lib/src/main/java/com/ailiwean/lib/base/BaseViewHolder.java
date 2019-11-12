@@ -13,7 +13,7 @@ import androidx.annotation.IdRes;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import com.ailiwean.lib.callback.BaseHolderClick;
+import com.ailiwean.lib.interfaces.BaseHolderClick;
 
 /***
  * 每个PageView的持有,提供快捷操作

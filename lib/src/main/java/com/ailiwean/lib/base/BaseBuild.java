@@ -7,10 +7,10 @@ import android.view.ViewStub;
 
 import androidx.annotation.LayoutRes;
 
-import com.ailiwean.lib.callback.InitListener;
-import com.ailiwean.lib.callback.LazyListener;
-import com.ailiwean.lib.callback.LifeListener;
-import com.ailiwean.lib.callback.PreLoadListener;
+import com.ailiwean.lib.interfaces.InitListener;
+import com.ailiwean.lib.interfaces.LazyListener;
+import com.ailiwean.lib.interfaces.LifeListener;
+import com.ailiwean.lib.interfaces.PreLoadListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;

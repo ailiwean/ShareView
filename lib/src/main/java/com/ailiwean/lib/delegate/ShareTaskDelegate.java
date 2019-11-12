@@ -10,7 +10,7 @@ import com.ailiwean.lib.am.BaseAnim;
 import com.ailiwean.lib.am.NullAnim;
 import com.ailiwean.lib.base.BaseBuild;
 import com.ailiwean.lib.base.BaseDelegate;
-import com.ailiwean.lib.callback.RollBackInter;
+import com.ailiwean.lib.interfaces.RollBackInter;
 import com.ailiwean.lib.holder.TaskViewHolder;
 import com.ailiwean.lib.manager.LifeManager;
 import com.ailiwean.lib.manager.RollBackManager;
@@ -237,7 +237,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
     public final ShareTaskDelegate setDefault(int type) {
         return super.setDefault(-1);
     }
-
+    
     /***
      * 栈结构不允许复用
      * @param isReuseLayout
@@ -317,7 +317,6 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
             }
         }
     }
-
 
     /***
      * 设定通用动画

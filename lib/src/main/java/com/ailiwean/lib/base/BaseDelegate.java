@@ -1,14 +1,13 @@
 package com.ailiwean.lib.base;
 
 import android.annotation.SuppressLint;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.FrameLayout;
 
 import androidx.annotation.LayoutRes;
 
-import com.ailiwean.lib.callback.LifeListenerInner;
+import com.ailiwean.lib.interfaces.LifeListenerInner;
 import com.ailiwean.lib.manager.LifeManager;
 
 import java.util.ArrayList;
@@ -180,6 +179,10 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
         currentType = defaultType;
     }
 
+    /***
+     * 实例ViewStub
+     * @param build
+     */
     private void inflateStub(T build) {
 
         if (!isReuseLayout) {
@@ -201,10 +204,8 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
      * @return
      */
     public void inflate(T build) {
-
         build.bindInstanceView();
         build.hide();
-
     }
 
     /***
@@ -266,7 +267,7 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
     protected abstract void dispatchShowView(int type);
 
     /***
-     * 将View的声明周期管理交给 {@link LifeManager}
+     * 将View的生命周期管理交给 {@link LifeManager}
      * @param type
      */
     @Override

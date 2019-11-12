@@ -2,8 +2,8 @@ package com.ailiwean.lib.am;
 
 import android.view.View;
 
-import com.ailiwean.lib.callback.AnimOutListener;
-import com.ailiwean.lib.callback.AnimStateListener;
+import com.ailiwean.lib.interfaces.AnimOutListener;
+import com.ailiwean.lib.interfaces.AnimStateListener;
 
 public abstract class DefaultAnim extends BaseAnim implements AnimOutListener {
 

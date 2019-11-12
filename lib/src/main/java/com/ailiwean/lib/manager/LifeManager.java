@@ -2,8 +2,8 @@ package com.ailiwean.lib.manager;
 
 import com.ailiwean.lib.base.BaseBuild;
 import com.ailiwean.lib.base.BaseDelegate;
-import com.ailiwean.lib.callback.LifeListener;
-import com.ailiwean.lib.callback.LifeListenerInner;
+import com.ailiwean.lib.interfaces.LifeListener;
+import com.ailiwean.lib.interfaces.LifeListenerInner;
 
 import java.util.LinkedHashMap;
 

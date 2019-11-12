@@ -5,10 +5,9 @@ import android.widget.FrameLayout;
 
 import com.ailiwean.lib.base.BaseBuild;
 import com.ailiwean.lib.base.BaseDelegate;
-import com.ailiwean.lib.callback.LifeListener;
+import com.ailiwean.lib.interfaces.LifeListener;
 import com.ailiwean.lib.holder.MultViewHolder;
 import com.ailiwean.lib.observe.MultiObserve;
-import com.ailiwean.lib.observe.TaskObserve;
 
 public class ShareMultiDelegate extends BaseDelegate<ShareMultiDelegate, ShareMultiDelegate.MultiBuild> {
 

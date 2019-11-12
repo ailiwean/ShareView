@@ -1,6 +1,6 @@
 package com.ailiwean.lib.manager;
 
-import com.ailiwean.lib.callback.RollBackInter;
+import com.ailiwean.lib.interfaces.RollBackInter;
 import com.ailiwean.lib.delegate.ShareTaskDelegate;
 
 import java.util.ArrayList;

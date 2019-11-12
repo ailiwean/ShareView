@@ -9,7 +9,7 @@ import android.annotation.SuppressLint;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 
-import com.ailiwean.lib.callback.AnimStateListener;
+import com.ailiwean.lib.interfaces.AnimStateListener;
 import com.ailiwean.lib.utils.Utils;
 
 class AnimHolder {
