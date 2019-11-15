@@ -129,7 +129,6 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         return pageRoot;
     }
 
-
     protected abstract H creatViewHolder(View pageView);
 
     public H getVH() {

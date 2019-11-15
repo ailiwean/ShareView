@@ -70,17 +70,6 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
         return build;
     }
 
-    /***
-     * 注册适配器, 单独的Page配置管理
-     * @return
-     */
-    public M regAdapter() {
-
-        //TODO ...
-
-        return (M) this;
-    }
-
 
     /***
      * 非懒加载会一次性加载所有布局

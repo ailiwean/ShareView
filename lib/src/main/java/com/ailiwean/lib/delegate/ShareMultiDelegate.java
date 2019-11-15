@@ -69,6 +69,10 @@ public class ShareMultiDelegate extends BaseDelegate<ShareMultiDelegate, ShareMu
             return this;
         }
 
+        public static MultiBuild getInstance(ShareMultiDelegate delegate, int layout, int type) {
+            return new MultiBuild(delegate, layout, type);
+        }
+
     }
 
 }

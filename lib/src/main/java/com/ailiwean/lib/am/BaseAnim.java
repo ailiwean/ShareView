@@ -115,22 +115,22 @@ public abstract class BaseAnim implements AnimStateListener, AnimInnerListener {
      * @param view
      * @param isTaskTop
      */
-    protected final void finalEnterAnimStar(View view, boolean isTaskTop) {
+    public final void finalEnterAnimStar(View view, boolean isTaskTop) {
         enterAnimStar_Inner(view);
         enterAnimStar(view, isTaskTop);
     }
 
-    protected final void finalEnterAnimEnd(View view, boolean isTaskTop) {
+    public final void finalEnterAnimEnd(View view, boolean isTaskTop) {
         enterAnimEnd_Inner(view);
         enterAnimEnd(view, isTaskTop);
     }
 
-    protected final void finalExitAnimStar(View view, boolean isTaskTop) {
+    public final void finalExitAnimStar(View view, boolean isTaskTop) {
         exitAnimStar_Inner(view);
         exitAnimStar(view, isTaskTop);
     }
 
-    protected final void finalExitAnimEnd(View view, boolean isTaskTop) {
+    public final void finalExitAnimEnd(View view, boolean isTaskTop) {
         exitAnimEnd_Inner(view);
         exitAnimEnd(view, isTaskTop);
     }

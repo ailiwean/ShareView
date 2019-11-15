@@ -9,4 +9,5 @@ import com.ailiwean.lib.interfaces.BridgeInner;
 public abstract class BaseBridge implements BridgeInner {
 
 
+
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.ailiwean.lib.adapter.TaskAdapter;
 import com.ailiwean.lib.am.AnimHelper;
 import com.ailiwean.lib.am.DefaultAnim;
 import com.ailiwean.lib.interfaces.InitListener;
