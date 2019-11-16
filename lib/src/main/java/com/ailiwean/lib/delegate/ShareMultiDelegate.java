@@ -3,10 +3,11 @@ package com.ailiwean.lib.delegate;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.ailiwean.lib.adapter.MultAdapter;
 import com.ailiwean.lib.base.BaseBuild;
 import com.ailiwean.lib.base.BaseDelegate;
-import com.ailiwean.lib.interfaces.LifeListener;
 import com.ailiwean.lib.holder.MultViewHolder;
+import com.ailiwean.lib.interfaces.LifeListener;
 import com.ailiwean.lib.observe.MultiObserve;
 
 public class ShareMultiDelegate extends BaseDelegate<ShareMultiDelegate, ShareMultiDelegate.MultiBuild> {
@@ -16,6 +17,11 @@ public class ShareMultiDelegate extends BaseDelegate<ShareMultiDelegate, ShareMu
     private ShareMultiDelegate(FrameLayout mControlView) {
         super(mControlView);
 
+    }
+
+    public void regAdapter(MultAdapter adapter) {
+        adapter.injectDelegate(this);
+        regLayout(adapter.build(), adapter.getType(), adapter.getLayoutId());
     }
 
     @Override
@@ -61,7 +67,7 @@ public class ShareMultiDelegate extends BaseDelegate<ShareMultiDelegate, ShareMu
 
         @Override
         protected MultViewHolder creatViewHolder(View pageView) {
-            return MultViewHolder.getInstance(pageView);
+            return MultViewHolder.getInstance(pageView, rootView);
         }
 
         public ShareMultiDelegate.MultiBuild subscibe(MultiObserve<?> baseObserve) {

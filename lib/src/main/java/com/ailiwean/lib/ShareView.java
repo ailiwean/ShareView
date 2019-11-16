@@ -45,13 +45,13 @@ public class ShareView extends FrameLayout {
         return taskDelegate;
     }
 
-    public void switchType(int type) {
+    public void goTo(int type) {
 
         if (multiDelegate != null)
-            multiDelegate.switchType(type);
+            multiDelegate.goTo(type);
 
         if (taskDelegate != null)
-            taskDelegate.switchType(type);
+            taskDelegate.goTo(type);
 
     }
 

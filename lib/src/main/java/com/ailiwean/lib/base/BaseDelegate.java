@@ -22,7 +22,7 @@ import java.util.TreeSet;
 public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> implements LifeListenerInner {
 
     //根View
-    FrameLayout rootView;
+    protected FrameLayout rootView;
 
     //存放Type与Build的Map
     @SuppressLint("UseSparseArrays")
@@ -64,12 +64,16 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
      * @return
      */
     public T regLayout(int type, @LayoutRes int layoutId) {
-        T build = creatBuild((M) this, layoutId, type);
-        typeMap.put(type, layoutId);
-        buildMap.put(type, build);
-        return build;
+        return regLayout(null, type, layoutId);
     }
 
+    public T regLayout(T t, int type, @LayoutRes int layoutId) {
+        if (t == null)
+            t = creatBuild((M) this, layoutId, type);
+        typeMap.put(type, layoutId);
+        buildMap.put(type, t);
+        return t;
+    }
 
     /***
      * 非懒加载会一次性加载所有布局
@@ -107,7 +111,7 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
 
         loadView();
 
-        switchType(defaultType);
+        goTo(defaultType);
 
     }
 
@@ -243,7 +247,7 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
     /***
      * 切换View  {@link #dispatchShowView(int)}
      */
-    public void switchType(int type) {
+    public void goTo(int type) {
 
         T build = getBuild(type);
         if (build == null)

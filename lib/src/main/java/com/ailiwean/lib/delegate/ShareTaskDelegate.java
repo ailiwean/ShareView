@@ -111,11 +111,12 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
      */
     public TaskBuild regAdapter(TaskAdapter adapter) {
 
+        adapter.injectDelegate(this);
         //非Root
         if (adapter.getFrontType() != -1)
             return regLayout(adapter.build(), adapter.getType(), adapter.getLayoutId(), adapter.getFrontType());
 
-        else return regRootLayout(adapter.getType(), adapter.getLayoutId());
+        else return regRootLayout(adapter.build(), adapter.getType(), adapter.getLayoutId());
 
     }
 
@@ -220,7 +221,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
     }
 
     @Override
-    public void switchType(int type) {
+    public void goTo(int type) {
 
         TaskBuild build = getBuild(type);
         if (build == null)
@@ -398,7 +399,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
 
         @Override
         protected TaskViewHolder creatViewHolder(View pageView) {
-            return TaskViewHolder.getInstance(pageView);
+            return TaskViewHolder.getInstance(pageView, rootView);
         }
 
         public BaseAnim getAnim() {

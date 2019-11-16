@@ -10,31 +10,13 @@ import java.util.HashMap;
 
 public abstract class BaseAdapter<T extends BaseBuild, M extends BaseDelegate, H extends BaseViewHolder, D extends BaseObserve> implements AdapterInner<T, M, H, D> {
 
-    protected T build = creatBuild();
+    protected T build;
 
     //由Delegate调用时注入
     protected M delege;
 
-    private HashMap<Class, D> baseObserves = new HashMap<>();
-
-    @Override
-    public void init(H vh) {
-
-    }
-
-    @Override
-    public void lazy(H vh) {
-
-    }
-
-    @Override
-    public void preload(H vh) {
-
-    }
-
-
     protected HashMap<Class, D> getBaseObserves() {
-        return baseObserves;
+        return build.getBaseObserves();
     }
 
     @Override
@@ -57,6 +39,7 @@ public abstract class BaseAdapter<T extends BaseBuild, M extends BaseDelegate, H
 
     @Override
     public T build() {
+        build = creatBuild();
         if (build == null)
             return null;
 

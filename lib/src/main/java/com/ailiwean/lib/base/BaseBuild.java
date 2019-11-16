@@ -7,6 +7,7 @@ import android.view.ViewStub;
 
 import androidx.annotation.LayoutRes;
 
+import com.ailiwean.lib.ShareView;
 import com.ailiwean.lib.interfaces.InitListener;
 import com.ailiwean.lib.interfaces.LazyListener;
 import com.ailiwean.lib.interfaces.LifeListener;
@@ -24,6 +25,8 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
     private View pageView;
 
     private ViewStub pageRoot;
+
+    protected ShareView rootView;
 
     //Build与Layout对应的Type
     protected int type;
@@ -69,6 +72,7 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         this.delegate = delegate;
         this.contentLayout = layout;
         this.type = type;
+        this.rootView = (ShareView) delegate.rootView;
     }
 
     /***
@@ -165,6 +169,7 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
             return;
         }
 
+        //复用布局
         pageView = (View) pageRoot.getTag();
 
         if (pageView != null) {

@@ -27,10 +27,10 @@ public class B extends AppCompatActivity {
                 .init(new InitListener<MultViewHolder>() {
                     @Override
                     public void init(MultViewHolder vh) {
-                        vh.getRootView().setOnClickListener(new View.OnClickListener() {
+                        vh.getPageView().setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                shareView.switchType(1);
+                                shareView.goTo(1);
                             }
                         });
                     }
@@ -40,10 +40,10 @@ public class B extends AppCompatActivity {
                 .init(new InitListener<MultViewHolder>() {
                     @Override
                     public void init(MultViewHolder vh) {
-                        vh.getRootView().setOnClickListener(new View.OnClickListener() {
+                        vh.getPageView().setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                shareView.switchType(2);
+                                shareView.goTo(2);
                             }
                         });
                     }
@@ -53,10 +53,10 @@ public class B extends AppCompatActivity {
                 .init(new InitListener<MultViewHolder>() {
                     @Override
                     public void init(MultViewHolder vh) {
-                        vh.getRootView().setOnClickListener(new View.OnClickListener() {
+                        vh.getPageView().setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                shareView.switchType(0);
+                                shareView.goTo(0);
                             }
                         });
                     }

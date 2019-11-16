@@ -54,7 +54,7 @@ public class RollBackManager implements RollBackInter {
                 return false;
 
             runTaskList.remove(runTaskList.size() - 1);
-            delegate.switchType(runTaskList.get(runTaskList.size() - 1));
+            delegate.goTo(runTaskList.get(runTaskList.size() - 1));
             return true;
         }
     }

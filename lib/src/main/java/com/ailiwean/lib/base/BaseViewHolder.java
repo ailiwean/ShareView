@@ -1,5 +1,6 @@
 package com.ailiwean.lib.base;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -13,6 +14,7 @@ import androidx.annotation.IdRes;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.ailiwean.lib.ShareView;
 import com.ailiwean.lib.interfaces.BaseHolderClick;
 
 /***
@@ -22,14 +24,17 @@ public class BaseViewHolder implements View.OnClickListener {
 
     View pageView;
 
+    ShareView shareView;
+
     BaseHolderClick baseHolderClick;
 
-    protected BaseViewHolder(View pageView) {
+    protected BaseViewHolder(View pageView, ShareView shareView) {
         this.pageView = pageView;
+        this.shareView = shareView;
     }
 
-    public static BaseViewHolder getInstance(View pageView) {
-        return new BaseViewHolder(pageView);
+    public static BaseViewHolder getInstance(View pageView, ShareView shareView) {
+        return new BaseViewHolder(pageView, shareView);
     }
 
     public <T extends View> T getView(@IdRes int id) {
@@ -112,8 +117,12 @@ public class BaseViewHolder implements View.OnClickListener {
         this.baseHolderClick = baseHolderClick;
     }
 
-    public View getRootView() {
+    public View getPageView() {
         return pageView;
+    }
+
+    public ShareView getShareView() {
+        return shareView;
     }
 
     @Override
@@ -122,5 +131,8 @@ public class BaseViewHolder implements View.OnClickListener {
             baseHolderClick.onChildClick(this, v);
     }
 
+    public Context getContext() {
+        return getPageView().getContext();
+    }
 
 }
