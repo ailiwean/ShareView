@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> implements LifeListenerInner {
+public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> implements LifeListenerInner<T> {
 
     //根View
     protected FrameLayout rootView;
@@ -179,13 +179,13 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
     private void inflateStub(T build) {
 
         if (!isReuseLayout) {
-            build.bindPageRoot(rootView);
+            build.bindViewStub(rootView);
             return;
         }
 
         //复用状态下, 若存在相同Type的则传递引用
         if (reuseMap.get(build.getContentLayout()) == null) {
-            reuseMap.put(build.getContentLayout(), build.bindPageRoot(rootView));
+            reuseMap.put(build.getContentLayout(), build.bindViewStub(rootView));
         } else {
             build.copyPageRoot((ViewStub) reuseMap.get(build.getContentLayout()));
         }
@@ -259,30 +259,47 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
 
     protected abstract void dispatchShowView(int type);
 
+
     /***
-     * 将View的生命周期管理交给 {@link LifeManager}
-     * @param type
+     * 页面可视时调用
+     * @param baseBuild
      */
     @Override
-    public void onVisiable(BaseBuild type) {
-        lifeManager.onVisiable(type);
+    public void onVisiable(T baseBuild) {
+        lifeManager.onVisiable(baseBuild);
     }
 
+    /***
+     * 页面隐藏时调用
+     * @param baseBuild
+     */
     @Override
-    public void onHide(BaseBuild type) {
-        lifeManager.onHide(type);
+    public void onHide(T baseBuild) {
+        lifeManager.onHide(baseBuild);
     }
 
+    /***
+     * 切换到该页面时立刻调用只调用一次
+     * @param baseBuild
+     */
     @Override
-    public void onInit(BaseBuild baseBuild) {
+    public void onInit(T baseBuild) {
         lifeManager.onInit(baseBuild);
     }
 
+    /***
+     * 该页面动画播放完毕调用
+     * @param baseBuild
+     */
     @Override
-    public void onLazy(BaseBuild baseBuild) {
+    public void onLazy(T baseBuild) {
         lifeManager.onLazy(baseBuild);
     }
 
+    /***
+     *
+     * @param type
+     */
     @Override
     public void onPreload(int type) {
         lifeManager.onPreload(type);

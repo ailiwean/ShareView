@@ -49,4 +49,10 @@ public class BAdapter extends TaskAdapter {
     public int getFrontType() {
         return 1;
     }
+
+    @Override
+    public boolean leaveRetain() {
+        return false;
+    }
+    
 }

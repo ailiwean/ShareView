@@ -124,7 +124,6 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         return pageView;
     }
 
-
     /***
      * 获取填充ViewStub
      * @return
@@ -210,10 +209,14 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         return baseObserves;
     }
 
-    protected ViewStub bindPageRoot(ViewGroup rootView) {
+    protected ViewStub bindViewStub(ViewGroup rootView) {
+        return bindViewStub(rootView, -1);
+    }
+
+    protected ViewStub bindViewStub(ViewGroup rootView, int index) {
         if (pageRoot == null) {
             pageRoot = new ViewStub(rootView.getContext());
-            rootView.addView(pageRoot);
+            rootView.addView(pageRoot, index);
             pageRoot.setLayoutResource(contentLayout);
             pageRoot.setLayoutInflater(LayoutInflater.from(rootView.getContext()));
         }
@@ -238,4 +241,11 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
 
     }
 
+    public void destory() {
+        int index = rootView.indexOfChild(pageView);
+        rootView.removeView(pageView);
+        pageView = null;
+        pageRoot = null;
+        bindViewStub(rootView, index);
+    }
 }

@@ -2,15 +2,15 @@ package com.ailiwean.lib.interfaces;
 
 import com.ailiwean.lib.base.BaseBuild;
 
-public interface LifeListenerInner {
+public interface LifeListenerInner<T extends BaseBuild> {
 
-    void onVisiable(BaseBuild baseBuild);
+    void onVisiable(T baseBuild);
 
-    void onHide(BaseBuild baseBuild);
+    void onHide(T baseBuild);
 
-    void onInit(BaseBuild baseBuild);
+    void onInit(T baseBuild);
 
-    void onLazy(BaseBuild baseBuild);
+    void onLazy(T baseBuild);
 
     void onPreload(int type);
 

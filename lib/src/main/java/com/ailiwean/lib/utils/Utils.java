@@ -8,7 +8,6 @@ import java.lang.ref.WeakReference;
 
 public class Utils {
 
-
     private static Point point = new Point();
 
     public static void init(Context mContext) {
@@ -27,10 +26,8 @@ public class Utils {
         return point.x;
     }
 
-
     public static int getY() {
         return point.y;
     }
-
 
 }

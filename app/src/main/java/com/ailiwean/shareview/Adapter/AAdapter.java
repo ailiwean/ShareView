@@ -12,7 +12,6 @@ public class AAdapter extends TaskAdapter {
 
     public static int CONTENT = 1;
 
-
     @Override
     public int getLayoutId() {
         return R.layout.aa;

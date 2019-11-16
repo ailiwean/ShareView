@@ -274,6 +274,15 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         return super.isReuseLayout(false);
     }
 
+    @Override
+    public void onHide(TaskBuild baseBuild) {
+        super.onHide(baseBuild);
+
+        if (!baseBuild.leaveRetain)
+            baseBuild.destory();
+
+    }
+
     /***
      * 为所有布局设定通用动画
      * @param customAnim 通用动画
@@ -365,6 +374,8 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
 
         boolean isRunning = false;
 
+        boolean leaveRetain = true;
+
         int taskIndex;
 
         int frontType;
@@ -378,18 +389,16 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
             return new TaskBuild(delegate, layout, type);
         }
 
-        TaskBuild setRunning(boolean running) {
+        void setRunning(boolean running) {
             isRunning = running;
-            return this;
         }
 
         /***
          * 绑定一个动画效果
          */
-        public TaskBuild bindAnimation(BaseAnim anim) {
+        public void bindAnimation(BaseAnim anim) {
             if (anim != null && anim.getPriority() > this.anim.getPriority())
                 this.anim = anim;
-            return this;
         }
 
         public TaskBuild subscibe(TaskObserve<?> baseObserve) {
@@ -410,9 +419,8 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
             return frontType;
         }
 
-        public TaskBuild setFrontType(int frontType) {
+        public void setFrontType(int frontType) {
             this.frontType = frontType;
-            return this;
         }
 
         protected boolean isLazy() {
@@ -421,6 +429,10 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
 
         public int getType() {
             return type;
+        }
+
+        public void setLeaveRetain(boolean leaveRetain) {
+            this.leaveRetain = leaveRetain;
         }
 
     }

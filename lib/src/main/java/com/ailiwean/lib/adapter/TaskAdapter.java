@@ -14,6 +14,18 @@ public abstract class TaskAdapter extends BaseAdapter<ShareTaskDelegate.TaskBuil
     }
 
     @Override
+    public void init(TaskViewHolder vh) {
+    }
+
+    @Override
+    public void lazy(TaskViewHolder vh) {
+    }
+
+    @Override
+    public void preload(TaskViewHolder vh) {
+    }
+
+    @Override
     public final ShareTaskDelegate.TaskBuild build() {
         super.build();
 
@@ -21,6 +33,7 @@ public abstract class TaskAdapter extends BaseAdapter<ShareTaskDelegate.TaskBuil
             return null;
 
         build.setFrontType(getFrontType());
+        build.setLeaveRetain(leaveRetain());
 
         return build;
     }
@@ -33,9 +46,15 @@ public abstract class TaskAdapter extends BaseAdapter<ShareTaskDelegate.TaskBuil
         build.bindAnimation(anim);
     }
 
-
     public int getFrontType() {
         return -1;
+    }
+
+    /***
+     *  该页面不可视时是否保留View
+     */
+    public boolean leaveRetain() {
+        return true;
     }
 
     @Override
