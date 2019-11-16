@@ -7,12 +7,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import androidx.annotation.IdRes;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
 import com.ailiwean.lib.ShareView;
 import com.ailiwean.lib.interfaces.BaseHolderClick;
@@ -54,18 +51,6 @@ public class BaseViewHolder implements View.OnClickListener {
     }
 
     public EditText getEv(@IdRes int id) {
-        return pageView.findViewById(id);
-    }
-
-    public TableLayout getTl(@IdRes int id) {
-        return pageView.findViewById(id);
-    }
-
-    public ViewPager getVp(@IdRes int id) {
-        return pageView.findViewById(id);
-    }
-
-    public RecyclerView getRv(@IdRes int id) {
         return pageView.findViewById(id);
     }
 
