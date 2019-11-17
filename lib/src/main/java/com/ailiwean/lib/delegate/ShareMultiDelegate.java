@@ -19,9 +19,9 @@ public class ShareMultiDelegate extends BaseDelegate<ShareMultiDelegate, ShareMu
 
     }
 
-    public void regAdapter(MultAdapter adapter) {
+    public MultiBuild regAdapter(MultAdapter adapter) {
         adapter.injectDelegate(this);
-        regLayout(adapter.build(), adapter.getType(), adapter.getLayoutId());
+        return regLayout(adapter.build(), adapter.getType(), adapter.getLayoutId());
     }
 
     @Override

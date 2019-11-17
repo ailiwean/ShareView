@@ -16,15 +16,18 @@ import com.ailiwean.lib.interfaces.PreLoadListener;
 import com.ailiwean.lib.holder.TaskViewHolder;
 import com.ailiwean.lib.observe.TaskObserve;
 import com.ailiwean.shareview.Adapter.AAdapter;
+import com.ailiwean.shareview.Adapter.A_Adapter;
 import com.ailiwean.shareview.Adapter.BAdapter;
+import com.ailiwean.shareview.Adapter.B_Adapter;
 import com.ailiwean.shareview.Adapter.CAdapter;
+import com.ailiwean.shareview.Adapter.C_Adapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    ShareView shareMultiView;
+    ShareView shareTask;
 
     public static final int CONTENT = 0;
 
@@ -37,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        shareMultiView = findViewById(R.id.mult);
+        shareTask = findViewById(R.id.mult);
 
         DefaultAnim anim = new DefaultAnim(400) {
             @Override
@@ -61,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        shareMultiView.getTaskDelegate()
+        shareTask.getTaskDelegate()
                 .regAdapter(new BAdapter())
                 .cp()
                 .regAdapter(new CAdapter())
@@ -83,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        if (shareMultiView.back())
+        if (shareTask.back())
             return;
 
         super.onBackPressed();

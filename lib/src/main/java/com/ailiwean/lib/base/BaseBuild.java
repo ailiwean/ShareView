@@ -247,5 +247,7 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         pageView = null;
         pageRoot = null;
         bindViewStub(rootView, index);
+        isInit = false;
+        isLazy = false;
     }
 }

@@ -54,5 +54,5 @@ public class BAdapter extends TaskAdapter {
     public boolean leaveRetain() {
         return false;
     }
-    
+
 }
