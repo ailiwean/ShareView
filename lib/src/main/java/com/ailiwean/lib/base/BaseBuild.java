@@ -80,9 +80,6 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
      * @param initListener
      * @return
      */
-    /**
-     * @hide
-     **/
     public T init(InitListener<H> initListener) {
         this.initListener = initListener;
         return (T) this;
@@ -227,14 +224,14 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         this.pageRoot = pageRoot;
     }
 
-    protected void hide() {
+    public void hide() {
 
         if (pageView != null)
-            pageView.setVisibility(View.INVISIBLE);
+            pageView.setVisibility(View.GONE);
 
     }
 
-    protected void show() {
+    public void show() {
 
         if (pageView != null)
             pageView.setVisibility(View.VISIBLE);

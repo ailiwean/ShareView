@@ -166,7 +166,6 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
             lastBuild.anim.operatorEndBack(new Runnable() {
                 @Override
                 public void run() {
-                    lastBuild.getPageView().setVisibility(View.INVISIBLE);
                     lastBuild.setRunning(false);
                     onHide(lastBuild);
                     onVisiable(build);
@@ -204,7 +203,6 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
             build.anim.operatorEndBack(new Runnable() {
                 @Override
                 public void run() {
-                    lastBuild.getPageView().setVisibility(View.INVISIBLE);
                     onVisiable(build);
                     onHide(lastBuild);
                     lastBuild = build;
@@ -277,10 +275,8 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
     @Override
     public void onHide(TaskBuild baseBuild) {
         super.onHide(baseBuild);
-
         if (!baseBuild.leaveRetain)
             baseBuild.destory();
-
     }
 
     /***

@@ -52,10 +52,10 @@ public class ShareMultiDelegate extends BaseDelegate<ShareMultiDelegate, ShareMu
                 item.onVisiable(build.getVH());
 
         if (lastBuild != null)
-            lastBuild.getPageView().setVisibility(View.INVISIBLE);
-        build.getPageView().setVisibility(View.VISIBLE);
+            onHide(lastBuild);
+        onVisiable(build);
         lastBuild = build;
-
+            
         updateCurrentType(type);
     }
 

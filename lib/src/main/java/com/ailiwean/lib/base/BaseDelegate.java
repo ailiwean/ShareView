@@ -259,13 +259,13 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
 
     protected abstract void dispatchShowView(int type);
 
-
     /***
      * 页面可视时调用
      * @param baseBuild
      */
     @Override
     public void onVisiable(T baseBuild) {
+        baseBuild.show();
         lifeManager.onVisiable(baseBuild);
     }
 
@@ -275,6 +275,8 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
      */
     @Override
     public void onHide(T baseBuild) {
+        //View的显示隐藏(核心)在内部控制, 其他交给lifeManager管理
+        baseBuild.hide();
         lifeManager.onHide(baseBuild);
     }
 
