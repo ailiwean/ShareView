@@ -13,9 +13,11 @@ allprojects {
 	}
 ```
 
+[![](https://jitpack.io/v/ailiwean/ShareView.svg)](https://jitpack.io/#ailiwean/ShareView)
+
 
 ```
-implementation 'com.github.ailiwean:ShareView:1.2.2'
+implementation 'com.github.ailiwean:ShareView:TAG'
 ```
 
 
