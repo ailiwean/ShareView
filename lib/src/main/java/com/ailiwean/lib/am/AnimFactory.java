@@ -48,7 +48,7 @@ public class AnimFactory {
         exitAnimHolder = null;
         enterAnimHolder = null;
 
-//        //开启硬件加速
+        //开启硬件加速
         temStart.getPageView().setLayerType(LAYER_TYPE_NONE, null);
         temEnd.getPageView().setLayerType(LAYER_TYPE_NONE, null);
         temStart.getPageView().setLayerType(View.LAYER_TYPE_HARDWARE, null);
@@ -57,14 +57,6 @@ public class AnimFactory {
         AnimatorSet set = new AnimatorSet();
         set.playTogether(temStart.getAnimator(), temEnd.getAnimator());
         set.start();
-
-        set.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                temStart.getPageView().setLayerType(LAYER_TYPE_SOFTWARE, null);
-                temEnd.getPageView().setLayerType(LAYER_TYPE_SOFTWARE, null);
-            }
-        });
     }
 
 }

@@ -119,6 +119,7 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
      *  装载View
      */
     private void loadView() {
+
         if (buildMap.size() == 0)
             return;
 
@@ -163,11 +164,11 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
                     continue;
 
                 inflate(build);
-
-                if (defaultType == -1)
-                    defaultType = keyList.get(0);
-
             }
+
+            if (defaultType == -1)
+                defaultType = keyList.get(0);
+
         }
         currentType = defaultType;
     }
