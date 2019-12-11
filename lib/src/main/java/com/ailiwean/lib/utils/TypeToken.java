@@ -1,23 +1,24 @@
-package com.ailiwean.lib.base;
-
-import android.util.Log;
-import android.widget.ImageView;
-import android.widget.TextView;
-
-import com.ailiwean.lib.utils.PatternUtils;
-import com.ailiwean.lib.utils.TypeToken;
+package com.ailiwean.lib.utils;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-public abstract class BaseObserve<T, V extends BaseViewHolder> {
+/***
+ * 通过匿名内部类实现范型获取
+ * @param <T>
+ */
+public class TypeToken<T> {
 
     ArrayList<Class> classes = new ArrayList<>();
 
-    public BaseObserve() {
+    public ArrayList<Class> getClasses() {
+        return classes;
+    }
+
+    public TypeToken getType() {
         autoAnaylsType();
+        return this;
     }
 
     private void autoAnaylsType() {
@@ -58,14 +59,26 @@ public abstract class BaseObserve<T, V extends BaseViewHolder> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        TypeToken typeToken = new TypeToken<HashMap<HashMap<ArrayList, TextView>, Integer>>() {
-        }.getType();
-
-        Log.e("TAG", typeToken.equals(classes) + "");
-
     }
 
-    public abstract void response(V vh, T t);
+    @Override
+    public boolean equals(Object obj) {
 
+        if (!(obj instanceof ArrayList))
+            return false;
+        else {
+            ArrayList other = (ArrayList) obj;
+            if (other.size() == 0 || other.get(0).getClass() != Class.class)
+                return false;
+
+            if (classes.size() != other.size())
+                return false;
+            for (int i = 0; i < classes.size(); i++) {
+                if (classes.get(i) != other.get(i))
+                    return false;
+            }
+            return true;
+        }
+    }
 }
+

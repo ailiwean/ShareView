@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
+import com.ailiwean.lib.utils.TypeToken;
 import com.ailiwean.lib.utils.Utils;
 import com.ailiwean.lib.delegate.ShareMultiDelegate;
 import com.ailiwean.lib.delegate.ShareTaskDelegate;
@@ -68,12 +69,12 @@ public class ShareView extends FrameLayout {
         return currentType;
     }
 
-    public void postData(int type, Object data) {
+    public void postData(int type, TypeToken<?> typeToken) {
 
-        if (multiDelegate != null)
-            multiDelegate.postData(type, data);
+//        if (multiDelegate != null)
+//            multiDelegate.postData(type, data);
         if (taskDelegate != null)
-            taskDelegate.postData(type, data);
+            taskDelegate.postData(type, typeToken);
 
     }
 

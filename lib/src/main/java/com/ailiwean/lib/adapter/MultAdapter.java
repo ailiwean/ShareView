@@ -8,7 +8,9 @@ import com.ailiwean.lib.observe.MultiObserve;
 public abstract class MultAdapter extends BaseAdapter<ShareMultiDelegate.MultiBuild, ShareMultiDelegate, MultViewHolder, MultiObserve> {
 
     protected MultAdapter subscribe(MultiObserve<?> observe) {
-        getBaseObserves().put(observe.getType(), observe);
+        // getBaseObserves().put(observe.getType(), observe);
+
+        // TODO
         return this;
     }
 

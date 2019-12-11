@@ -203,11 +203,11 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
             build.anim.operatorEndBack(new Runnable() {
                 @Override
                 public void run() {
+                    if (!build.isLazy())
+                        onLazy(build);
                     onVisiable(build);
                     onHide(lastBuild);
                     lastBuild = build;
-                    if (!build.isLazy())
-                        onLazy(build);
                     build.setRunning(false);
                 }
             }, build.getPageView());
@@ -398,7 +398,8 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         }
 
         public TaskBuild subscibe(TaskObserve<?> baseObserve) {
-            getBaseObserves().put(baseObserve.getType(), baseObserve);
+         //   getBaseObserves().put(baseObserve.getType(), baseObserve);
+            // TODO
             return this;
         }
 

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ailiwean.lib.am.AnimHelper;
@@ -23,6 +24,7 @@ import com.ailiwean.shareview.Adapter.CAdapter;
 import com.ailiwean.shareview.Adapter.C_Adapter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -70,11 +72,11 @@ public class MainActivity extends AppCompatActivity {
                 .regAdapter(new CAdapter())
                 .cp()
                 .regAdapter(new AAdapter())
-                .subscibe(new TaskObserve<ArrayList<String>>() {
+                .subscibe(new TaskObserve<HashMap<HashMap<ArrayList, ImageView>, Integer>>() {
 
                     @Override
-                    public void response(TaskViewHolder vh, ArrayList<String> strings) {
-                        Toast.makeText(MainActivity.this, "list集合", Toast.LENGTH_SHORT).show();
+                    public void response(TaskViewHolder vh, HashMap<HashMap<ArrayList, ImageView>, Integer> hashMapIntegerHashMap) {
+
                     }
                 })
                 .cp()

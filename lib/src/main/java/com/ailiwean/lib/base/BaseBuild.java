@@ -42,7 +42,7 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
 
     private M delegate;
 
-    private HashMap<Class, D> baseObserves = new HashMap<>();
+    private HashMap<String, D> baseObserves = new HashMap<>();
 
     InitListener initListener = new InitListener<H>() {
 
@@ -202,7 +202,7 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         this.isLazy = isLazy;
     }
 
-    protected HashMap<Class, D> getBaseObserves() {
+    protected HashMap<String, D> getBaseObserves() {
         return baseObserves;
     }
 

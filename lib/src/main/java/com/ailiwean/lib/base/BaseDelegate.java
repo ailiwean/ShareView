@@ -9,6 +9,7 @@ import androidx.annotation.LayoutRes;
 
 import com.ailiwean.lib.interfaces.LifeListenerInner;
 import com.ailiwean.lib.manager.LifeManager;
+import com.ailiwean.lib.utils.TypeToken;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,7 +21,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> implements LifeListenerInner<T> {
-
+        
     //根View
     protected FrameLayout rootView;
 
@@ -300,7 +301,7 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
     }
 
     /***
-     *
+     * 预加载时调用
      * @param type
      */
     @Override
@@ -311,15 +312,19 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
     /***
      * 发送数据
      * @param type
-     * @param data
      */
-    public void postData(int type, Object data) {
+    public <Z> void postData(int type, TypeToken<?> typeToken) {
         BaseBuild baseBuild = getBuild(type);
         if (baseBuild == null)
             return;
-        BaseObserve observe = (BaseObserve) baseBuild.getBaseObserves().get(data.getClass());
-        if (observe != null)
-            observe.response(baseBuild.getVH(), data);
+
+
+        TypeToken typeToken1 = typeToken;
+
+
+//        BaseObserve observe = (BaseObserve) baseBuild.getBaseObserves().get(data.getClass());
+//        if (observe != null)
+//            observe.response(baseBuild.getVH(), data);
     }
 
     /***

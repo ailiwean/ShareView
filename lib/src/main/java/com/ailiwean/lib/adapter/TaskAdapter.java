@@ -1,5 +1,7 @@
 package com.ailiwean.lib.adapter;
 
+import android.content.Context;
+
 import com.ailiwean.lib.am.BaseAnim;
 import com.ailiwean.lib.base.BaseAdapter;
 import com.ailiwean.lib.delegate.ShareTaskDelegate;
@@ -8,41 +10,58 @@ import com.ailiwean.lib.observe.TaskObserve;
 
 public abstract class TaskAdapter extends BaseAdapter<ShareTaskDelegate.TaskBuild, ShareTaskDelegate, TaskViewHolder, TaskObserve> {
 
+    private TaskViewHolder vh;
+
     protected TaskAdapter subscribe(TaskObserve<?> observe) {
-        getBaseObserves().put(observe.getType(), observe);
+      //  getBaseObserves().put(observe.getType(), observe);
+
+        // TODO
         return this;
     }
 
     @Override
-    public void init(TaskViewHolder vh) {
+    public final void init(TaskViewHolder vh) {
+        this.vh = vh;
+        init();
     }
 
-    @Override
-    public void lazy(TaskViewHolder vh) {
-    }
+    public abstract void init();
 
     @Override
-    public void preload(TaskViewHolder vh) {
+    public final void lazy(TaskViewHolder vh) {
+        lazy();
+    }
+
+    public abstract void lazy();
+
+    @Override
+    public final void preload(TaskViewHolder vh) {
+        preload();
+    }
+
+    public abstract void preload();
+
+    public TaskViewHolder getVh() {
+        return vh;
+    }
+
+    public Context getContext() {
+        return getVh().getContext();
     }
 
     @Override
     public final ShareTaskDelegate.TaskBuild build() {
         super.build();
-
         if (build == null)
             return null;
-
         build.setFrontType(getFrontType());
         build.setLeaveRetain(leaveRetain());
-
         return build;
     }
 
     public final void bindAnimation(BaseAnim anim) {
-
         if (build == null)
             return;
-
         build.bindAnimation(anim);
     }
 

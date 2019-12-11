@@ -55,7 +55,7 @@ public class ShareMultiDelegate extends BaseDelegate<ShareMultiDelegate, ShareMu
             onHide(lastBuild);
         onVisiable(build);
         lastBuild = build;
-            
+
         updateCurrentType(type);
     }
 
@@ -71,7 +71,9 @@ public class ShareMultiDelegate extends BaseDelegate<ShareMultiDelegate, ShareMu
         }
 
         public ShareMultiDelegate.MultiBuild subscibe(MultiObserve<?> baseObserve) {
-            getBaseObserves().put(baseObserve.getType(), baseObserve);
+            //  getBaseObserves().put(baseObserve.getType(), baseObserve);
+
+            // TODO
             return this;
         }
 
