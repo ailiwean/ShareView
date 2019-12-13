@@ -1,4 +1,4 @@
-package com.ailiwean.lib.am;
+package com.ailiwean.lib.anim;
 
 public class NullAnim extends DefaultAnim {
 }

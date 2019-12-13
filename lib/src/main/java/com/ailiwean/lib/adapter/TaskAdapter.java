@@ -2,8 +2,9 @@ package com.ailiwean.lib.adapter;
 
 import android.content.Context;
 
-import com.ailiwean.lib.am.BaseAnim;
+import com.ailiwean.lib.anim.BaseAnim;
 import com.ailiwean.lib.base.BaseAdapter;
+import com.ailiwean.lib.base.BaseEvents;
 import com.ailiwean.lib.delegate.ShareTaskDelegate;
 import com.ailiwean.lib.holder.TaskViewHolder;
 import com.ailiwean.lib.observe.TaskObserve;
@@ -13,7 +14,7 @@ public abstract class TaskAdapter extends BaseAdapter<ShareTaskDelegate.TaskBuil
     private TaskViewHolder vh;
 
     protected TaskAdapter subscribe(TaskObserve<?> observe) {
-        getBaseObserves().add(observe);
+        build.baseObserves.add(observe);
         return this;
     }
 
@@ -21,6 +22,7 @@ public abstract class TaskAdapter extends BaseAdapter<ShareTaskDelegate.TaskBuil
     public final void init(TaskViewHolder vh) {
         this.vh = vh;
         init();
+        matchAllEvents();
     }
 
     public abstract void init();
@@ -28,6 +30,7 @@ public abstract class TaskAdapter extends BaseAdapter<ShareTaskDelegate.TaskBuil
     @Override
     public final void lazy(TaskViewHolder vh) {
         lazy();
+        matchAllEventsClear();
     }
 
     public abstract void lazy();
@@ -72,6 +75,19 @@ public abstract class TaskAdapter extends BaseAdapter<ShareTaskDelegate.TaskBuil
      */
     public boolean leaveRetain() {
         return true;
+    }
+
+    //处理缓存中事件
+    private void matchAllEvents() {
+        for (BaseEvents item : build.getEventQueue()) {
+            build.matchEvent(item);
+        }
+    }
+
+    //处理缓存中事件， 对于无法处理的进行清除
+    private void matchAllEventsClear() {
+        matchAllEvents();
+        build.getEventQueue().clear();
     }
 
     @Override

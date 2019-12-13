@@ -1,9 +1,16 @@
 package com.ailiwean.shareview.Adapter;
 
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.ailiwean.lib.adapter.TaskAdapter;
+import com.ailiwean.lib.holder.TaskViewHolder;
+import com.ailiwean.lib.observe.TaskObserve;
 import com.ailiwean.shareview.R;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class CAdapter extends TaskAdapter {
 
@@ -26,6 +33,12 @@ public class CAdapter extends TaskAdapter {
     @Override
     public void lazy() {
 
+        subscribe(new TaskObserve<HashMap<HashMap<ArrayList, ImageView>, Integer>>() {
+            @Override
+            public void response(TaskViewHolder vh, HashMap<HashMap<ArrayList, ImageView>, Integer> hashMapIntegerHashMap) {
+                Toast.makeText(getContext(), "接收到注册", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

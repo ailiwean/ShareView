@@ -69,13 +69,18 @@ public class ShareView extends FrameLayout {
         return currentType;
     }
 
-    public void postData(int type, TypeToken<?> typeToken) {
-
-//        if (multiDelegate != null)
-//            multiDelegate.postData(type, data);
+    public void postData(int type, Object o) {
+        if (multiDelegate != null)
+            multiDelegate.postData(type, o);
         if (taskDelegate != null)
-            taskDelegate.postData(type, typeToken);
+            taskDelegate.postData(type, o);
+    }
 
+    public void postData(int type, TypeToken<?> typeToken, Object o) {
+        if (multiDelegate != null)
+            multiDelegate.postData(type, typeToken, o);
+        if (taskDelegate != null)
+            taskDelegate.postData(type, typeToken, o);
     }
 
     public void preload(int type) {
@@ -88,7 +93,6 @@ public class ShareView extends FrameLayout {
 
     }
 
-
     public boolean back() {
 
         if (multiDelegate != null)
@@ -99,6 +103,5 @@ public class ShareView extends FrameLayout {
 
         return false;
     }
-
 
 }

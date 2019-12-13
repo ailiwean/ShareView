@@ -7,8 +7,8 @@ import android.widget.FrameLayout;
 import androidx.annotation.LayoutRes;
 
 import com.ailiwean.lib.adapter.TaskAdapter;
-import com.ailiwean.lib.am.BaseAnim;
-import com.ailiwean.lib.am.NullAnim;
+import com.ailiwean.lib.anim.BaseAnim;
+import com.ailiwean.lib.anim.NullAnim;
 import com.ailiwean.lib.base.BaseBuild;
 import com.ailiwean.lib.base.BaseDelegate;
 import com.ailiwean.lib.holder.TaskViewHolder;
@@ -391,7 +391,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         }
 
         public TaskBuild subscibe(TaskObserve<?> baseObserve) {
-            getBaseObserves().add(baseObserve);
+            baseObserves.add(baseObserve);
             return this;
         }
 

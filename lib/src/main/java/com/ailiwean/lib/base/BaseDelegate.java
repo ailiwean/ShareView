@@ -14,7 +14,6 @@ import com.ailiwean.lib.utils.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -35,9 +34,6 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
 
     //存放可复用的Type
     Set<Integer> receptType = new TreeSet<>();
-
-    //任务队列
-    LinkedList<Runnable> queue = new LinkedList<>();
 
     //是否启用懒加载
     boolean isLazyLoad = true;
@@ -319,13 +315,12 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
         BaseBuild baseBuild = getBuild(type);
         if (baseBuild == null)
             return;
+
+        //对于不可消费的事件，先进行缓存
+        if (!baseBuild.matchEvent(BaseEvents.creat(typeToken, o))) {
+            baseBuild.cacheEvents(BaseEvents.creat(typeToken, o));
+        }
     }
-
-
-    private void packRunnable(Runnable runnable) {
-
-    }
-
 
     /***
      * 获取当前显示页的Type

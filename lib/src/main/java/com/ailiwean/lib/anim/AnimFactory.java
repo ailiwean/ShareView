@@ -1,12 +1,9 @@
-package com.ailiwean.lib.am;
+package com.ailiwean.lib.anim;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.view.View;
 
 import static android.view.View.LAYER_TYPE_NONE;
-import static android.view.View.LAYER_TYPE_SOFTWARE;
 
 public class AnimFactory {
 

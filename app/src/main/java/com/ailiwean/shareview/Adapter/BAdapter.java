@@ -1,6 +1,7 @@
 package com.ailiwean.shareview.Adapter;
 
 import android.view.View;
+import android.widget.ImageView;
 
 import com.ailiwean.lib.adapter.TaskAdapter;
 import com.ailiwean.lib.utils.TypeToken;
@@ -8,7 +9,6 @@ import com.ailiwean.shareview.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class BAdapter extends TaskAdapter {
 
@@ -21,14 +21,13 @@ public class BAdapter extends TaskAdapter {
             @Override
             public void onClick(View v) {
                 getVh().getShareView().goTo(3);
-                getVh().getShareView().postData(1, new TypeToken<List>() {
-                }.getType());
+                getVh().getShareView().postData(3, new TypeToken<HashMap<HashMap<ArrayList, ImageView>, Integer>>() {
+                }.getType(), new HashMap<>());
             }
         });
 
     }
-
-
+    
     @Override
     public void lazy() {
 

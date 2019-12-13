@@ -1,7 +1,7 @@
 package com.ailiwean.lib.interfaces;
 
 
-import com.ailiwean.lib.am.AnimHelper;
+import com.ailiwean.lib.anim.AnimHelper;
 
 /***
  * 该接口提供外部调用，返回自带动画Type

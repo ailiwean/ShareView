@@ -41,7 +41,11 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
 
     private M delegate;
 
-    private List<D> baseObserves = new ArrayList<>();
+    //事件消费订阅者
+    public List<D> baseObserves = new ArrayList<>();
+
+    //事件队列
+    private List<BaseEvents> eventQueue = new ArrayList<>();
 
     InitListener initListener = new InitListener<H>() {
 
@@ -201,10 +205,6 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         this.isLazy = isLazy;
     }
 
-    protected List<D> getBaseObserves() {
-        return baseObserves;
-    }
-
     protected ViewStub bindViewStub(ViewGroup rootView) {
         return bindViewStub(rootView, -1);
     }
@@ -219,24 +219,37 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         return pageRoot;
     }
 
+    /***
+     * 适用与复用布局
+     * @param pageRoot
+     */
     protected void copyPageRoot(ViewStub pageRoot) {
         this.pageRoot = pageRoot;
     }
 
-    public void hide() {
+    /***
+     * 隐藏
+     */
+    void hide() {
 
         if (pageView != null)
             pageView.setVisibility(View.GONE);
 
     }
 
-    public void show() {
+    /***
+     * 展示
+     */
+    void show() {
 
         if (pageView != null)
             pageView.setVisibility(View.VISIBLE);
 
     }
 
+    /**
+     * 销毁BaseBuild对应View， 意味着重新创建
+     */
     public void destory() {
         int index = rootView.indexOfChild(pageView);
         rootView.removeView(pageView);
@@ -247,4 +260,34 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         isLazy = false;
         lifeListeners.clear();
     }
+
+    /***
+     * 匹配是否可消费事件
+     */
+    public boolean matchEvent(BaseEvents baseEvents) {
+        for (BaseObserve item : baseObserves) {
+            if (item.match(baseEvents.typeToken)) {
+                item.response(vh, baseEvents.event);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /***
+     * 缓存一个事件
+     * @param events
+     */
+    void cacheEvents(BaseEvents events) {
+        eventQueue.add(events);
+    }
+
+    /***
+     * 获取缓存的事件队列
+     * @return
+     */
+    public List<BaseEvents> getEventQueue() {
+        return eventQueue;
+    }
+
 }

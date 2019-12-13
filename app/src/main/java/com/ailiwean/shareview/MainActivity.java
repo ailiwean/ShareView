@@ -3,17 +3,13 @@ package com.ailiwean.shareview;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.ailiwean.lib.am.AnimHelper;
-import com.ailiwean.lib.am.DefaultAnim;
-import com.ailiwean.lib.interfaces.InitListener;
+import com.ailiwean.lib.anim.AnimHelper;
+import com.ailiwean.lib.anim.DefaultAnim;
 import com.ailiwean.lib.ShareView;
-import com.ailiwean.lib.interfaces.LazyListener;
-import com.ailiwean.lib.interfaces.LifeListener;
-import com.ailiwean.lib.interfaces.PreLoadListener;
+import com.ailiwean.lib.base.BaseViewHolder;
 import com.ailiwean.lib.holder.TaskViewHolder;
 import com.ailiwean.lib.observe.TaskObserve;
 import com.ailiwean.shareview.Adapter.AAdapter;
@@ -25,7 +21,6 @@ import com.ailiwean.shareview.Adapter.C_Adapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -44,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         shareTask = findViewById(R.id.mult);
 
-        DefaultAnim anim = new DefaultAnim(400) {
+        DefaultAnim anim = new DefaultAnim(3000) {
             @Override
             public int taskTopEnter() {
                 return AnimHelper.ALPHA_UP_SHOW;
@@ -66,29 +61,16 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        shareTask.getMultiDelegate()
-                .regAdapter(new A_Adapter())
+        shareTask.getTaskDelegate()
+                .regAdapter(new BAdapter())
                 .cp()
-                .regAdapter(new B_Adapter())
+                .regAdapter(new CAdapter())
                 .cp()
-                .regAdapter(new C_Adapter())
+                .regAdapter(new AAdapter())
+
                 .cp()
+                .bindCommonAnimation(anim)
                 .go();
-//                .regAdapter(new BAdapter())
-//                .cp()
-//                .regAdapter(new CAdapter())
-//                .cp()
-//                .regAdapter(new AAdapter())
-//                .subscibe(new TaskObserve<HashMap<HashMap<ArrayList, ImageView>, Integer>>() {
-//
-//                    @Override
-//                    public void response(TaskViewHolder vh, HashMap<HashMap<ArrayList, ImageView>, Integer> hashMapIntegerHashMap) {
-//
-//                    }
-//                })
-//                .cp()
-//                .bindCommonAnimation(anim)
-//                .go();
 
     }
 
