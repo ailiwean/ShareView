@@ -8,6 +8,7 @@ import com.ailiwean.lib.base.BaseEvents;
 import com.ailiwean.lib.delegate.ShareTaskDelegate;
 import com.ailiwean.lib.holder.TaskViewHolder;
 import com.ailiwean.lib.observe.TaskObserve;
+import com.ailiwean.lib.utils.TypeToken;
 
 public abstract class TaskAdapter extends BaseAdapter<ShareTaskDelegate.TaskBuild, ShareTaskDelegate, TaskViewHolder, TaskObserve> {
 
@@ -26,7 +27,7 @@ public abstract class TaskAdapter extends BaseAdapter<ShareTaskDelegate.TaskBuil
     }
 
     public abstract void init();
-
+        
     @Override
     public final void lazy(TaskViewHolder vh) {
         lazy();
@@ -78,16 +79,24 @@ public abstract class TaskAdapter extends BaseAdapter<ShareTaskDelegate.TaskBuil
     }
 
     //处理缓存中事件
-    private void matchAllEvents() {
+    private final void matchAllEvents() {
         for (BaseEvents item : build.getEventQueue()) {
             build.matchEvent(item);
         }
     }
 
     //处理缓存中事件， 对于无法处理的进行清除
-    private void matchAllEventsClear() {
+    private final void matchAllEventsClear() {
         matchAllEvents();
         build.getEventQueue().clear();
+    }
+
+    public final void post(int type, Object o) {
+        vh.getShareView().postData(type, o);
+    }
+
+    public final void postData(int type, TypeToken<?> typeToken, Object o) {
+        vh.getShareView().postData(type, typeToken, o);
     }
 
     @Override

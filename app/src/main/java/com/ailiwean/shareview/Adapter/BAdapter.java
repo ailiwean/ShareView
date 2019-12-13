@@ -27,7 +27,7 @@ public class BAdapter extends TaskAdapter {
         });
 
     }
-    
+
     @Override
     public void lazy() {
 
