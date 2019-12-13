@@ -66,22 +66,29 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        shareTask.getTaskDelegate()
-                .regAdapter(new BAdapter())
+        shareTask.getMultiDelegate()
+                .regAdapter(new A_Adapter())
                 .cp()
-                .regAdapter(new CAdapter())
+                .regAdapter(new B_Adapter())
                 .cp()
-                .regAdapter(new AAdapter())
-                .subscibe(new TaskObserve<HashMap<HashMap<ArrayList, ImageView>, Integer>>() {
-
-                    @Override
-                    public void response(TaskViewHolder vh, HashMap<HashMap<ArrayList, ImageView>, Integer> hashMapIntegerHashMap) {
-
-                    }
-                })
+                .regAdapter(new C_Adapter())
                 .cp()
-                .bindCommonAnimation(anim)
                 .go();
+//                .regAdapter(new BAdapter())
+//                .cp()
+//                .regAdapter(new CAdapter())
+//                .cp()
+//                .regAdapter(new AAdapter())
+//                .subscibe(new TaskObserve<HashMap<HashMap<ArrayList, ImageView>, Integer>>() {
+//
+//                    @Override
+//                    public void response(TaskViewHolder vh, HashMap<HashMap<ArrayList, ImageView>, Integer> hashMapIntegerHashMap) {
+//
+//                    }
+//                })
+//                .cp()
+//                .bindCommonAnimation(anim)
+//                .go();
 
     }
 

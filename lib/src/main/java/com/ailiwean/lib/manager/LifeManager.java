@@ -1,15 +1,15 @@
 package com.ailiwean.lib.manager;
 
+import android.util.SparseArray;
+
 import com.ailiwean.lib.base.BaseBuild;
 import com.ailiwean.lib.base.BaseDelegate;
 import com.ailiwean.lib.interfaces.LifeListener;
 import com.ailiwean.lib.interfaces.LifeListenerInner;
 
-import java.util.LinkedHashMap;
-
 public class LifeManager implements LifeListenerInner {
 
-    LinkedHashMap<Integer, BaseBuild> buildMap;
+    SparseArray<BaseBuild> buildMap;
 
     BaseDelegate delegate;
 

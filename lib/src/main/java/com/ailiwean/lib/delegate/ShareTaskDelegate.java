@@ -1,6 +1,6 @@
 package com.ailiwean.lib.delegate;
 
-import android.annotation.SuppressLint;
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -11,18 +11,14 @@ import com.ailiwean.lib.am.BaseAnim;
 import com.ailiwean.lib.am.NullAnim;
 import com.ailiwean.lib.base.BaseBuild;
 import com.ailiwean.lib.base.BaseDelegate;
-import com.ailiwean.lib.interfaces.RollBackInter;
 import com.ailiwean.lib.holder.TaskViewHolder;
+import com.ailiwean.lib.interfaces.RollBackInter;
 import com.ailiwean.lib.manager.LifeManager;
 import com.ailiwean.lib.manager.RollBackManager;
 import com.ailiwean.lib.observe.TaskObserve;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTaskDelegate.TaskBuild> implements RollBackInter {
 
@@ -315,7 +311,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         temList.add(rootBuild);
         reCurSort(temList, rootBuild);
 
-        LinkedHashMap<Integer, TaskBuild> newBuildMap = new LinkedHashMap<>();
+        SparseArray<TaskBuild> newBuildMap = new SparseArray<>();
         int taskIndex = 0;
         for (TaskBuild tem : temList) {
             tem.taskIndex = taskIndex;
@@ -334,17 +330,14 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
      */
     private void reCurSort(List<TaskBuild> temList, TaskBuild build) {
 
-        @SuppressLint("UseSparseArrays")
-        HashMap<Integer, TaskBuild> temMap = new HashMap<>(buildMap);
-        Iterator<Map.Entry<Integer, TaskBuild>> iterator = temMap.entrySet().iterator();
-
-        while (iterator.hasNext()) {
-            Map.Entry<Integer, TaskBuild> item = iterator.next();
-            if (item.getValue().getFrontType() == build.getType()) {
-                temList.add(item.getValue());
+        SparseArray<TaskBuild> temMap = buildMap.clone();
+        for (int i = 0; i < temMap.size(); i++) {
+            TaskBuild item = temMap.valueAt(i);
+            if (item.getFrontType() == build.getType()) {
+                temList.add(item);
                 //添加后移除BuildMap里的
-                buildMap.remove(item.getKey());
-                reCurSort(temList, item.getValue());
+                buildMap.remove(item.getType());
+                reCurSort(temList, item);
             }
         }
     }
@@ -398,8 +391,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         }
 
         public TaskBuild subscibe(TaskObserve<?> baseObserve) {
-         //   getBaseObserves().put(baseObserve.getType(), baseObserve);
-            // TODO
+            getBaseObserves().add(baseObserve);
             return this;
         }
 

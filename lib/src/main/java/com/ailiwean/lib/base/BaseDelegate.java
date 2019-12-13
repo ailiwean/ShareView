@@ -1,6 +1,7 @@
 package com.ailiwean.lib.base;
 
-import android.annotation.SuppressLint;
+import android.util.SparseArray;
+import android.util.SparseIntArray;
 import android.view.View;
 import android.view.ViewStub;
 import android.widget.FrameLayout;
@@ -12,33 +13,31 @@ import com.ailiwean.lib.manager.LifeManager;
 import com.ailiwean.lib.utils.TypeToken;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
 public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> implements LifeListenerInner<T> {
-        
+
     //根View
     protected FrameLayout rootView;
 
     //存放Type与Build的Map
-    @SuppressLint("UseSparseArrays")
-    protected LinkedHashMap<Integer, T> buildMap = new LinkedHashMap<>();
+    protected SparseArray<T> buildMap = new SparseArray<>();
 
     //存放Type与LayoutId的Map
-    @SuppressLint("UseSparseArrays")
-    protected LinkedHashMap<Integer, Integer> typeMap = new LinkedHashMap<>();
+    protected SparseIntArray typeMap = new SparseIntArray();
 
     //存放复用配置下的LayoutId与实例化View的Map
-    @SuppressLint("UseSparseArrays")
-    HashMap<Integer, View> reuseMap = new HashMap<>();
+    SparseArray<View> reuseMap = new SparseArray<>();
 
     //存放可复用的Type
     Set<Integer> receptType = new TreeSet<>();
+
+    //任务队列
+    LinkedList<Runnable> queue = new LinkedList<>();
 
     //是否启用懒加载
     boolean isLazyLoad = true;
@@ -50,8 +49,6 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
     int currentType = -1;
 
     protected LifeManager lifeManager;
-
-    private BaseBuild rootBuild;
 
     protected BaseDelegate(FrameLayout controlView) {
         this.rootView = controlView;
@@ -71,8 +68,8 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
     public T regLayout(T t, int type, @LayoutRes int layoutId) {
         if (t == null)
             t = creatBuild((M) this, layoutId, type);
-        typeMap.put(type, layoutId);
-        buildMap.put(type, t);
+        typeMap.append(type, layoutId);
+        buildMap.append(type, t);
         return t;
     }
 
@@ -135,12 +132,11 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
             //加载第一项
             if (defaultType == -1) {
 
-                List<Integer> keyList = new ArrayList<>(buildMap.keySet());
-                T build = buildMap.get(keyList.get(0));
+                T build = buildMap.valueAt(0);
                 if (build == null || build.getContentLayout() == 0)
                     return;
 
-                defaultType = keyList.get(0);
+                defaultType = build.type;
 
                 inflate(build);
 
@@ -155,20 +151,15 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
 
         } else {
 
-            List<Integer> keyList = new ArrayList<>(buildMap.keySet());
-
-            for (Integer key : keyList) {
-
-                T build = buildMap.get(key);
-
+            for (int i = 0; i < buildMap.size(); i++) {
+                T build = buildMap.valueAt(i);
                 if (build == null || build.getContentLayout() == 0)
                     continue;
-
                 inflate(build);
             }
 
             if (defaultType == -1)
-                defaultType = keyList.get(0);
+                defaultType = buildMap.valueAt(0).type;
 
         }
         currentType = defaultType;
@@ -187,7 +178,7 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
 
         //复用状态下, 若存在相同Type的则传递引用
         if (reuseMap.get(build.getContentLayout()) == null) {
-            reuseMap.put(build.getContentLayout(), build.bindViewStub(rootView));
+            reuseMap.append(build.getContentLayout(), build.bindViewStub(rootView));
         } else {
             build.copyPageRoot((ViewStub) reuseMap.get(build.getContentLayout()));
         }
@@ -230,20 +221,24 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
      */
     private void creatReceptType() {
 
-        if (buildMap == null || buildMap.keySet().size() == 0)
+        if (buildMap == null || buildMap.size() == 0)
             return;
 
-        HashMap<Integer, Integer> copy = new HashMap<>(typeMap);
-        for (Map.Entry<Integer, Integer> entry : typeMap.entrySet()) {
-            //先移除要判断的某项
-            copy.remove(entry.getKey());
-            //仍有该values表示重复
-            if (copy.containsValue(entry.getValue()))
-                receptType.add(entry.getKey());
-            //移除后再添加, 保证与该项相同的想可以获取
-            copy.put(entry.getKey(), entry.getValue());
-        }
+        if (!isReuseLayout)
+            return;
 
+        SparseIntArray copy = typeMap.clone();
+        for (int i = 0; i < copy.size(); i++) {
+            int values = copy.valueAt(i);
+            int key = copy.keyAt(i);
+            //先移除要判断的某项
+            copy.removeAt(i);
+            //仍有该values表示重复
+            if (copy.indexOfValue(values) != -1)
+                receptType.add(key);
+            //移除后再添加, 保证与该项相同的想可以获取
+            copy.append(key, values);
+        }
     }
 
     /***
@@ -310,22 +305,27 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
     }
 
     /***
-     * 发送数据
+     * 发送数据不带范型模式
      * @param type
      */
-    public <Z> void postData(int type, TypeToken<?> typeToken) {
+    public void postData(int type, Object o) {
+        postData(type, new TypeToken<>(o.getClass()), o);
+    }
+
+    /***
+     * 发送数据携带范型模式,最高支持三层，   参照{@link TypeToken}
+     */
+    public void postData(int type, TypeToken<?> typeToken, Object o) {
         BaseBuild baseBuild = getBuild(type);
         if (baseBuild == null)
             return;
-
-
-        TypeToken typeToken1 = typeToken;
-
-
-//        BaseObserve observe = (BaseObserve) baseBuild.getBaseObserves().get(data.getClass());
-//        if (observe != null)
-//            observe.response(baseBuild.getVH(), data);
     }
+
+
+    private void packRunnable(Runnable runnable) {
+
+    }
+
 
     /***
      * 获取当前显示页的Type
@@ -338,7 +338,7 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
     /***
      * 返回Build集合
      */
-    public LinkedHashMap<Integer, T> getBuildMap() {
+    public SparseArray<T> getBuildMap() {
         return buildMap;
     }
 
@@ -356,8 +356,8 @@ public abstract class BaseDelegate<M extends BaseDelegate, T extends BaseBuild> 
 
     protected List<T> getBuildLinkList() {
         List<T> buildList = new ArrayList<>();
-        for (Map.Entry<Integer, T> item : buildMap.entrySet()) {
-            buildList.add(item.getValue());
+        for (int i = 0; i < buildMap.size(); i++) {
+            buildList.add(buildMap.valueAt(i));
         }
         return buildList;
     }

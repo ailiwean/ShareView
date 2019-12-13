@@ -13,9 +13,7 @@ public abstract class TaskAdapter extends BaseAdapter<ShareTaskDelegate.TaskBuil
     private TaskViewHolder vh;
 
     protected TaskAdapter subscribe(TaskObserve<?> observe) {
-      //  getBaseObserves().put(observe.getType(), observe);
-
-        // TODO
+        getBaseObserves().add(observe);
         return this;
     }
 

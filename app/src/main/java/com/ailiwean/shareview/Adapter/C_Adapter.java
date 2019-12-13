@@ -31,7 +31,7 @@ public class C_Adapter extends MultAdapter {
 
     @Override
     public int getLayoutId() {
-        return R.layout.cc;
+        return R.layout.aa;
     }
 
     @Override

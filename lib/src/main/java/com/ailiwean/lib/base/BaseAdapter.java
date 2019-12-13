@@ -7,6 +7,7 @@ import com.ailiwean.lib.interfaces.LifeListener;
 import com.ailiwean.lib.interfaces.PreLoadListener;
 
 import java.util.HashMap;
+import java.util.List;
 
 public abstract class BaseAdapter<T extends BaseBuild, M extends BaseDelegate, H extends BaseViewHolder, D extends BaseObserve> implements AdapterInner<T, M, H, D> {
 
@@ -15,7 +16,7 @@ public abstract class BaseAdapter<T extends BaseBuild, M extends BaseDelegate, H
     //由Delegate调用时注入
     protected M delege;
 
-    protected HashMap<Class, D> getBaseObserves() {
+    protected List<D> getBaseObserves() {
         return build.getBaseObserves();
     }
 

@@ -12,6 +12,14 @@ public class TypeToken<T> {
 
     ArrayList<Class> classes = new ArrayList<>();
 
+    public TypeToken(Class c) {
+        classes.add(c);
+    }
+
+    public TypeToken() {
+
+    }
+
     public ArrayList<Class> getClasses() {
         return classes;
     }
@@ -58,26 +66,6 @@ public class TypeToken<T> {
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-
-        if (!(obj instanceof ArrayList))
-            return false;
-        else {
-            ArrayList other = (ArrayList) obj;
-            if (other.size() == 0 || other.get(0).getClass() != Class.class)
-                return false;
-
-            if (classes.size() != other.size())
-                return false;
-            for (int i = 0; i < classes.size(); i++) {
-                if (classes.get(i) != other.get(i))
-                    return false;
-            }
-            return true;
         }
     }
 }

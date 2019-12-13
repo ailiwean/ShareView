@@ -14,7 +14,6 @@ import com.ailiwean.lib.interfaces.LifeListener;
 import com.ailiwean.lib.interfaces.PreLoadListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H extends BaseViewHolder, D extends BaseObserve> {
@@ -42,7 +41,7 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
 
     private M delegate;
 
-    private HashMap<String, D> baseObserves = new HashMap<>();
+    private List<D> baseObserves = new ArrayList<>();
 
     InitListener initListener = new InitListener<H>() {
 
@@ -202,7 +201,7 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         this.isLazy = isLazy;
     }
 
-    protected HashMap<String, D> getBaseObserves() {
+    protected List<D> getBaseObserves() {
         return baseObserves;
     }
 
@@ -246,5 +245,6 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         bindViewStub(rootView, index);
         isInit = false;
         isLazy = false;
+        lifeListeners.clear();
     }
 }

@@ -71,9 +71,7 @@ public class ShareMultiDelegate extends BaseDelegate<ShareMultiDelegate, ShareMu
         }
 
         public ShareMultiDelegate.MultiBuild subscibe(MultiObserve<?> baseObserve) {
-            //  getBaseObserves().put(baseObserve.getType(), baseObserve);
-
-            // TODO
+            getBaseObserves().add(baseObserve);
             return this;
         }
 

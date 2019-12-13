@@ -1,16 +1,11 @@
 package com.ailiwean.lib.base;
 
-import android.util.Log;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.ailiwean.lib.utils.PatternUtils;
 import com.ailiwean.lib.utils.TypeToken;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public abstract class BaseObserve<T, V extends BaseViewHolder> {
 
@@ -58,14 +53,24 @@ public abstract class BaseObserve<T, V extends BaseViewHolder> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        TypeToken typeToken = new TypeToken<HashMap<HashMap<ArrayList, TextView>, Integer>>() {
-        }.getType();
-
-        Log.e("TAG", typeToken.equals(classes) + "");
-
     }
 
     public abstract void response(V vh, T t);
+
+    public boolean match(TypeToken typeToken) {
+
+        if (typeToken.getClasses() == null)
+            return false;
+
+        if (typeToken.getClasses().size() != classes.size())
+            return false;
+
+        for (int i = 0; i < classes.size(); i++) {
+            if (classes.get(i) != typeToken.getClasses().get(i))
+                return false;
+        }
+
+        return true;
+    }
 
 }
