@@ -27,7 +27,7 @@ public abstract class TaskAdapter extends BaseAdapter<ShareTaskDelegate.TaskBuil
     }
 
     public abstract void init();
-        
+
     @Override
     public final void lazy(TaskViewHolder vh) {
         lazy();
@@ -79,14 +79,14 @@ public abstract class TaskAdapter extends BaseAdapter<ShareTaskDelegate.TaskBuil
     }
 
     //处理缓存中事件
-    private final void matchAllEvents() {
+    private void matchAllEvents() {
         for (BaseEvents item : build.getEventQueue()) {
             build.matchEvent(item);
         }
     }
 
     //处理缓存中事件， 对于无法处理的进行清除
-    private final void matchAllEventsClear() {
+    private void matchAllEventsClear() {
         matchAllEvents();
         build.getEventQueue().clear();
     }
@@ -97,6 +97,14 @@ public abstract class TaskAdapter extends BaseAdapter<ShareTaskDelegate.TaskBuil
 
     public final void postData(int type, TypeToken<?> typeToken, Object o) {
         vh.getShareView().postData(type, typeToken, o);
+    }
+
+    public final void goTo(int type) {
+        vh.getShareView().goTo(type);
+    }
+
+    public final void back() {
+        vh.getShareView().back();
     }
 
     @Override

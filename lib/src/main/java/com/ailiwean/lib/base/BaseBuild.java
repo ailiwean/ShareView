@@ -259,6 +259,7 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         isInit = false;
         isLazy = false;
         lifeListeners.clear();
+        baseObserves.clear();
     }
 
     /***
