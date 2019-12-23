@@ -11,6 +11,7 @@ import com.ailiwean.shareview.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class CAdapter extends TaskAdapter {
 
@@ -33,12 +34,15 @@ public class CAdapter extends TaskAdapter {
     @Override
     public void lazy() {
 
-        subscribe(new TaskObserve<HashMap<HashMap<ArrayList, ImageView>, Integer>>() {
+        subscribe(new TaskObserve<List<ImageView>>() {
             @Override
-            public void response(TaskViewHolder vh, HashMap<HashMap<ArrayList, ImageView>, Integer> hashMapIntegerHashMap) {
+            public void response(TaskViewHolder vh, List<ImageView> imageViews) {
                 Toast.makeText(getContext(), "接收到注册", Toast.LENGTH_SHORT).show();
+
             }
         });
+
+
     }
 
 

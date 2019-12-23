@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
         shareTask = findViewById(R.id.mult);
 
-        DefaultAnim anim = new DefaultAnim(3000) {
+        DefaultAnim anim = new DefaultAnim(2000) {
             @Override
             public int taskTopEnter() {
                 return AnimHelper.ALPHA_UP_SHOW;

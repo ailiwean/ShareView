@@ -1,9 +1,16 @@
 package com.ailiwean.lib.anim;
 
 import android.animation.AnimatorSet;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 
+import java.util.Objects;
+
 import static android.view.View.LAYER_TYPE_NONE;
+import static android.view.View.LAYER_TYPE_SOFTWARE;
 
 public class AnimFactory {
 
@@ -28,17 +35,16 @@ public class AnimFactory {
             enterAnimHolder = animHolder;
         else exitAnimHolder = animHolder;
 
-        loop();
-    }
-
-    private void loop() {
-
         if (enterAnimHolder == null)
             return;
 
         if (exitAnimHolder == null)
             return;
 
+        loop();
+    }
+
+    private void loop() {
         final AnimHolder temStart = enterAnimHolder;
         final AnimHolder temEnd = exitAnimHolder;
 
@@ -46,14 +52,10 @@ public class AnimFactory {
         enterAnimHolder = null;
 
         //开启硬件加速
-        temStart.getPageView().setLayerType(LAYER_TYPE_NONE, null);
-        temEnd.getPageView().setLayerType(LAYER_TYPE_NONE, null);
         temStart.getPageView().setLayerType(View.LAYER_TYPE_HARDWARE, null);
         temEnd.getPageView().setLayerType(View.LAYER_TYPE_HARDWARE, null);
-
         AnimatorSet set = new AnimatorSet();
         set.playTogether(temStart.getAnimator(), temEnd.getAnimator());
         set.start();
     }
-
 }

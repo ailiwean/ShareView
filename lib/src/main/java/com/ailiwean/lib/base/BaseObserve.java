@@ -6,6 +6,9 @@ import com.ailiwean.lib.utils.TypeToken;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public abstract class BaseObserve<T, V extends BaseViewHolder> {
 
@@ -66,6 +69,16 @@ public abstract class BaseObserve<T, V extends BaseViewHolder> {
             return false;
 
         for (int i = 0; i < classes.size(); i++) {
+
+            if (classes.get(i) == List.class && List.class.isAssignableFrom((Class<?>) typeToken.getClasses().get(i)))
+                continue;
+
+            if (classes.get(i) == Map.class && Map.class.isAssignableFrom((Class<?>) typeToken.getClasses().get(i)))
+                continue;
+
+            if (classes.get(i) == Set.class && Set.class.isAssignableFrom((Class<?>) typeToken.getClasses().get(i)))
+                continue;
+
             if (classes.get(i) != typeToken.getClasses().get(i))
                 return false;
         }

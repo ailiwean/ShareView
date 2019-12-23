@@ -9,6 +9,7 @@ import com.ailiwean.shareview.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class BAdapter extends TaskAdapter {
 
@@ -21,8 +22,8 @@ public class BAdapter extends TaskAdapter {
             @Override
             public void onClick(View v) {
                 getVh().getShareView().goTo(3);
-                getVh().getShareView().postData(3, new TypeToken<HashMap<HashMap<ArrayList, ImageView>, Integer>>() {
-                }.getType(), new HashMap<>());
+                getVh().getShareView().postData(3, new TypeToken<ArrayList>() {
+                }.getType(), new ArrayList<>());
             }
         });
 
