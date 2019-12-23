@@ -6,10 +6,7 @@ import android.animation.Keyframe;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.annotation.SuppressLint;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
 
 import com.ailiwean.lib.interfaces.AnimStateListener;
 import com.ailiwean.lib.utils.Utils;
@@ -94,36 +91,36 @@ class AnimHolder {
         if (pageView == null)
             return null;
 
-        if (type == AnimHelper.ALPHA_DOWN_HIDE) {
-            animator = aplha_down_hide();
+
+        switch (type) {
+
+            case AnimHelper.ALPHA_DOWN_HIDE:
+                animator = aplha_down_hide();
+                break;
+
+            case AnimHelper.ALPHA_UP_SHOW:
+                animator = alpha_up_show();
+                break;
+
+            case AnimHelper.LEFT_ALL_SHOW:
+                animator = left_all_show();
+                break;
+            case AnimHelper.RIGHT_ALL_HIDE:
+                animator = right_all_hide();
+                break;
+
+            case AnimHelper.RIGHT_HALF_SHOW:
+                animator = right_half_show();
+                break;
+
+            case AnimHelper.LEFT_HALF_HIDE:
+                animator = left_half_hide();
+                break;
+
+            default:
+                animator = null_null();
+
         }
-
-        if (type == AnimHelper.ALPHA_UP_SHOW) {
-            animator = alpha_up_show();
-        }
-
-        if (type == AnimHelper.LEFT_ALL_SHOW) {
-            animator = left_all_show();
-        }
-
-        if (type == AnimHelper.RIGHT_ALL_HIDE) {
-            animator = right_all_hide();
-        }
-
-        if (type == AnimHelper.RIGHT_HALF_SHOW) {
-            animator = right_half_show();
-        }
-
-        if (type == AnimHelper.LEFT_HALF_HIDE) {
-            animator = left_half_hide();
-        }
-
-        if (type == AnimHelper.NULL)
-            animator = null_null();
-
-        if (animator == null)
-            return null;
-
 
         if (type == AnimHelper.NULL)
             animator.setDuration(0);
@@ -131,7 +128,7 @@ class AnimHolder {
             animator.setDuration(duration);
 
         animator.addListener(listener);
-        animator.setInterpolator(new DecelerateInterpolator(1.5f));
+        //   animator.setInterpolator(new DecelerateInterpolator(1.5f));
         AnimFactory.getInstance().bind(this);
         return this;
     }

@@ -6,6 +6,7 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 
 import java.util.Objects;
 
@@ -56,6 +57,7 @@ public class AnimFactory {
         temEnd.getPageView().setLayerType(View.LAYER_TYPE_HARDWARE, null);
         AnimatorSet set = new AnimatorSet();
         set.playTogether(temStart.getAnimator(), temEnd.getAnimator());
+        set.setInterpolator(new DecelerateInterpolator(1.5f));
         set.start();
     }
 }

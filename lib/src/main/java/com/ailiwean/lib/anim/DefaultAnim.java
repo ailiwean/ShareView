@@ -77,8 +77,8 @@ public abstract class DefaultAnim extends BaseAnim implements AnimOutListener {
         else creatAnimHolder(pageView, taskInnerExit(), false, false, isExecute);
 
     }
-        
-    private AnimHolder creatAnimHolder(View pageView, int type, boolean isEnter, boolean isTopTask, boolean isExecute) {
+
+    private AnimHolder creatAnimHolder(View pageView, @AnimHelper.Type int type, boolean isEnter, boolean isTopTask, boolean isExecute) {
 
         if (!isExecute) {
             if (isEnter) {
@@ -91,39 +91,7 @@ public abstract class DefaultAnim extends BaseAnim implements AnimOutListener {
             return null;
         }
 
-        switch (type) {
-
-            case AnimHelper.ALPHA_UP_SHOW:
-                return commonExeAnimLib(AnimHolder.getInstance(AnimHelper.ALPHA_UP_SHOW, pageView), isEnter, isTopTask);
-
-
-            case AnimHelper.ALPHA_DOWN_HIDE:
-                return commonExeAnimLib(AnimHolder.getInstance(AnimHelper.ALPHA_DOWN_HIDE, pageView), isEnter, isTopTask);
-
-
-            case AnimHelper.LEFT_ALL_SHOW:
-                return commonExeAnimLib(AnimHolder.getInstance(AnimHelper.LEFT_ALL_SHOW, pageView), isEnter, isTopTask);
-
-
-            case AnimHelper.RIGHT_ALL_HIDE:
-                return commonExeAnimLib(AnimHolder.getInstance(AnimHelper.RIGHT_ALL_HIDE, pageView), isEnter, isTopTask);
-
-
-            case AnimHelper.LEFT_HALF_HIDE:
-                return commonExeAnimLib(AnimHolder.getInstance(AnimHelper.LEFT_HALF_HIDE, pageView), isEnter, isTopTask);
-
-
-            case AnimHelper.RIGHT_HALF_SHOW:
-                return commonExeAnimLib(AnimHolder.getInstance(AnimHelper.RIGHT_HALF_SHOW, pageView), isEnter, isTopTask);
-
-            case AnimHelper.NULL:
-                return commonExeAnimLib(AnimHolder.getInstance(AnimHelper.NULL, pageView), isEnter, isTopTask);
-
-            default:
-                return commonExeAnimLib(AnimHolder.getInstance(AnimHelper.NULL, pageView), isEnter, isTopTask);
-
-        }
-
+        return commonExeAnimLib(AnimHolder.getInstance(type, pageView), isEnter, isTopTask);
     }
 
     private AnimHolder commonExeAnimLib(AnimHolder animHolder, boolean isEnter, boolean isTopTask) {
