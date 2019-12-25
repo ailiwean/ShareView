@@ -62,27 +62,27 @@ class AnimHolder {
         return new AnimHolder(type, preView);
     }
 
-    public AnimHolder bindListener(AnimStateListener animStateListener) {
+    AnimHolder bindListener(AnimStateListener animStateListener) {
         this.animStateListener = animStateListener;
         return this;
     }
 
-    public AnimHolder isTopTask(boolean isTopTask) {
+    AnimHolder isTopTask(boolean isTopTask) {
         this.isTopTask = isTopTask;
         return this;
     }
 
-    public AnimHolder isDuration(long duration) {
+    AnimHolder isDuration(long duration) {
         this.duration = duration;
         return this;
     }
 
-    public AnimHolder isEnter(boolean isEnter) {
+    AnimHolder isEnter(boolean isEnter) {
         this.isEnter = isEnter;
         return this;
     }
 
-    public boolean getEnter() {
+    boolean getEnter() {
         return isEnter;
     }
 
@@ -91,6 +91,34 @@ class AnimHolder {
         if (pageView == null)
             return null;
 
+        selectAnimator();
+
+        if (type == AnimHelper.NULL)
+            animator.setDuration(0);
+        else
+            animator.setDuration(duration);
+
+        animator.addListener(listener);
+        AnimFactory.getInstance().insert(this);
+        return this;
+    }
+
+    Animator getAnimator() {
+        return animator;
+    }
+
+    public View getPageView() {
+        return pageView;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    /***
+     * 挑选动画
+     */
+    private void selectAnimator() {
 
         switch (type) {
 
@@ -122,108 +150,58 @@ class AnimHolder {
 
         }
 
-        if (type == AnimHelper.NULL)
-            animator.setDuration(0);
-        else
-            animator.setDuration(duration);
-
-        animator.addListener(listener);
-        //   animator.setInterpolator(new DecelerateInterpolator(1.5f));
-        AnimFactory.getInstance().bind(this);
-        return this;
-    }
-
-    public Animator getAnimator() {
-        return animator;
-    }
-
-    public View getPageView() {
-        return pageView;
-    }
-
-    public long getDuration() {
-        return duration;
     }
 
     @SuppressLint("ObjectAnimatorBinding")
     private ObjectAnimator null_null() {
-        return ObjectAnimator.ofFloat(pageView, "null", 1, 1);
+        return ObjectAnimator.ofFloat(pageView, "", 1, 1);
     }
 
     private ObjectAnimator aplha_down_hide() {
-
         Keyframe alphaK1 = Keyframe.ofFloat(0f, 1);
         Keyframe alphaK2 = Keyframe.ofFloat(1, 0);
         PropertyValuesHolder alpha = PropertyValuesHolder.ofKeyframe("alpha", alphaK1, alphaK2);
-
         Keyframe tranK1 = Keyframe.ofFloat(0f, 0);
         Keyframe tranK2 = Keyframe.ofFloat(1f, Utils.getY());
         PropertyValuesHolder translation = PropertyValuesHolder.ofKeyframe("translationY", tranK1, tranK2);
-
-        ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(pageView, alpha, translation);
-        animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                pageView.setAlpha(1f);
-                pageView.setTranslationY(0);
-            }
-        });
-        return animator;
+        return ObjectAnimator.ofPropertyValuesHolder(pageView, alpha, translation);
     }
 
     private ObjectAnimator alpha_up_show() {
-
         Keyframe alphaK1 = Keyframe.ofFloat(0f, 0);
         Keyframe alphaK2 = Keyframe.ofFloat(1, 1);
         PropertyValuesHolder alpha = PropertyValuesHolder.ofKeyframe("alpha", alphaK1, alphaK2);
-
         Keyframe tranK1 = Keyframe.ofFloat(0f, Utils.getY());
         Keyframe tranK2 = Keyframe.ofFloat(1f, 0);
         PropertyValuesHolder translation = PropertyValuesHolder.ofKeyframe("translationY", tranK1, tranK2);
-
         return ObjectAnimator.ofPropertyValuesHolder(pageView, alpha, translation);
-
     }
 
     private ObjectAnimator left_all_show() {
-
         return ObjectAnimator.ofFloat(pageView, "translationX", Utils.getX(), 0)
                 .setDuration(duration);
-
     }
 
     private ObjectAnimator right_all_hide() {
-
-        ObjectAnimator animator = ObjectAnimator.ofFloat(pageView, "translationX", 0, Utils.getX())
+        return ObjectAnimator.ofFloat(pageView, "translationX", 0, Utils.getX())
                 .setDuration(duration);
-
-        animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                pageView.setTranslationX(0);
-            }
-        });
-        return animator;
     }
 
     private ObjectAnimator right_half_show() {
-
         return ObjectAnimator.ofFloat(pageView, "translationX", -Utils.getX() / 2f, 0)
                 .setDuration(duration);
     }
 
     private ObjectAnimator left_half_hide() {
-
-        ObjectAnimator animator = ObjectAnimator.ofFloat(pageView, "translationX", 0, -Utils.getX() / 2f)
+        return ObjectAnimator.ofFloat(pageView, "translationX", 0, -Utils.getX() / 2f)
                 .setDuration(duration);
-
-        animator.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                pageView.setTranslationX(0);
-            }
-        });
-        return animator;
     }
 
 }
+
+
+
+
+
+
+

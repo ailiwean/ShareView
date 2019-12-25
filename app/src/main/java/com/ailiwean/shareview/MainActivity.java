@@ -31,12 +31,12 @@ public class MainActivity extends AppCompatActivity {
         DefaultAnim anim = new DefaultAnim(400) {
             @Override
             public int taskTopEnter() {
-                return AnimHelper.LEFT_ALL_SHOW;
+                return AnimHelper.ALPHA_UP_SHOW;
             }
 
             @Override
             public int taskTopExit() {
-                return AnimHelper.RIGHT_ALL_HIDE;
+                return AnimHelper.ALPHA_DOWN_HIDE;
             }
 
             @Override
