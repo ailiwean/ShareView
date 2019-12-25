@@ -9,6 +9,8 @@ import com.ailiwean.lib.anim.AnimHelper;
 import com.ailiwean.lib.anim.DefaultAnim;
 import com.ailiwean.lib.ShareView;
 import com.ailiwean.lib.holder.TaskViewHolder;
+import com.ailiwean.lib.interfaces.InitListener;
+import com.ailiwean.lib.interfaces.LazyListener;
 import com.ailiwean.lib.interfaces.LifeAdapter;
 import com.ailiwean.shareview.Adapter.AAdapter;
 import com.ailiwean.shareview.Adapter.BAdapter;
@@ -55,17 +57,23 @@ public class MainActivity extends AppCompatActivity {
 
         shareTask.getTaskDelegate()
                 .regAdapter(new BAdapter())
+                .lazy(new LazyListener<TaskViewHolder>() {
+                    @Override
+                    public void onLazy(TaskViewHolder vh) {
+                        Toast.makeText(MainActivity.this, "外部lazy", Toast.LENGTH_LONG).show();
+                    }
+                })
                 .addLifeListener(new LifeAdapter<TaskViewHolder>() {
 
                     @Override
                     public void onReVisiable(TaskViewHolder vh) {
-                        Toast.makeText(MainActivity.this, "准备显示", Toast.LENGTH_LONG).show();
+                        //          Toast.makeText(MainActivity.this, "准备显示", Toast.LENGTH_LONG).show();
 
                     }
 
                     @Override
                     public void onVisiable(TaskViewHolder vh) {
-                        Toast.makeText(MainActivity.this, "已经显示", Toast.LENGTH_LONG).show();
+                        //            Toast.makeText(MainActivity.this, "已经显示", Toast.LENGTH_LONG).show();
 
                     }
                 })

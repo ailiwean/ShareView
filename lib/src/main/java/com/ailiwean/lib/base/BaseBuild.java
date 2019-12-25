@@ -80,29 +80,48 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
 
     /***
      * 初始化回调，非复用布局Layout只执行一次
-     * @param initListener
      * @return
      */
-    public T init(InitListener<H> initListener) {
-        this.initListener = initListener;
+    public T init(final InitListener<H> init) {
+        final InitListener<H> oriInit = initListener;
+        initListener = new InitListener<H>() {
+            @Override
+            public void init(H vh) {
+                oriInit.init(vh);
+                init.init(vh);
+            }
+        };
         return (T) this;
     }
 
     /***
-     * 懒加载  :   View创建完成并展示动画播放完毕
+     * 懒加载:View创建完成并展示动画播放完毕
      */
-    public T lazy(LazyListener<H> lazyListener) {
-        this.lazyListener = lazyListener;
+    public T lazy(final LazyListener<H> lazy) {
+        final LazyListener<H> oriLazy = lazyListener;
+        lazyListener = new LazyListener<H>() {
+            @Override
+            public void onLazy(H vh) {
+                oriLazy.onLazy(vh);
+                lazy.onLazy(vh);
+            }
+        };
         return (T) this;
     }
 
     /***
      * 页面预加载回调
-     * @param preLoadListener
      * @return
      */
-    public T preLoad(PreLoadListener<H> preLoadListener) {
-        this.preLoadListener = preLoadListener;
+    public T preLoad(final PreLoadListener<H> pre) {
+        final PreLoadListener<H> oriPre = preLoadListener;
+        preLoadListener = new PreLoadListener<H>() {
+            @Override
+            public void preLoad(H vh) {
+                oriPre.preLoad(vh);
+                pre.preLoad(vh);
+            }
+        };
         return (T) this;
     }
 

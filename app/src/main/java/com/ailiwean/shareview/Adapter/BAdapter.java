@@ -2,9 +2,11 @@ package com.ailiwean.shareview.Adapter;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.ailiwean.lib.adapter.TaskAdapter;
 import com.ailiwean.lib.utils.TypeToken;
+import com.ailiwean.shareview.MainActivity;
 import com.ailiwean.shareview.R;
 
 import java.util.ArrayList;
@@ -31,9 +33,8 @@ public class BAdapter extends TaskAdapter {
 
     @Override
     public void lazy() {
-
+        Toast.makeText(getContext(), "内部lazy", Toast.LENGTH_LONG).show();
     }
-
 
     @Override
     public void preload() {

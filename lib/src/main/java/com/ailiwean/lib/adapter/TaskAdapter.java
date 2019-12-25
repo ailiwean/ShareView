@@ -12,7 +12,9 @@ import com.ailiwean.lib.utils.TypeToken;
 
 public abstract class TaskAdapter extends BaseAdapter<ShareTaskDelegate.TaskBuild, ShareTaskDelegate, TaskViewHolder, TaskObserve> {
 
-    private TaskViewHolder vh;
+    public TaskViewHolder vh;
+
+    public Context mContext;
 
     protected TaskAdapter subscribe(TaskObserve<?> observe) {
         build.baseObserves.add(observe);
@@ -22,6 +24,7 @@ public abstract class TaskAdapter extends BaseAdapter<ShareTaskDelegate.TaskBuil
     @Override
     public final void init(TaskViewHolder vh) {
         this.vh = vh;
+        this.mContext = getContext();
         init();
         matchAllEvents();
     }
