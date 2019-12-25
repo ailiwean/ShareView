@@ -128,6 +128,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
         if (lastBuild == null) {
             build.anim.enter(build.getPageView(), true, false);
             onLazy(build);
+            onReVisiable(build);
             onVisiable(build);
             lastBuild = build;
             return;
@@ -139,6 +140,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
                 @Override
                 public void run() {
                     build.setRunning(true);
+                    onReVisiable(build);
                 }
             }, build.getPageView());
 
@@ -155,6 +157,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
                 @Override
                 public void run() {
                     lastBuild.setRunning(true);
+                    onReHide(lastBuild);
                 }
             }, lastBuild.getPageView());
 
@@ -163,7 +166,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
                 @Override
                 public void run() {
                     lastBuild.setRunning(false);
-                    onHide(lastBuild);
+                    onHidden(lastBuild);
                     onVisiable(build);
                     lastBuild = build;
                 }
@@ -179,6 +182,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
                 @Override
                 public void run() {
                     temBuild.setRunning(true);
+                    onReHide(lastBuild);
                 }
             }, lastBuild.getPageView());
             lastBuild.anim.operatorEndBack(new Runnable() {
@@ -193,6 +197,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
                 @Override
                 public void run() {
                     build.setRunning(true);
+                    onReVisiable(build);
                 }
             }, build.getPageView());
             //进入动画结束后才将lastBuild指向当前页
@@ -202,7 +207,7 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
                     if (!build.isLazy())
                         onLazy(build);
                     onVisiable(build);
-                    onHide(lastBuild);
+                    onHidden(lastBuild);
                     lastBuild = build;
                     build.setRunning(false);
                 }
@@ -269,8 +274,8 @@ public class ShareTaskDelegate extends BaseDelegate<ShareTaskDelegate, ShareTask
     }
 
     @Override
-    public void onHide(TaskBuild baseBuild) {
-        super.onHide(baseBuild);
+    public void onHidden(TaskBuild baseBuild) {
+        super.onHidden(baseBuild);
         if (!baseBuild.leaveRetain)
             baseBuild.destory();
     }

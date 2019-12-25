@@ -174,7 +174,7 @@ vh.getShareView().postData(OTHER, 2);
             public void onVisiable(TaskViewHolder vH) {
             }
             @Override
-            public void onHide(TaskViewHolder vH) {
+            public void onHidden(TaskViewHolder vH) {
             }
         });
     }

@@ -13,7 +13,7 @@ import java.util.Objects;
 import static android.view.View.LAYER_TYPE_NONE;
 import static android.view.View.LAYER_TYPE_SOFTWARE;
 
-public class AnimFactory {
+class AnimFactory {
 
     private AnimHolder enterAnimHolder;
 
@@ -28,7 +28,7 @@ public class AnimFactory {
     }
 
     /***
-     * 当插入连个View的入场出场动画才进行播放
+     * 当分别插入View的入场出场动画才进行播放
      * @param animHolder
      */
     void insert(AnimHolder animHolder) {

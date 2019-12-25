@@ -209,7 +209,7 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
         return bindViewStub(rootView, -1);
     }
 
-    protected ViewStub bindViewStub(ViewGroup rootView, int index) {
+    private ViewStub bindViewStub(ViewGroup rootView, int index) {
         if (pageRoot == null) {
             pageRoot = new ViewStub(rootView.getContext());
             rootView.addView(pageRoot, index);
@@ -231,20 +231,16 @@ public abstract class BaseBuild<T extends BaseBuild, M extends BaseDelegate, H e
      * 隐藏
      */
     void hide() {
-
         if (pageView != null)
             pageView.setVisibility(View.GONE);
-
     }
 
     /***
      * 展示
      */
     void show() {
-
         if (pageView != null)
             pageView.setVisibility(View.VISIBLE);
-
     }
 
     /**

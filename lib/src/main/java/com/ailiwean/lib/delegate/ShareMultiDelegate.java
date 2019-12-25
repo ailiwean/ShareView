@@ -44,7 +44,7 @@ public class ShareMultiDelegate extends BaseDelegate<ShareMultiDelegate, ShareMu
         //回调上个页面的隐藏方法
         if (lastBuild != null && lastBuild.lifeListeners.size() != 0) {
             for (LifeListener item : lastBuild.lifeListeners)
-                item.onHide(lastBuild.getVH());
+                item.onHidden(lastBuild.getVH());
         }
 
         if (build.lifeListeners.size() != 0)
@@ -52,7 +52,7 @@ public class ShareMultiDelegate extends BaseDelegate<ShareMultiDelegate, ShareMu
                 item.onVisiable(build.getVH());
 
         if (lastBuild != null)
-            onHide(lastBuild);
+            onHidden(lastBuild);
         onVisiable(build);
         lastBuild = build;
 

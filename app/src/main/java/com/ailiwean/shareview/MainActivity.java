@@ -3,10 +3,13 @@ package com.ailiwean.shareview;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.ailiwean.lib.anim.AnimHelper;
 import com.ailiwean.lib.anim.DefaultAnim;
 import com.ailiwean.lib.ShareView;
+import com.ailiwean.lib.holder.TaskViewHolder;
+import com.ailiwean.lib.interfaces.LifeAdapter;
 import com.ailiwean.shareview.Adapter.AAdapter;
 import com.ailiwean.shareview.Adapter.BAdapter;
 import com.ailiwean.shareview.Adapter.CAdapter;
@@ -28,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
         shareTask = findViewById(R.id.mult);
 
-        DefaultAnim anim = new DefaultAnim(400) {
+        DefaultAnim anim = new DefaultAnim(4000) {
             @Override
             public int taskTopEnter() {
                 return AnimHelper.ALPHA_UP_SHOW;
@@ -52,11 +55,35 @@ public class MainActivity extends AppCompatActivity {
 
         shareTask.getTaskDelegate()
                 .regAdapter(new BAdapter())
+                .addLifeListener(new LifeAdapter<TaskViewHolder>() {
+
+                    @Override
+                    public void onReVisiable(TaskViewHolder vh) {
+                        Toast.makeText(MainActivity.this, "准备显示", Toast.LENGTH_LONG).show();
+
+                    }
+
+                    @Override
+                    public void onVisiable(TaskViewHolder vh) {
+                        Toast.makeText(MainActivity.this, "已经显示", Toast.LENGTH_LONG).show();
+
+                    }
+                })
                 .cp()
                 .regAdapter(new CAdapter())
                 .cp()
                 .regAdapter(new AAdapter())
+                .addLifeListener(new LifeAdapter<TaskViewHolder>() {
+                    @Override
+                    public void onReHide(TaskViewHolder vh) {
+                        //                    Toast.makeText(MainActivity.this, "准备隐藏", Toast.LENGTH_LONG).show();
+                    }
 
+                    @Override
+                    public void onHidden(TaskViewHolder vh) {
+                        //                    Toast.makeText(MainActivity.this, "已经隐藏", Toast.LENGTH_LONG).show();
+                    }
+                })
                 .cp()
                 .bindCommonAnimation(anim)
                 .go();

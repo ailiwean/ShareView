@@ -18,11 +18,11 @@ public abstract class BaseAnim implements AnimStateListener, AnimInnerListener {
     //动画优先级
     int priority = 1;  //new出来的>com>自带
 
-    public int getPriority() {
+    public final int getPriority() {
         return priority;
     }
 
-    public BaseAnim setPriority(int priority) {
+    public final BaseAnim setPriority(int priority) {
         this.priority = priority;
         return this;
     }
@@ -50,8 +50,10 @@ public abstract class BaseAnim implements AnimStateListener, AnimInnerListener {
 
     /***
      * 保留库内回调
+     * 动画开始时保证View可视，动画结束在该类下不予处理
+     *
      */
-    private final void enterAnimStar_Inner(View pageView) {
+    private void enterAnimStar_Inner(View pageView) {
 
         pageView.setVisibility(View.VISIBLE);
         Runnable run = startBackMaps.get(pageView);
@@ -60,7 +62,7 @@ public abstract class BaseAnim implements AnimStateListener, AnimInnerListener {
         }
     }
 
-    private final void enterAnimEnd_Inner(View pageView) {
+    private void enterAnimEnd_Inner(View pageView) {
 
         Runnable run = endBackMaps.get(pageView);
         if (run != null) {
@@ -68,7 +70,7 @@ public abstract class BaseAnim implements AnimStateListener, AnimInnerListener {
         }
     }
 
-    private final void exitAnimEnd_Inner(View pageView) {
+    private void exitAnimEnd_Inner(View pageView) {
 
         Runnable run = endBackMaps.get(pageView);
         if (run != null) {
@@ -77,7 +79,7 @@ public abstract class BaseAnim implements AnimStateListener, AnimInnerListener {
 
     }
 
-    private final void exitAnimStar_Inner(View pageView) {
+    private void exitAnimStar_Inner(View pageView) {
 
         pageView.setVisibility(View.VISIBLE);
         Runnable run = startBackMaps.get(pageView);
@@ -115,22 +117,22 @@ public abstract class BaseAnim implements AnimStateListener, AnimInnerListener {
      * @param view
      * @param isTaskTop
      */
-    public final void finalEnterAnimStar(View view, boolean isTaskTop) {
+    final void finalEnterAnimStar(View view, boolean isTaskTop) {
         enterAnimStar_Inner(view);
         enterAnimStar(view, isTaskTop);
     }
 
-    public final void finalEnterAnimEnd(View view, boolean isTaskTop) {
+    final void finalEnterAnimEnd(View view, boolean isTaskTop) {
         enterAnimEnd_Inner(view);
         enterAnimEnd(view, isTaskTop);
     }
 
-    public final void finalExitAnimStar(View view, boolean isTaskTop) {
+    final void finalExitAnimStar(View view, boolean isTaskTop) {
         exitAnimStar_Inner(view);
         exitAnimStar(view, isTaskTop);
     }
 
-    public final void finalExitAnimEnd(View view, boolean isTaskTop) {
+    final void finalExitAnimEnd(View view, boolean isTaskTop) {
         exitAnimEnd_Inner(view);
         exitAnimEnd(view, isTaskTop);
     }

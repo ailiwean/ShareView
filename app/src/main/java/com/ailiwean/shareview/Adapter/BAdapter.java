@@ -57,7 +57,7 @@ public class BAdapter extends TaskAdapter {
 
     @Override
     public boolean leaveRetain() {
-        return false;
+        return true;
     }
 
 }

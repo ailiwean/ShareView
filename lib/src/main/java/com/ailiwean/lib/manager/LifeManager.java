@@ -41,14 +41,35 @@ public class LifeManager implements LifeListenerInner {
     }
 
     @Override
-    public void onHide(BaseBuild baseBuild) {
+    public void onHidden(BaseBuild baseBuild) {
         if (baseBuild == null)
             return;
         for (int i = 0; i < baseBuild.lifeListeners.size(); i++) {
             LifeListener listener = (LifeListener) baseBuild.lifeListeners.get(i);
-            listener.onHide(baseBuild.getVH());
+            listener.onHidden(baseBuild.getVH());
         }
     }
+
+    @Override
+    public void onReVisiable(BaseBuild baseBuild) {
+        if (baseBuild == null)
+            return;
+        for (int i = 0; i < baseBuild.lifeListeners.size(); i++) {
+            LifeListener listener = (LifeListener) baseBuild.lifeListeners.get(i);
+            listener.onReVisiable(baseBuild.getVH());
+        }
+    }
+
+    @Override
+    public void onReHide(BaseBuild baseBuild) {
+        if (baseBuild == null)
+            return;
+        for (int i = 0; i < baseBuild.lifeListeners.size(); i++) {
+            LifeListener listener = (LifeListener) baseBuild.lifeListeners.get(i);
+            listener.onReHide(baseBuild.getVH());
+        }
+    }
+
 
     @Override
     public void onInit(BaseBuild baseBuild) {
